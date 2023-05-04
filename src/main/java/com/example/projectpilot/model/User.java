@@ -41,7 +41,7 @@ public class User {
         return email;
     }
 
-    public String pw()
+    public String getPw()
     {
         return pw;
     }
@@ -66,7 +66,7 @@ public class User {
         this.email = email;
     }
 
-    public void pw(String pw)
+    public void setPw(String pw)
     {
         this.pw = pw;
     }
