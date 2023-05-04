@@ -185,7 +185,6 @@ public class UserRepository
     }
 
     //Method 7 delete user by ID. This method will return true if the user was successfully deleted from the database.
-    //Method 7 delete user by ID. This method will return true if the user was successfully deleted from the database.
     public boolean deleteUserByID(User user) {
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.user WHERE user_id = ?";
         try {
