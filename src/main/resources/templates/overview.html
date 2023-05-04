@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Task Overview</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Hide the additional info row by default */
+    .additional-info {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 <div class="container">
@@ -14,9 +20,11 @@
     <tr>
       <th>Task Name</th>
       <th>Deadline</th>
-      <th>Description</th>
+      <th>Department</th>
       <th>Assigned To</th>
+      <th>Status</th>
       <th>Action</th>
+      <th>More Info</th>
     </tr>
     </thead>
     <tbody>
@@ -24,35 +32,59 @@
       <td>Task 1</td>
       <td>2023-06-01</td>
       <td>
-        <select name="description">
-          <option value="description1">Description 1</option>
-          <option value="description2">Description 2</option>
-          <option value="description3">Description 3</option>
+        <select name="department">
+          <option value="departmentA">Department A</option>
+          <option value="departmentB">Department B</option>
+          <option value="departmentC">Department C</option>
         </select>
       </td>
       <td>
         <input type="text" name="assigned-to" placeholder="Enter member ID">
       </td>
+      <td>
+        <select name="status">
+          <option value="not-begun">Not Begun</option>
+          <option value="in-progress">In Progress</option>
+          <option value="done">Done</option>
+        </select>
+      </td>
       <td><button>Assign</button></td>
+      <td>
+        <button class="expand-btn">More Info</button>
+        <div class="additional-info">
+          <textarea placeholder="Add Description"></textarea>
+        </div>
+      </td>
     </tr>
     <tr>
       <td>Task 2</td>
       <td>2023-06-15</td>
       <td>
-        <select name="description">
-          <option value="description1">Description 1</option>
-          <option value="description2">Description 2</option>
-          <option value="description3">Description 3</option>
+        <select name="department">
+          <option value="departmentA">Department A</option>
+          <option value="departmentB">Department B</option>
+          <option value="departmentC">Department C</option>
         </select>
       </td>
       <td>
         <input type="text" name="assigned-to" placeholder="Enter member ID">
       </td>
+      <td>
+        <select name="status">
+          <option value="not-begun">Not Begun</option>
+          <option value="in-progress">In Progress</option>
+          <option value="done">Done</option>
+        </select>
+      </td>
       <td><button>Assign</button></td>
+      <td>
+        <button class="expand-btn">More Info</button>
+        <div class="additional-info">
+          <textarea placeholder="Add Description"></textarea>
+        </div>
+      </td>
     </tr>
     <!-- More task rows -->
     </tbody>
   </table>
 </div>
-</body>
-</html>
