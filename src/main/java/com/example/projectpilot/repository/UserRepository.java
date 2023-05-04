@@ -13,17 +13,17 @@ public class UserRepository
     private String DB_URL;
     @Value("${spring.datasource.username}") //ProjectPilotDB
     private String UID;
-    @Value("${spring.datasource.password}") //ProjectPilot23
+    @Value("${spring.datasource.password}") //Bugbusters23
     private String PWD;
 
     //Method 1 extract user from SQL. This method will return a user object from the database.
     private User extractUser(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt(1);
-        String firstName = resultSet.getString(2);
-        String lastName = resultSet.getString(3);
+        String fname = resultSet.getString(2);
+        String lname = resultSet.getString(3);
         String email = resultSet.getString(4);
         String pw = resultSet.getString(5);
-        User user = new User(firstName, lastName, email, pw);
+        User user = new User(fname, lname, email, pw);
         user.setId(id);
         return user;
     }
@@ -83,7 +83,7 @@ public class UserRepository
     //Method 4 add user. This method will return true if the user was successfully added to the database.
     public boolean addUser(User user)
     {
-        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.user (firstName, lastName, email, pw) VALUES (?, ?, ?, ?)";
+        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.user (fname, lname, email, pw) VALUES (?, ?, ?, ?)";
         try
         {
             //db connection
@@ -91,8 +91,8 @@ public class UserRepository
 
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
-            preparedStatement.setString(1, user.getFirstName());
-            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(1, user.getfname());
+            preparedStatement.setString(2, user.getlname());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getPw());
 
@@ -137,7 +137,7 @@ public class UserRepository
     // Method 6 update user. This method will return true if the user was successfully updated in the database.
     public void updateUser(User user)
     {
-        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.user SET firstName = ?, lastName = ?, email = ?, pw = ? WHERE id = ?";
+        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.user SET fname = ?, lname = ?, email = ?, pw = ? WHERE id = ?";
         try
         {
             //db connection
@@ -145,8 +145,8 @@ public class UserRepository
 
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
-            preparedStatement.setString(1, user.getFirstName());
-            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(1, user.getfname());
+            preparedStatement.setString(2, user.getlname());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getPw());
             preparedStatement.setInt(5, user.getId());
@@ -159,5 +159,42 @@ public class UserRepository
             System.out.println("Could not query database");
             e.printStackTrace();
         }
+    }
+
+    // Method 7 verify user. This method will return true if the user exists in the database.
+    public boolean verifyUser(String email, String pw)
+    {
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ? AND pw = ?";
+        try
+        {
+            //db connection
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+
+            //prepared statement
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, pw);
+            //execute statement
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                email = resultSet.getString(4);
+                pw = resultSet.getString(5);
+                if(email != null && password != null){
+                    return true;
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Could not query database");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public deleteUserByID()
+    {
+
     }
 }
