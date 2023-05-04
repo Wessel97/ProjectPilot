@@ -1,11 +1,11 @@
 package com.example.projectpilot.model;
 
 public class User {
-    private int id;
-    private String firstName;
-    private String lastName;
+    private int user_id;
+    private String first_name;
+    private String last_name;
     private String email;
-    private String pw;
+    private String password;
 
     //constructor
     public User()
@@ -13,27 +13,27 @@ public class User {
     }
 
     //constructor
-    public User(String firstName, String lastName, String email, String pw)
+    public User(String first_name, String last_name, String email, String password)
     {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.first_name = first_name;
+        this.last_name = last_name;
         this.email = email;
-        this.pw = pw;
+        this.password = password;
     }
 
-    public int getId()
+    public int getID()
     {
-        return id;
+        return user_id;
     }
 
     public String getFirstName()
     {
-        return firstName;
+        return first_name;
     }
 
     public String getLastName()
     {
-        return lastName;
+        return last_name;
     }
 
     public String getEmail()
@@ -41,24 +41,24 @@ public class User {
         return email;
     }
 
-    public String pw()
+    public String getPassword()
     {
-        return pw;
+        return password;
     }
 
-    public void setId(int id)
+    public void setID(int user_id)
     {
-        this.id = id;
+        this.user_id = user_id;
     }
 
-    public void setFirstName(String firstName)
+    public void setFirstName(String first_name)
     {
-        this.firstName = firstName;
+        this.first_name = first_name;
     }
 
-    public void setLastName(String lastName)
+    public void setLastName(String last_name)
     {
-        this.lastName = lastName;
+        this.last_name = last_name;
     }
 
     public void setEmail(String email)
@@ -66,8 +66,8 @@ public class User {
         this.email = email;
     }
 
-    public void pw(String pw)
+    public void setPassword(String password)
     {
-        this.pw = pw;
+        this.password = password;
     }
 }
