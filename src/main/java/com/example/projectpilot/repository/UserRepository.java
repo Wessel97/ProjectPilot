@@ -60,8 +60,6 @@ public class UserRepository
                 User user = extractUser(resultSet);
                 //add user to list
                 userList.add(user);
-                //print user
-                System.out.println(user);
             }
         }
         catch (SQLException e)

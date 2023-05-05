@@ -72,7 +72,7 @@ public class TaskRepository {
                 Task task = extractTask(resultSet);
                 //add user to list
                 allTaskList.add(task);
-                //print user
+                //print user. Debugging purposes to see list.
                 System.out.println(task);
             }
         }
@@ -197,10 +197,10 @@ public class TaskRepository {
         return false;
     }
 
-    /*
+    // Method 9 find task by user ID. This method will return the tasks with the given ID.
     public List<Task> findAllTasksByUserID(int userId) {
     // Initialize an empty list to store tasks with the given userId
-    List<Task> tasksByUserId = new ArrayList<>();
+    List<Task> UserIdTasksList = new ArrayList<>();
 
     // Define the SQL query to find all tasks with the given userId
     final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
@@ -222,9 +222,10 @@ public class TaskRepository {
         while (resultSet.next()) {
             // Extract the task from the result set
             Task task = extractTask(resultSet);
-
             // Add the extracted task to the tasksByUserId list
-            tasksByUserId.add(task);
+            UserIdTasksList.add(task);
+            //print user. Debugging purposes to see list.
+            System.out.println(task);
         }
     } catch (SQLException e) {
         // Handle any errors while querying the database
@@ -233,50 +234,8 @@ public class TaskRepository {
     }
 
     // Return the list of tasks with the given userId
-    return tasksByUserId;
+    return UserIdTasksList;
 }
-     */
-
-
-    public Task findAllTasksByUserID(String userId)
-    {
-        //query to find user
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
-        try
-        {
-            //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
-            //set parameters for prepared statement (user_id)
-            preparedStatement.setString(1, userId);
-            //execute statement
-            ResultSet resultSet = preparedStatement.executeQuery();
-            //return user if user exists
-            while (resultSet.next())
-            {
-                //extract user from result set
-                Task task = extractTask(resultSet);
-                //add user to list
-                getAllTask().add(task);
-                //print user
-                System.out.println(task);
-            }
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Could not query database");
-            e.printStackTrace();
-        }
-        //return null if user does not exist
-        return null;
-    }
-
-    public Task findByTaskId(int taskId) {
-        Task task = new Task();
-        // SQL Query + Connection Try Catch
-        return task;
-    }
 
     // Sort Metoder
 
