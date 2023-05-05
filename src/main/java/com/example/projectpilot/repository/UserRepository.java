@@ -43,6 +43,7 @@ public class UserRepository
         //create list of users
         List<User> userList = new ArrayList<>();
         //execute statement, here there is no exceptions that need to be caught. It does need to be in try/catch.
+        // Limit the scope of a try block to only the code that might throw an exception.
         final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.user";
         try
         {
