@@ -5,7 +5,7 @@ public class Task {
     // Parameters
     private int taskId;
     private int userId;
-    private String assignedTo;
+    private String assigned_to;
     private String title;
     private String description;
     private String note;
@@ -17,10 +17,10 @@ public class Task {
     private String department;
 
     // Constructor
-    public Task(int taskId, int userId, String assignedTo, String title, String description, String note, int hours, boolean flag, String startDate, String endDate, String status, String department) {
+    public Task(int taskId, int userId, String assigned_to, String title, String description, String note, int hours, boolean flag, String startDate, String endDate, String status, String department) {
         this.taskId = taskId;
         this.userId = userId;
-        this.assignedTo = assignedTo;
+        this.assigned_to = assigned_to;
         this.title = title;
         this.description = description;
         this.note = note;
@@ -54,11 +54,11 @@ public class Task {
     }
 
     public String getAssignedTo() {
-        return assignedTo;
+        return assigned_to;
     }
 
-    public void setAssignedTo(String assignedTo) {
-        this.assignedTo = assignedTo;
+    public void setAssignedTo(String assigned_to) {
+        this.assigned_to = assigned_to;
     }
 
     public String getTitle() {

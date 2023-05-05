@@ -20,7 +20,7 @@ public class UserRepository
     private User extractUser(ResultSet resultSet) throws SQLException
     {
         //get user_id from result set
-        int user_id = resultSet.getInt(1);
+        int id = resultSet.getInt(1);
         //get first_name from result set
         String first_name = resultSet.getString(2);
         //get last_name from result set
@@ -32,7 +32,7 @@ public class UserRepository
         //create user object
         User user = new User(first_name, last_name, email, password);
         //set user_id
-        user.setID(user_id);
+        user.setID(id);
         //return user
         return user;
     }
@@ -139,10 +139,10 @@ public class UserRepository
     }
 
     //Method 5 get user by ID. This method will return a user object if the user exists in the database.
-    public User getUserByID(String user_id)
+    public User getUserByID(String id)
     {
         //query to find user
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE user_id = ?";
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE id = ?";
         try
         {
             //db connection
@@ -150,7 +150,7 @@ public class UserRepository
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters for prepared statement (user_id)
-            preparedStatement.setString(1, user_id);
+            preparedStatement.setString(1, id);
             //execute statement
             ResultSet resultSet = preparedStatement.executeQuery();
             //return user if user exists
@@ -172,7 +172,7 @@ public class UserRepository
     public void updateUser(User user)
     {
         //query to update user
-        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.user SET first_name = ?, last_name = ?, email = ?, password = ? WHERE user_id = ?";
+        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.user SET first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
         try
         {
             //db connection
@@ -239,7 +239,7 @@ public class UserRepository
     public boolean deleteUserByID(User user)
     {
         //query to delete user
-        final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.user WHERE user_id = ?";
+        final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.user WHERE id = ?";
         try
         {
             //db connection

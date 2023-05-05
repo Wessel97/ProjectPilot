@@ -1,7 +1,7 @@
 package com.example.projectpilot.model;
 
 public class User {
-    private int user_id;
+    private int id;
     private String first_name;
     private String last_name;
     private String email;
@@ -23,7 +23,7 @@ public class User {
 
     public int getID()
     {
-        return user_id;
+        return id;
     }
 
     public String getFirstName()
@@ -46,9 +46,9 @@ public class User {
         return password;
     }
 
-    public void setID(int user_id)
+    public void setID(int id)
     {
-        this.user_id = user_id;
+        this.id = id;
     }
 
     public void setFirstName(String first_name)
