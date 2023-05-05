@@ -3,8 +3,8 @@ package com.example.projectpilot.model;
 public class Task {
 
     // Parameters
-    private int taskId;
-    private int userId;
+    private int taskID;
+    private int userID;
     private String assigned_to;
     private String title;
     private String description;
@@ -17,9 +17,9 @@ public class Task {
     private String department;
 
     // Constructor
-    public Task(int taskId, int userId, String assigned_to, String title, String description, String note, int hours, boolean flag, String startDate, String endDate, String status, String department) {
-        this.taskId = taskId;
-        this.userId = userId;
+    public Task(int taskID, int userID, String assigned_to, String title, String description, String note, int hours, boolean flag, String startDate, String endDate, String status, String department) {
+        this.taskID = taskID;
+        this.userID = userID;
         this.assigned_to = assigned_to;
         this.title = title;
         this.description = description;
@@ -37,20 +37,20 @@ public class Task {
     }
 
     // Getters and Setters
-    public int getTaskId() {
-        return taskId;
+    public int getTaskID() {
+        return taskID;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
+    public void setTaskID(int taskID) {
+        this.taskID = taskID;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getUserID() {
+        return userID;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public String getAssignedTo() {

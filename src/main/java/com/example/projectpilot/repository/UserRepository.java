@@ -16,8 +16,8 @@ public class UserRepository
     @Value("${spring.datasource.password}") //Bugbusters23
     private String PWD;
 
-    //Method 1 extract user from SQL. This method will return a user object from the database.
-    private User extractUser(ResultSet resultSet) throws SQLException
+    //Method 1 get user from SQL. This method will return a user object from the database.
+    private User getUser(ResultSet resultSet) throws SQLException
     {
         //get user_id from result set
         int id = resultSet.getInt(1);
@@ -30,11 +30,7 @@ public class UserRepository
         //get password from result set
         String password = resultSet.getString(5);
         //create user object
-        User user = new User(first_name, last_name, email, password);
-        //set user_id
-        user.setID(id);
-        //return user
-        return user;
+        return new User(first_name, last_name, email, password);
     }
 
     //Method 2 get all users. This method will return a list of all users in the database.
@@ -56,8 +52,8 @@ public class UserRepository
             //loop through result set
             while (resultSet.next())
             {
-                //extract user from result set
-                User user = extractUser(resultSet);
+                //get user from result set
+                User user = getUser(resultSet);
                 //add user to list
                 userList.add(user);
                 //print user
@@ -156,7 +152,7 @@ public class UserRepository
             //return user if user exists
             if (resultSet.next())
             {
-                return extractUser(resultSet);
+                return getUser(resultSet);
             }
         }
         catch (SQLException e)
