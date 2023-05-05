@@ -72,7 +72,7 @@ public class TaskRepository {
                 Task task = extractTask(resultSet);
                 //add user to list
                 allTaskList.add(task);
-                //print user
+                //print user. Debugging purposes to see list.
                 System.out.println(task);
             }
         }
@@ -129,7 +129,7 @@ public class TaskRepository {
     public void updateTask(Task task)
     {
         //query to update user
-        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.task SET assigned_to = ?, title = ?, description = ?, hours = ?, start_date = ?, end_date = ?, department = ? WHERE task_id = ?";
+        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.task SET assigned_to = ?, title = ?, description = ?, note = ?, hours = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE task_id = ?";
         try
         {
             //db connection
@@ -137,7 +137,25 @@ public class TaskRepository {
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             //set parameters for prepared statement
-            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(1, task.getAssignedTo());
+
+            preparedStatement.setString(2, task.getTitle());
+
+            preparedStatement.setString(3, task.getDescription());
+
+            preparedStatement.setString(4, task.getNote());
+
+            preparedStatement.setInt(5, task.getHours());
+
+            preparedStatement.setBoolean(6, task.isFlag());
+
+            preparedStatement.setString(7, task.getStartDate());
+
+            preparedStatement.setString(8, task.getEndDate());
+
+            preparedStatement.setString(9, task.getStatus());
+
+            preparedStatement.setString(10, task.getDepartment());
 
             //execute statement
             preparedStatement.executeUpdate();
@@ -149,19 +167,80 @@ public class TaskRepository {
         }
     }
 
-
-    public void updateTask(Task task) {
-        // SQL Query + Connection Try Catch
+    //Method 8 delete user by ID. This method will return true if the user was successfully deleted from the database.
+    public boolean deleteTaskByID(Task task)
+    {
+        //query to delete user
+        final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.task WHERE task_id = ?";
+        try
+        {
+            //db connection
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            //prepared statement
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
+            //set parameters for prepared statement(user_id)
+            preparedStatement.setInt(1, task.getTaskId());
+            //execute statement
+            int foundUser = preparedStatement.executeUpdate();
+            //return true if user was found and deleted (foundUser should be 1).
+            if(foundUser == 1)
+            {
+                return true;
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Could not query database");
+            e.printStackTrace();
+        }
+        //return false if user was not found and deleted
+        return false;
     }
 
-    public void deleteTask(int taskId) {
-        // SQL Query + Connection Try Catch
+    // Method 9 find task by user ID. This method will return the tasks with the given ID.
+    public List<Task> findAllTasksByUserID(int userId) {
+    // Initialize an empty list to store tasks with the given userId
+    List<Task> UserIdTasksList = new ArrayList<>();
+
+    // Define the SQL query to find all tasks with the given userId
+    final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
+
+    try {
+        // Establish a connection to the database
+        Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+
+        // Prepare a statement with the given FIND_QUERY
+        PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
+
+        // Set the userId parameter for the prepared statement
+        preparedStatement.setInt(1, userId);
+
+        // Execute the query and get the result set
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        // Loop through the result set
+        while (resultSet.next()) {
+            // Extract the task from the result set
+            Task task = extractTask(resultSet);
+            // Add the extracted task to the tasksByUserId list
+            UserIdTasksList.add(task);
+            //print user. Debugging purposes to see list in terminal.
+            System.out.println(task);
+        }
+    } catch (SQLException e) {
+        // Handle any errors while querying the database
+        System.out.println("Could not query database");
+        e.printStackTrace();
     }
 
-    public Task findTaskById(int taskId) {
-        Task task = new Task();
-        // SQL Query + Connection Try Catch
-        return task;
+    // Return the list of tasks with the given userId
+    return UserIdTasksList;
+}
+
+    public void findTaskByTaskId(int taskId) {
+        /*
+        Skal finde en task ud fra task id
+         */
     }
 
     // Sort Metoder
