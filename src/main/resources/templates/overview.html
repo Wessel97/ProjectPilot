@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Task Overview</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" th:href="@{style.css}">
   <style>
     /* Hide the additional info row by default */
     .additional-info {
@@ -28,8 +28,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>Task 1</td>
+    <tr th:each="task : ${tasks}">
+      <td  th:text="${task.title}"></td>
       <td>2023-06-01</td>
       <td>
         <select name="department">
