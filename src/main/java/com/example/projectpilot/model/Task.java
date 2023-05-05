@@ -132,7 +132,6 @@ public class Task {
     public void setDepartment(String department) {
         this.department = department;
     }
-
 }
 
 

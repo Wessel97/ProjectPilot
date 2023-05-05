@@ -115,6 +115,7 @@ public class TaskRepository {
     public Task getTaskByTaskId(int taskId)
     {
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE task_id = ?";
+        // Make a boolean to check if the task was found (sentinel). Makes the code more readable.
         Task selectTask = null;
         try
         {
@@ -145,6 +146,8 @@ public class TaskRepository {
     {
         //query to insert task
         final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.task (assigned_to, title, description, hours, start_date, end_date, department) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // Make a boolean to check if the task was added (sentinel). Makes the code more readable.
+        boolean taskAdded = false;
         try
         {
             //db connection
@@ -168,9 +171,10 @@ public class TaskRepository {
             //execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected.
             int rowsAffected = preparedStatement.executeUpdate();
             //return true if rowsAffected is 1, it will return false if rowsAffected is 0 or more than 1.
+
             if(rowsAffected == 1)
             {
-                return true;
+                taskAdded = true;
             }
         }
         catch (SQLException e)
@@ -179,14 +183,16 @@ public class TaskRepository {
             e.printStackTrace();
         }
         //return false if task was not added or there was an error in the try block.
-        return false;
+        return taskAdded;
     }
 
     // Method 6 update task. This method will update the selected task in the database. Without returning anything.
-    public void updateTask(Task task)
+    public boolean updateTask(Task task)
     {
         //query to update user
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.task SET assigned_to = ?, title = ?, description = ?, note = ?, hours = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE task_id = ?";
+        // Make a boolean to check if the task was updated (sentinel). Makes the code more readable.
+        boolean taskUpdated = false;
         try
         {
             //db connection
@@ -215,13 +221,19 @@ public class TaskRepository {
             preparedStatement.setString(10, task.getDepartment());
 
             //execute statement
-            preparedStatement.executeUpdate();
+            int updatedRow = preparedStatement.executeUpdate();
+
+            if(updatedRow == 1)
+            {
+                taskUpdated = true;
+            }
         }
         catch (SQLException e)
         {
             System.out.println("Error trying to query database: " + e);
             e.printStackTrace();
         }
+        return taskUpdated;
     }
 
     //Method 7 delete task by ID. This method will return true if the task was successfully deleted from the database.
@@ -229,6 +241,8 @@ public class TaskRepository {
     {
         //query to delete user
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.task WHERE task_id = ?";
+        // Make a boolean to check if the task was deleted (sentinel). Makes the code more readable.
+        boolean taskDeleted = false;
         try
         {
             //db connection
@@ -242,7 +256,7 @@ public class TaskRepository {
             //return true if task was found and deleted (foundTask should be 1).
             if(foundTask == 1)
             {
-                return true;
+                taskDeleted = true;
             }
         }
         catch (SQLException e)
@@ -250,8 +264,8 @@ public class TaskRepository {
             System.out.println("Error trying to query database: " + e);
             e.printStackTrace();
         }
-        //return false if task was not found and deleted
-        return false;
+        //return false if task was not deleted
+        return taskDeleted;
     }
 
                             // Sort Metoder
