@@ -224,7 +224,7 @@ public class TaskRepository {
             Task task = extractTask(resultSet);
             // Add the extracted task to the tasksByUserId list
             UserIdTasksList.add(task);
-            //print user. Debugging purposes to see list.
+            //print user. Debugging purposes to see list in terminal.
             System.out.println(task);
         }
     } catch (SQLException e) {
@@ -237,6 +237,12 @@ public class TaskRepository {
     return UserIdTasksList;
 }
 
+    public void findTaskByTaskId(int taskId) {
+        /*
+        Skal finde en task ud fra task id
+         */
+    }
+    
     // Sort Metoder
 
     public void sortByHours() {
