@@ -74,7 +74,6 @@ public class UserRepository
     //Method 3 check if user exists. This method will return true if the user exists in the database.
     public boolean checkIfUserExists(String checkEmail)
     {
-        //query to find user
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
         try
         {
@@ -86,19 +85,12 @@ public class UserRepository
             preparedStatement.setString(1, checkEmail);
             //execute statement
             ResultSet resultSet = preparedStatement.executeQuery();
-            //loop through result set
-            while(resultSet.next())
+            // Check if there is a row in the resultSet with the specified email
+            if (resultSet.next())
             {
-                //get email from database
-                String DB_email = resultSet.getString(4);
-                //compare email from database to email passed in
-                if(DB_email.equals(checkEmail))
-                {
-                    return true;
-                }
+                return true;
             }
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             System.out.println("Could not query database");
             e.printStackTrace();
@@ -106,6 +98,7 @@ public class UserRepository
         //return false if user does not exist
         return false;
     }
+
 
 
     //Method 4 add user. This method will return true if the user was successfully added to the database.
