@@ -66,7 +66,9 @@ public class TaskRepository {
         }
         catch (SQLException e)
         {
-            System.out.println("Error trying to query database: "  + e);
+            //Handle any errors while querying the database.
+            System.out.println("Error trying to query database: " + e);
+            //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
         return allTasksList;
@@ -103,8 +105,9 @@ public class TaskRepository {
         }
         catch (SQLException e)
         {
-            // Handle any errors while querying the database
+            //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
+            //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
         // Return the list of tasks with the given userID
@@ -131,7 +134,9 @@ public class TaskRepository {
         }
         catch (SQLException e)
         {
+            //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
+            //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
         return selectTask;
@@ -179,7 +184,9 @@ public class TaskRepository {
         }
         catch (SQLException e)
         {
+            //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
+            //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
         //return false if task was not added or there was an error in the try block.
@@ -195,34 +202,34 @@ public class TaskRepository {
         boolean taskUpdated = false;
         try
         {
-            //db connection
+            // db connection
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
-            //prepared statement
+            // prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
-            //set parameters for prepared statement
+            // set AssignedTo parameter
             preparedStatement.setString(1, task.getAssignedTo());
-
+            // set title parameter
             preparedStatement.setString(2, task.getTitle());
-
+            // set description parameter
             preparedStatement.setString(3, task.getDescription());
-
+            // set note parameter
             preparedStatement.setString(4, task.getNote());
-
+            // set hours parameter
             preparedStatement.setInt(5, task.getHours());
-
+            // set flag parameter
             preparedStatement.setBoolean(6, task.isFlag());
-
+            // set start_date parameter
             preparedStatement.setString(7, task.getStartDate());
-
+            // set end_date parameter
             preparedStatement.setString(8, task.getEndDate());
-
+            // set status parameter
             preparedStatement.setString(9, task.getStatus());
-
+            // set department parameter
             preparedStatement.setString(10, task.getDepartment());
 
-            //execute statement
+            // execute statement
             int updatedRow = preparedStatement.executeUpdate();
-
+            // if updatedRow is 1, task was updated.
             if(updatedRow == 1)
             {
                 taskUpdated = true;
@@ -230,9 +237,12 @@ public class TaskRepository {
         }
         catch (SQLException e)
         {
+            //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
+            //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
+        // return true if task was updated, false if not.
         return taskUpdated;
     }
 
@@ -261,7 +271,9 @@ public class TaskRepository {
         }
         catch (SQLException e)
         {
+            //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
+            //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
         //return false if task was not deleted
@@ -270,12 +282,39 @@ public class TaskRepository {
 
                             // Sort Metoder
 
-    public void sortByHours() {
-        /*
-        Skal sortere tasks efter timer
-         */
+    //Method 8 sort by hours. This method will sort the tasks by hours.
+    public List<Task> getAllTasksSortedByHours()
+    {
+        List<Task> allTasksList = new ArrayList<>();
+        //query to get all tasks
+        final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task ORDER BY hours";
+        try
+        {
+            //db connection
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            // create statement. This will be used to execute the query.
+            Statement statement = connection.createStatement();
+            // execute query and store result in resultSet.
+            ResultSet resultSet = statement.executeQuery(SQL_QUERY);
+            // loop through resultSet and add each task to allTasksList.
+            while(resultSet.next())
+            {
+                //create task object and add to allTasksList.
+                Task task = getTask(resultSet);
+                allTasksList.add(task);
+            }
+        }
+        catch(SQLException e)
+        {
+            //Handle any errors while querying the database.
+            System.out.println("Error trying to query database: " + e);
+            //This method will print the error, what line it is on and what method it is in.
+            e.printStackTrace();
+        }
+        return allTasksList;
     }
 
+    //Method 9 sort by start date. This method will sort the tasks by start date.
     public void sortByDepartment() {
         /*
         Skal sortere tasks efter afdeling
