@@ -197,7 +197,45 @@ public class TaskRepository {
         return false;
     }
 
-    public Task findByUserID(String userId)
+    /*
+    public List<Task> findAllTasksByUserID(int userId)
+{
+    //query to find tasks by user ID
+    final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
+    //create list of tasks
+    List<Task> tasks = new ArrayList<>();
+    try
+    {
+        //db connection
+        Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+        //prepared statement
+        PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
+        //set parameters for prepared statement (user_id)
+        preparedStatement.setInt(1, userId);
+        //execute statement
+        ResultSet resultSet = preparedStatement.executeQuery();
+        //add tasks to list if they exist
+        while (resultSet.next())
+        {
+            //extract task from result set
+            Task task = extractTask(resultSet);
+            //add task to list
+            tasks.add(task);
+            //print task
+            System.out.println(task);
+        }
+    }
+    catch (SQLException e)
+    {
+        System.out.println("Could not query database");
+        e.printStackTrace();
+    }
+    //return list of tasks
+    return tasks;
+}
+     */
+
+    public Task findAllTasksByUserID(String userId)
     {
         //query to find user
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
