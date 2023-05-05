@@ -198,42 +198,45 @@ public class TaskRepository {
     }
 
     /*
-    public List<Task> findAllTasksByUserID(int userId)
-{
-    //query to find tasks by user ID
+    public List<Task> findAllTasksByUserID(int userId) {
+    // Initialize an empty list to store tasks with the given userId
+    List<Task> tasksByUserId = new ArrayList<>();
+
+    // Define the SQL query to find all tasks with the given userId
     final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
-    //create list of tasks
-    List<Task> tasks = new ArrayList<>();
-    try
-    {
-        //db connection
+
+    try {
+        // Establish a connection to the database
         Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
-        //prepared statement
+
+        // Prepare a statement with the given FIND_QUERY
         PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
-        //set parameters for prepared statement (user_id)
+
+        // Set the userId parameter for the prepared statement
         preparedStatement.setInt(1, userId);
-        //execute statement
+
+        // Execute the query and get the result set
         ResultSet resultSet = preparedStatement.executeQuery();
-        //add tasks to list if they exist
-        while (resultSet.next())
-        {
-            //extract task from result set
+
+        // Loop through the result set
+        while (resultSet.next()) {
+            // Extract the task from the result set
             Task task = extractTask(resultSet);
-            //add task to list
-            tasks.add(task);
-            //print task
-            System.out.println(task);
+
+            // Add the extracted task to the tasksByUserId list
+            tasksByUserId.add(task);
         }
-    }
-    catch (SQLException e)
-    {
+    } catch (SQLException e) {
+        // Handle any errors while querying the database
         System.out.println("Could not query database");
         e.printStackTrace();
     }
-    //return list of tasks
-    return tasks;
+
+    // Return the list of tasks with the given userId
+    return tasksByUserId;
 }
      */
+
 
     public Task findAllTasksByUserID(String userId)
     {
