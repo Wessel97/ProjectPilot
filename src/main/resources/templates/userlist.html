@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User List</title>
-  <link rel="stylesheet" href="../static/css/userlist.css">
+  <link rel="stylesheet" th:href="@{../static/css/userlist.css}">
 </head>
 <body>
 <div class="container">
@@ -19,19 +19,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>1</td>
-      <td>John</td>
-      <td>Doe</td>
-      <td>john.doe@example.com</td>
+    <tr th:each="user : ${user}">
+      <td th:text="${user.id}"></td>
+      <td th:text="${user.first_name}"></td>
+      <td th:text="${user.last_name}"></td>
+      <td th:text="${user.email}"></td>
     </tr>
-    <tr>
-      <td>2</td>
-      <td>Jane</td>
-      <td>Doe</td>
-      <td>jane.doe@example.com</td>
-    </tr>
-    <!-- More user rows -->
     </tbody>
   </table>
 </div>
