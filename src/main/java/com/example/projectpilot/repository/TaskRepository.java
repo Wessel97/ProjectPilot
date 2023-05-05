@@ -66,7 +66,7 @@ public class TaskRepository {
         }
         catch (SQLException e)
         {
-            System.out.println("Error querying database");
+            System.out.println("Error trying to query database: "  + e);
             e.printStackTrace();
         }
         return allTasksList;
@@ -104,7 +104,7 @@ public class TaskRepository {
         catch (SQLException e)
         {
             // Handle any errors while querying the database
-            System.out.println("Could not query database");
+            System.out.println("Error trying to query database: " + e);
             e.printStackTrace();
         }
         // Return the list of tasks with the given userID
@@ -130,11 +130,15 @@ public class TaskRepository {
         }
         catch (SQLException e)
         {
-            System.out.println("Could not query database");
+            System.out.println("Error trying to query database: " + e);
             e.printStackTrace();
         }
         return selectTask;
     }
+
+
+                                //Add + update + delete metoder.
+
 
     //Method 5 add task. This method will add a task to the database.
     public boolean addTask(Task task)
@@ -163,7 +167,7 @@ public class TaskRepository {
             preparedStatement.setString(7, task.getDepartment());
             //execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected.
             int rowsAffected = preparedStatement.executeUpdate();
-            //return true if rowsAffected is 1
+            //return true if rowsAffected is 1, it will return false if rowsAffected is 0 or more than 1.
             if(rowsAffected == 1)
             {
                 return true;
@@ -171,10 +175,10 @@ public class TaskRepository {
         }
         catch (SQLException e)
         {
-            System.out.println("Could not query database");
+            System.out.println("Error trying to query database: " + e);
             e.printStackTrace();
         }
-        //return false if task was not added
+        //return false if task was not added or there was an error in the try block.
         return false;
     }
 
@@ -215,7 +219,7 @@ public class TaskRepository {
         }
         catch (SQLException e)
         {
-            System.out.println("Could not query database");
+            System.out.println("Error trying to query database: " + e);
             e.printStackTrace();
         }
     }
@@ -243,7 +247,7 @@ public class TaskRepository {
         }
         catch (SQLException e)
         {
-            System.out.println("Could not query database");
+            System.out.println("Error trying to query database: " + e);
             e.printStackTrace();
         }
         //return false if task was not found and deleted
