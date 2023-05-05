@@ -42,14 +42,14 @@ public class UserRepository
     {
         //create list of users
         List<User> userList = new ArrayList<>();
+        //execute statement, here there is no exceptions that need to be caught. It does need to be in try/catch.
+        final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.user";
         try
         {
             //db connection
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             //create statement
             Statement statement = connection.createStatement();
-            //execute statement
-            final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.user";
             //get result set
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
             //loop through result set
