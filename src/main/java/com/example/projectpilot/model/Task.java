@@ -10,8 +10,6 @@ public class Task {
     private String note;
     private int hours;
     private int payRate;
-
-    private int totalPay;
     private boolean flag;
     private String start_Date;
     private String end_Date;
@@ -19,7 +17,7 @@ public class Task {
     private String department;
 
     // Constructor
-    public Task(int task_id, int user_id, String title, String description, String note, int hours, int payRate, int totalPay, boolean flag, String start_Date, String end_Date, String status, String department)
+    public Task(int taskID, int userID, String title, String description, String note, int hours, int payRate, boolean flag, String startDate, String endDate, String status, String department)
     {
         this.task_id = task_id;
         this.user_id = user_id;
@@ -28,7 +26,6 @@ public class Task {
         this.note = note;
         this.hours = hours;
         this.payRate = payRate;
-        this.totalPay = totalPay;
         this.flag = flag;
         this.start_Date = start_Date;
         this.end_Date = end_Date;
@@ -135,16 +132,6 @@ public class Task {
 
     public void setDepartment(String department) {
         this.department = department;
-    }
-
-    public int getTotalPay()
-    {
-        return totalPay;
-    }
-
-    public void setTotalPay(int totalPay)
-    {
-        this.totalPay = totalPay;
     }
 }
 
