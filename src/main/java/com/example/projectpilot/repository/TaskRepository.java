@@ -191,7 +191,7 @@ public class TaskRepository {
     public boolean addTask(Task task)
     {
         //query to insert task
-        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.task (title, description, hours, start_date, end_date, department) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.task (title, description, hours, start_date, end_date, department) VALUES (?, ?, ?, ?, ?, ?)";
         // Make a boolean to check if the task was added (sentinel). Makes the code more readable.
         boolean taskAdded = false;
         try
@@ -395,24 +395,24 @@ public class TaskRepository {
 
     // Method 16 calculates the total number of hours for all tasks.
     public int totalHours() {
-        int totalSum = 0;
+        int sumHours = 0;
         try {
             String query = "SELECT SUM(hours) FROM ProjectPilotDB.task";
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                totalSum = resultSet.getInt(1);
+                sumHours = resultSet.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return totalSum;
+        return sumHours;
     }
 
     // Method 17 calculates the total number of hours for a given department.
     public int totalHoursByDepartment(String department) {
-        int sum = 0;
+        int sumHoursByDept = 0;
         try {
             String query = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE department = ?";
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
@@ -420,17 +420,17 @@ public class TaskRepository {
             statement.setString(1, department);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                sum = resultSet.getInt(1);
+                sumHoursByDept = resultSet.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return sum;
+        return sumHoursByDept;
     }
 
     // Method 18 calculates the total number of hours for a given user.
     public int totalHoursByID(int userID) {
-        int sum = 0;
+        int sumHoursByID = 0;
         try {
             String query = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE userID = ?";
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
@@ -438,34 +438,34 @@ public class TaskRepository {
             statement.setInt(1, userID);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                sum = resultSet.getInt(1);
+                sumHoursByID = resultSet.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return sum;
+        return sumHoursByID;
     }
 
     // Method 19 calculates the total price for all tasks.
     public int totalPrice() {
-        int sum = 0;
+        int sumPrice = 0;
         try {
             String query = "SELECT SUM(hours * payRate) FROM ProjectPilotDB.task";
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                sum = resultSet.getInt(1);
+                sumPrice = resultSet.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return sum;
+        return sumPrice;
     }
 
     // Method 20 calculates the total price for the tasks in a given department.
     public int totalPriceByDepartment(String department) {
-        int sum = 0;
+        int sumPriceByDept = 0;
         try {
             String query = "SELECT SUM(hours * payRate) FROM ProjectPilotDB.task WHERE department = ?";
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
@@ -473,17 +473,17 @@ public class TaskRepository {
             statement.setString(1, department);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                sum = resultSet.getInt(1);
+                sumPriceByDept = resultSet.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return sum;
+        return sumPriceByDept;
     }
 
     // Method 21 calculates the total price for the tasks in a given user.
     public int totalPriceByID(int userID) {
-        int sum = 0;
+        int sumPriceByID = 0;
         try {
             String query = "SELECT SUM(hours * payRate) FROM ProjectPilotDB.task WHERE userID=?";
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
@@ -491,11 +491,11 @@ public class TaskRepository {
             statement.setInt(1, userID);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                sum = resultSet.getInt(1);
+                sumPriceByID = resultSet.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return sum;
+        return sumPriceByID;
     }
 }
