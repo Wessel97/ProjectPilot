@@ -393,23 +393,27 @@ public class TaskRepository {
                             // Projekt kalkulering Metoder
     --------------------------------------------------------------------*/
 
-    public int timeOverview() {
+    public int totalHours() {
         /*
-        Skal vise resultatet af totale timer der er
-        brugt og er til overs i tasks
+        Skal vise resultatet af totale timer i alle tasks.
          */
-
-        // int totalHours = ???
-
-        // return totalHours;
-        return  0;
     }
 
-    public int priceOverview() {
+    public int totalHoursByDepartment() {
         /*
-        Skal vise resultatet af totale timer der er
-        brugt og er til overs i tasks, ganget med
-        gennemsnitlig timeløn (payRate)
+        Skal vise resultatet af totale timer i de tasks i en department.
+         */
+    }
+
+    public int timeCalculationByID() {
+        /*
+        Skal vise resultatet af totale timer i de tasks i en user_id.
+         */
+    }
+
+    public int totalPrice() {
+        /*
+        Skal vise resultatet af hours ganget med payRate
          */
 
         // int payRate = 300;
@@ -418,7 +422,18 @@ public class TaskRepository {
         // int price = totalHours * payRate;
 
         // return price;
-        return 0;
+    }
+
+    public int totalPriceByDepartment() {
+        /*
+        Skal vise resultatet af hours ganget med payRate i en department.
+         */
+    }
+
+    public int totalPriceByID() {
+        /*
+        Skal vise resultatet af hours ganget med payRate i en user_id.
+         */
     }
 
 }
