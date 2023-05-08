@@ -193,7 +193,7 @@ public class TaskRepository {
     public boolean addTask(Task task)
     {
         //query to insert task
-        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.task (title, description, hours, start_date, end_date, department) VALUES (?, ?, ?, ?, ?, ?)";
+        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.task (title ,description ,hours ,start_date , end_date, department) VALUES (?, ?, ?, ?, ?, ?)";
         // Make a boolean to check if the task was added (sentinel). Makes the code more readable.
         boolean taskAdded = false;
         try
@@ -209,11 +209,11 @@ public class TaskRepository {
             //set hours
             preparedStatement.setInt(3, task.getHours());
             //set start_date
-            preparedStatement.setString(5, task.getStart_Date());
+            preparedStatement.setString(4, task.getStart_Date());
             //set end_date
-            preparedStatement.setString(6, task.getEnd_Date());
+            preparedStatement.setString(5, task.getEnd_Date());
             //set department
-            preparedStatement.setString(7, task.getDepartment());
+            preparedStatement.setString(6, task.getDepartment());
             //execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected.
             int rowsAffected = preparedStatement.executeUpdate();
             //return true if rowsAffected is 1, it will return false if rowsAffected is 0 or more than 1.
@@ -434,7 +434,7 @@ public class TaskRepository {
     public int totalHoursByID(int userID) {
         int sumHoursByID = 0;
         try {
-            String query = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE userID = ?";
+            String query = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE user_id = ?";
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userID);
@@ -452,7 +452,7 @@ public class TaskRepository {
     public int totalPrice() {
         int sumPrice = 0;
         try {
-            String query = "SELECT SUM(hours * payRate) FROM ProjectPilotDB.task";
+            String query = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task";
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -469,7 +469,7 @@ public class TaskRepository {
     public int totalPriceByDepartment(String department) {
         int sumPriceByDept = 0;
         try {
-            String query = "SELECT SUM(hours * payRate) FROM ProjectPilotDB.task WHERE department = ?";
+            String query = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE department = ?";
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, department);
@@ -487,7 +487,7 @@ public class TaskRepository {
     public int totalPriceByID(int userID) {
         int sumPriceByID = 0;
         try {
-            String query = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE userID=?";
+            String query = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE user_id=?";
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userID);
