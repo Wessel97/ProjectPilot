@@ -64,7 +64,7 @@ public class MainController {
         userRepository.addUser(newUser);
 
         //Tilbage til start så man kan logge ind
-        return "";
+        return "start";
     }
 
     //Viser login-siden
@@ -106,14 +106,14 @@ public class MainController {
 
     @PostMapping("/updateTask")
     public String updateTask(@RequestParam("task-title") String updateTitle,
-                         @RequestParam("task-description") String updateDescription,
-                         @RequestParam("task-note") String updateNote,
-                         @RequestParam("task-hour") int updateHour,
-                         @RequestParam("task-flag") boolean updateFlag,
-                         @RequestParam("task-startDate") Date updateStartDate,
-                         @RequestParam("task-endDate") Date updateEndDate,
-                         @RequestParam("task-status") String updateStatus,
-                         @RequestParam("task-department") String updateDepartment) {
+                             @RequestParam("task-description") String updateDescription,
+                             @RequestParam("task-note") String updateNote,
+                             @RequestParam("task-hour") int updateHour,
+                             @RequestParam("task-flag") boolean updateFlag,
+                             @RequestParam("task-startDate") String updateStartDate,
+                             @RequestParam("task-endDate") String updateEndDate,
+                             @RequestParam("task-status") String updateStatus,
+                             @RequestParam("task-department") String updateDepartment) {
         Task updateTask = new Task(updateTitle, updateDescription, updateNote, updateHour, updateFlag, updateStartDate, updateEndDate, updateStatus, updateDepartment);
 
         taskRepository.updateTask(updateTask);

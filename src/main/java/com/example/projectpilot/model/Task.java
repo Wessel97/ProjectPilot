@@ -3,8 +3,8 @@ package com.example.projectpilot.model;
 public class Task {
 
     // Parameters
-    private int taskID;
-    private int userID;
+    private int task_id;
+    private int user_id;
     private String title;
     private String description;
     private String note;
@@ -13,16 +13,16 @@ public class Task {
 
     private int totalPay;
     private boolean flag;
-    private String startDate;
-    private String endDate;
+    private String start_Date;
+    private String end_Date;
     private String status;
     private String department;
 
     // Constructor
-    public Task(int taskID, int userID, String title, String description, String note, int hours, int payRate, int totalPay, boolean flag, String startDate, String endDate, String status, String department)
+    public Task(int task_id, int user_id, String title, String description, String note, int hours, int payRate, int totalPay, boolean flag, String start_Date, String end_Date, String status, String department)
     {
-        this.taskID = taskID;
-        this.userID = userID;
+        this.task_id = task_id;
+        this.user_id = user_id;
         this.title = title;
         this.description = description;
         this.note = note;
@@ -30,8 +30,8 @@ public class Task {
         this.payRate = payRate;
         this.totalPay = totalPay;
         this.flag = flag;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.start_Date = start_Date;
+        this.end_Date = end_Date;
         this.status = status;
         this.department = department;
     }
@@ -41,20 +41,20 @@ public class Task {
     }
 
     // Getters and Setters
-    public int getTaskID() {
-        return taskID;
+    public int getTask_id() {
+        return task_id;
     }
 
-    public void setTaskID(int taskID) {
-        this.taskID = taskID;
+    public void setTask_id(int task_id) {
+        this.task_id = task_id;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public int getPayRate() {
@@ -105,20 +105,20 @@ public class Task {
         this.flag = flag;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public String getStart_Date() {
+        return start_Date;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setStart_Date(String start_Date) {
+        this.start_Date = start_Date;
     }
 
-    public String getEndDate() {
-        return endDate;
+    public String getEnd_Date() {
+        return end_Date;
     }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setEnd_Date(String end_Date) {
+        this.end_Date = end_Date;
     }
 
     public String getStatus() {
