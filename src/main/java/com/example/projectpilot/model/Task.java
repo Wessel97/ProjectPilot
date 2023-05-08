@@ -11,13 +11,13 @@ public class Task {
     private int hours;
     private int payRate;
     private boolean flag;
-    private String start_Date;
-    private String end_Date;
+    private String start_date;
+    private String end_date;
     private String status;
     private String department;
 
     // Constructor
-    public Task(int taskID, int userID, String title, String description, String note, int hours, int payRate, boolean flag, String startDate, String endDate, String status, String department)
+    public Task(int task_id, int user_id, String title, String description, String note, int hours, int pay_rate, boolean flag, String start_date, String end_date, String status, String department)
     {
         this.task_id = task_id;
         this.user_id = user_id;
@@ -27,14 +27,17 @@ public class Task {
         this.hours = hours;
         this.payRate = payRate;
         this.flag = flag;
-        this.start_Date = start_Date;
-        this.end_Date = end_Date;
+        this.start_date = start_date;
+        this.end_date = end_date;
         this.status = status;
         this.department = department;
     }
 
     // Empty Constructor
     public Task() {
+    }
+
+    public Task(String title, String description, String note, int hour, boolean flag, String start_date, String end_date, String status, String department) {
     }
 
     // Getters and Setters
@@ -103,19 +106,19 @@ public class Task {
     }
 
     public String getStart_Date() {
-        return start_Date;
+        return start_date;
     }
 
     public void setStart_Date(String start_Date) {
-        this.start_Date = start_Date;
+        this.start_date = start_Date;
     }
 
     public String getEnd_Date() {
-        return end_Date;
+        return end_date;
     }
 
     public void setEnd_Date(String end_Date) {
-        this.end_Date = end_Date;
+        this.end_date = end_Date;
     }
 
     public String getStatus() {
