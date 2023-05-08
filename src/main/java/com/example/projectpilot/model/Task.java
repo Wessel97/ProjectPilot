@@ -61,8 +61,8 @@ public class Task {
         return pay_rate;
     }
 
-    public void setPayRate(int payRate) {
-        this.pay_rate = payRate;
+    public void setPayRate(int pay_rate) {
+        this.pay_rate = pay_rate;
     }
 
     public String getTitle() {
@@ -109,16 +109,16 @@ public class Task {
         return start_date;
     }
 
-    public void setStart_Date(String start_Date) {
-        this.start_date = start_Date;
+    public void setStart_Date(String start_date) {
+        this.start_date = start_date;
     }
 
     public String getEnd_Date() {
         return end_date;
     }
 
-    public void setEnd_Date(String end_Date) {
-        this.end_date = end_Date;
+    public void setEnd_Date(String end_date) {
+        this.end_date = end_date;
     }
 
     public String getStatus() {

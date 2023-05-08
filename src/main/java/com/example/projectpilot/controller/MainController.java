@@ -38,7 +38,8 @@ public class MainController {
     // Viser Start siden
     @GetMapping("/")
     public String showStart(Model model) {
-        return "start";
+        model.addAttribute("task", taskRepository.getAllTasks());
+        return "allTasks";
     }
 
     // Viser "opret bruger" siden
