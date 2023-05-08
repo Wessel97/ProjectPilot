@@ -1,11 +1,13 @@
 package com.example.projectpilot.repository;
 import com.example.projectpilot.model.Task;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class TaskRepository {
 
     @Value("${spring.datasource.url}") //jdbc:mysql://localhost:3306/ProjectPilotDB
