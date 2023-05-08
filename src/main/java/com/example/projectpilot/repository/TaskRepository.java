@@ -30,14 +30,13 @@ public class TaskRepository {
         String note = resultSet.getString(5);
         int hours = resultSet.getInt(6);
         int payRate = resultSet.getInt(7);
-        int totalPay = resultSet.getInt(8);
         boolean flag = resultSet.getBoolean(9);
         String startDate = resultSet.getString(10);
         String endDate = resultSet.getString(11);
         String status = resultSet.getString(12);
         String department = resultSet.getString(13);
         //create task object and return task object.
-        return new Task(taskID, userID, title, description, note, hours, payRate, totalPay, flag, startDate, endDate, status, department);
+        return new Task(taskID, userID, title, description, note, hours, payRate, flag, startDate, endDate, status, department);
     }
 
     //Method 2 get all tasks. This method will return a list of all tasks in the database.
@@ -144,6 +143,7 @@ public class TaskRepository {
         return selectTask;
     }
 
+    // Method 5 get task by department. This method will return a list of all tasks in the given department.
     public List<Task> getAllTasksByDepartment(String department)
     {
         // Initialize an empty list to store tasks with the given userID
@@ -187,7 +187,7 @@ public class TaskRepository {
                     //Add + update + delete metoder.
     --------------------------------------------------------------------*/
 
-    //Method 5 add task. This method will add a task to the database.
+    //Method 6 add task. This method will add a task to the database.
     public boolean addTask(Task task)
     {
         //query to insert task
@@ -232,7 +232,7 @@ public class TaskRepository {
         return taskAdded;
     }
 
-    // Method 6 update task. This method will update the selected task in the database. Without returning anything.
+    // Method 7 update task. This method will update the selected task in the database. Without returning anything.
     public boolean updateTask(Task task)
     {
         //query to update user
@@ -283,7 +283,7 @@ public class TaskRepository {
         return taskUpdated;
     }
 
-    //Method 7 delete task by ID. This method will return true if the task was successfully deleted from the database.
+    //Method 8 delete task by ID. This method will return true if the task was successfully deleted from the database.
     public boolean deleteTaskByID(Task task)
     {
         //query to delete user
@@ -321,7 +321,7 @@ public class TaskRepository {
                             // Sort Metoder
     --------------------------------------------------------------------*/
 
-    //Method 8 Generic sorting method. You can define your sorting parameter.
+    //Method 9 Generic sorting method. You can define your sorting parameter.
     public List<Task> getTasksSorted(String sortingParameter)
     {
         List<Task> sortedTasksList = new ArrayList<>();
@@ -353,37 +353,37 @@ public class TaskRepository {
         return sortedTasksList;
     }
 
-    //Method 9 sort by hours. This method will sort the tasks by hours.
+    //Method 10 sort by hours. This method will sort the tasks by hours.
     public List<Task> getAllTasksSortedByHours()
     {
         return getTasksSorted("hours");
     }
 
-    //Method 10 sort by department. This method will sort the tasks by department.
+    //Method 11 sort by department. This method will sort the tasks by department.
     public List<Task> getAllTasksSortedByDepartment()
     {
         return getTasksSorted("department");
     }
 
-    //Method 11 sort by start date. This method will sort the tasks by start date.
+    //Method 12 sort by start date. This method will sort the tasks by start date.
     public List<Task> getAllTasksSortedByStartDate()
     {
         return getTasksSorted("start_date");
     }
 
-    //Method 12 sort by end date. This method will sort the tasks by end date.
+    //Method 13 sort by end date. This method will sort the tasks by end date.
     public List<Task> getAllTasksSortedByEndDate()
     {
         return getTasksSorted("end_date");
     }
 
-    //Method 13 sort by status. This method will sort the tasks by status (unassigned, assigned, in progress, done).
+    //Method 14 sort by status. This method will sort the tasks by status (unassigned, assigned, in progress, done).
     public List<Task> getAllTasksSortedByStatus()
     {
         return getTasksSorted("start_date");
     }
 
-    //sort by flag
+    //Method 15 sort by flag. This method will sort the tasks by flag (true or false).
     public List<Task> getAllTasksSortedByFlag()
     {
         return getTasksSorted("start_date");
@@ -393,47 +393,109 @@ public class TaskRepository {
                             // Projekt kalkulering Metoder
     --------------------------------------------------------------------*/
 
+    // Method 16 calculates the total number of hours for all tasks.
     public int totalHours() {
-        /*
-        Skal vise resultatet af totale timer i alle tasks.
-         */
+        int totalSum = 0;
+        try {
+            String query = "SELECT SUM(hours) FROM ProjectPilotDB.task";
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                totalSum = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalSum;
     }
 
-    public int totalHoursByDepartment() {
-        /*
-        Skal vise resultatet af totale timer i de tasks i en department.
-         */
+    // Method 17 calculates the total number of hours for a given department.
+    public int totalHoursByDepartment(String department) {
+        int sum = 0;
+        try {
+            String query = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE department = ?";
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, department);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                sum = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sum;
     }
 
-    public int timeCalculationByID() {
-        /*
-        Skal vise resultatet af totale timer i de tasks i en user_id.
-         */
+    // Method 18 calculates the total number of hours for a given user.
+    public int totalHoursByID(int userID) {
+        int sum = 0;
+        try {
+            String query = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE userID = ?";
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                sum = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sum;
     }
 
+    // Method 19 calculates the total price for all tasks.
     public int totalPrice() {
-        /*
-        Skal vise resultatet af hours ganget med payRate
-         */
-
-        // int payRate = 300;
-        // int totalHours = ???
-
-        // int price = totalHours * payRate;
-
-        // return price;
+        int sum = 0;
+        try {
+            String query = "SELECT SUM(hours * payRate) FROM ProjectPilotDB.task";
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                sum = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sum;
     }
 
-    public int totalPriceByDepartment() {
-        /*
-        Skal vise resultatet af hours ganget med payRate i en department.
-         */
+    // Method 20 calculates the total price for the tasks in a given department.
+    public int totalPriceByDepartment(String department) {
+        int sum = 0;
+        try {
+            String query = "SELECT SUM(hours * payRate) FROM ProjectPilotDB.task WHERE department = ?";
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, department);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                sum = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sum;
     }
 
-    public int totalPriceByID() {
-        /*
-        Skal vise resultatet af hours ganget med payRate i en user_id.
-         */
+    // Method 21 calculates the total price for the tasks in a given user.
+    public int totalPriceByID(int userID) {
+        int sum = 0;
+        try {
+            String query = "SELECT SUM(hours * payRate) FROM ProjectPilotDB.task WHERE userID=?";
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                sum = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sum;
     }
-
 }
