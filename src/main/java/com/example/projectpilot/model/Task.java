@@ -9,7 +9,7 @@ public class Task {
     private String description;
     private String note;
     private int hours;
-    private int payRate;
+    private int pay_rate;
     private boolean flag;
     private String start_date;
     private String end_date;
@@ -25,7 +25,7 @@ public class Task {
         this.description = description;
         this.note = note;
         this.hours = hours;
-        this.payRate = payRate;
+        this.pay_rate = pay_rate;
         this.flag = flag;
         this.start_date = start_date;
         this.end_date = end_date;
@@ -58,11 +58,11 @@ public class Task {
     }
 
     public int getPayRate() {
-        return payRate;
+        return pay_rate;
     }
 
     public void setPayRate(int payRate) {
-        this.payRate = payRate;
+        this.pay_rate = payRate;
     }
 
     public String getTitle() {
