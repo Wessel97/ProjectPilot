@@ -15,8 +15,9 @@ public class TaskRepository {
     @Value("${spring.datasource.password}") //Bugbusters23
     private String PWD;
 
-
+    /*--------------------------------------------------------------------
                                 //Get metoder.
+     ------------------------------------------------------------------*/
 
 
     //Method 1 get task from SQL. This method will return a task object from the database.
@@ -78,7 +79,7 @@ public class TaskRepository {
     public List<Task> getAllTasksByUserID(int userId)
     {
         // Initialize an empty list to store tasks with the given userID
-        List<Task> UserIdTasksList = new ArrayList<>();
+        List<Task> userIdTasksList = new ArrayList<>();
         // Define the SQL query to find all tasks with the given userID
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
         try
@@ -98,7 +99,7 @@ public class TaskRepository {
                 // Extract the task from the result set
                 Task task = getTask(resultSet);
                 // Add the extracted task to the tasksByUserId list
-                UserIdTasksList.add(task);
+                userIdTasksList.add(task);
                 //print user. Debugging purposes to see list in terminal.
                 System.out.println(task);
             }
@@ -111,7 +112,7 @@ public class TaskRepository {
             e.printStackTrace();
         }
         // Return the list of tasks with the given userID
-        return UserIdTasksList;
+        return userIdTasksList;
     }
 
     // Method 4 get task by task ID. This method will find the task with the given ID.
@@ -142,9 +143,48 @@ public class TaskRepository {
         return selectTask;
     }
 
+    public List<Task> getAllTasksByDepartment(String department)
+    {
+        // Initialize an empty list to store tasks with the given userID
+        List<Task> departmentTasksList = new ArrayList<>();
+        // Define the SQL query to find all tasks with the given userID
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE department = ?";
+        try
+        {
+            // Establish a connection to the database
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            // Prepare a statement with the given FIND_QUERY
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
+            // Set the userId parameter for the prepared statement
+            preparedStatement.setString(1, department);
+            // Execute the query and get the result set
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-                                //Add + update + delete metoder.
+            // Loop through the result set
+            while (resultSet.next())
+            {
+                // Extract the task from the result set
+                Task task = getTask(resultSet);
+                // Add the extracted task to the tasksByUserId list
+                departmentTasksList.add(task);
+                //print user. Debugging purposes to see list in terminal.
+                System.out.println(task);
+            }
+        }
+        catch (SQLException e)
+        {
+            //Handle any errors while querying the database.
+            System.out.println("Error trying to query database: " + e);
+            //This method will print the error, what line it is on and what method it is in.
+            e.printStackTrace();
+        }
+        // Return the list of tasks with the given userID
+        return departmentTasksList;
+    }
 
+     /*--------------------------------------------------------------------
+                    //Add + update + delete metoder.
+    --------------------------------------------------------------------*/
 
     //Method 5 add task. This method will add a task to the database.
     public boolean addTask(Task task)
@@ -280,16 +320,16 @@ public class TaskRepository {
         return taskDeleted;
     }
 
+    /*--------------------------------------------------------------------
                             // Sort Metoder
+    --------------------------------------------------------------------*/
 
-    //Method 8 sort by hours. This method will sort the tasks by hours.
-    public List<Task> getAllTasksSortedByHours()
-    {
+    //Method 8 Generic sorting method. You can define your sorting parameter.
+    public List<Task> getAllTasksSorted(String sortingParameter) {
         List<Task> allTasksList = new ArrayList<>();
         //query to get all tasks
-        final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task ORDER BY hours";
-        try
-        {
+        final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task ORDER BY " + sortingParameter;
+        try {
             //db connection
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             // create statement. This will be used to execute the query.
@@ -297,15 +337,12 @@ public class TaskRepository {
             // execute query and store result in resultSet.
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
             // loop through resultSet and add each task to allTasksList.
-            while(resultSet.next())
-            {
+            while (resultSet.next()) {
                 //create task object and add to allTasksList.
                 Task task = getTask(resultSet);
                 allTasksList.add(task);
             }
-        }
-        catch(SQLException e)
-        {
+        } catch (SQLException e) {
             //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
             //This method will print the error, what line it is on and what method it is in.
@@ -314,25 +351,39 @@ public class TaskRepository {
         return allTasksList;
     }
 
-    //Method 9 sort by start date. This method will sort the tasks by start date.
-    public void sortByDepartment() {
-        /*
-        Skal sortere tasks efter afdeling
-         */
+    //Method 9 sort by hours. This method will sort the tasks by hours.
+    public List<Task> getAllTasksSortedByHours() {
+        return getAllTasksSorted("hours");
     }
 
-    public void sortByStatus() {
-        /*
-        Skal sortere tasks efter status
-         */
+    //Method 10 sort by department. This method will sort the tasks by department.
+    public List<Task> getAllTasksSortedByDepartment() {
+        return getAllTasksSorted("department");
     }
 
-    public void sortByFlag() {
-        /*
-        Skal sortere tasks efter flag
-         */
+    //Method 11 sort by start date. This method will sort the tasks by start date.
+    public List<Task> getAllTasksSortedByStartDate() {
+        return getAllTasksSorted("start_date");
     }
 
+    //sort by end date
+    public List<Task> getAllTasksSortedByEndDate() {
+        return getAllTasksSorted("end_date");
+    }
+
+    //sort by status
+    public List<Task> getAllTasksSortedByStatus() {
+        return getAllTasksSorted("start_date");
+    }
+
+    //sort by flag
+    public List<Task> getAllTasksSortedByFlag() {
+        return getAllTasksSorted("start_date");
+    }
+
+    /*--------------------------------------------------------------------
+                            // Overview Metoder
+    --------------------------------------------------------------------*/
 
     public int timeOverview() {
         /*
