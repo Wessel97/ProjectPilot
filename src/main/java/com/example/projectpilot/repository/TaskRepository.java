@@ -207,9 +207,9 @@ public class TaskRepository {
             //set hours
             preparedStatement.setInt(3, task.getHours());
             //set start_date
-            preparedStatement.setString(5, task.getStartDate());
+            preparedStatement.setString(5, task.getStart_Date());
             //set end_date
-            preparedStatement.setString(6, task.getEndDate());
+            preparedStatement.setString(6, task.getEnd_Date());
             //set department
             preparedStatement.setString(7, task.getDepartment());
             //execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected.
@@ -256,9 +256,9 @@ public class TaskRepository {
             // set flag parameter
             preparedStatement.setBoolean(6, task.isFlag());
             // set start_date parameter
-            preparedStatement.setString(7, task.getStartDate());
+            preparedStatement.setString(7, task.getStart_Date());
             // set end_date parameter
-            preparedStatement.setString(8, task.getEndDate());
+            preparedStatement.setString(8, task.getEnd_Date());
             // set status parameter
             preparedStatement.setString(9, task.getStatus());
             // set department parameter
@@ -297,7 +297,7 @@ public class TaskRepository {
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(task_id)
-            preparedStatement.setInt(1, task.getTaskID());
+            preparedStatement.setInt(1, task.getTask_id());
             //execute statement
             int foundTask = preparedStatement.executeUpdate();
             //return true if task was found and deleted (foundTask should be 1).
