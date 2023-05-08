@@ -5,11 +5,13 @@ public class Task {
     // Parameters
     private int taskID;
     private int userID;
-    private String assigned_to;
     private String title;
     private String description;
     private String note;
     private int hours;
+    private int payRate;
+
+    private int totalPay;
     private boolean flag;
     private String startDate;
     private String endDate;
@@ -17,14 +19,16 @@ public class Task {
     private String department;
 
     // Constructor
-    public Task(int taskID, int userID, String assigned_to, String title, String description, String note, int hours, boolean flag, String startDate, String endDate, String status, String department) {
+    public Task(int taskID, int userID, String title, String description, String note, int hours, int payRate, int totalPay, boolean flag, String startDate, String endDate, String status, String department)
+    {
         this.taskID = taskID;
         this.userID = userID;
-        this.assigned_to = assigned_to;
         this.title = title;
         this.description = description;
         this.note = note;
         this.hours = hours;
+        this.payRate = payRate;
+        this.totalPay = totalPay;
         this.flag = flag;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -53,12 +57,12 @@ public class Task {
         this.userID = userID;
     }
 
-    public String getAssignedTo() {
-        return assigned_to;
+    public int getPayRate() {
+        return payRate;
     }
 
-    public void setAssignedTo(String assigned_to) {
-        this.assigned_to = assigned_to;
+    public void setPayRate(int payRate) {
+        this.payRate = payRate;
     }
 
     public String getTitle() {
@@ -131,6 +135,16 @@ public class Task {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public int getTotalPay()
+    {
+        return totalPay;
+    }
+
+    public void setTotalPay(int totalPay)
+    {
+        this.totalPay = totalPay;
     }
 }
 

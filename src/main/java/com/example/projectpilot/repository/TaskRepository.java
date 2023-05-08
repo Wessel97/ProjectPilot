@@ -25,18 +25,19 @@ public class TaskRepository {
     {
         int taskID = resultSet.getInt(1);
         int userID = resultSet.getInt(2);
-        String assignedTo = resultSet.getString(3);
-        String title = resultSet.getString(4);
-        String description = resultSet.getString(5);
-        String note = resultSet.getString(6);
-        int hours = resultSet.getInt(7);
-        boolean flag = resultSet.getBoolean(8);
-        String startDate = resultSet.getString(9);
-        String endDate = resultSet.getString(10);
-        String status = resultSet.getString(11);
-        String department = resultSet.getString(12);
+        String title = resultSet.getString(3);
+        String description = resultSet.getString(4);
+        String note = resultSet.getString(5);
+        int hours = resultSet.getInt(6);
+        int payRate = resultSet.getInt(7);
+        int totalPay = resultSet.getInt(8);
+        boolean flag = resultSet.getBoolean(9);
+        String startDate = resultSet.getString(10);
+        String endDate = resultSet.getString(11);
+        String status = resultSet.getString(12);
+        String department = resultSet.getString(13);
         //create task object and return task object.
-        return new Task(taskID, userID, assignedTo, title, description, note, hours, flag, startDate, endDate, status, department);
+        return new Task(taskID, userID, title, description, note, hours, payRate, totalPay, flag, startDate, endDate, status, department);
     }
 
     //Method 2 get all tasks. This method will return a list of all tasks in the database.
@@ -190,7 +191,7 @@ public class TaskRepository {
     public boolean addTask(Task task)
     {
         //query to insert task
-        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.task (assigned_to, title, description, hours, start_date, end_date, department) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.task (title, description, hours, start_date, end_date, department) VALUES (?, ?, ?, ?, ?, ?, ?)";
         // Make a boolean to check if the task was added (sentinel). Makes the code more readable.
         boolean taskAdded = false;
         try
@@ -199,14 +200,12 @@ public class TaskRepository {
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
-            //set assigned_to
-            preparedStatement.setString(1, task.getAssignedTo());
             //set title
-            preparedStatement.setString(2, task.getTitle());
+            preparedStatement.setString(1, task.getTitle());
             //set description
-            preparedStatement.setString(3, task.getDescription());
+            preparedStatement.setString(2, task.getDescription());
             //set hours
-            preparedStatement.setInt(4, task.getHours());
+            preparedStatement.setInt(3, task.getHours());
             //set start_date
             preparedStatement.setString(5, task.getStartDate());
             //set end_date
@@ -237,7 +236,7 @@ public class TaskRepository {
     public boolean updateTask(Task task)
     {
         //query to update user
-        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.task SET assigned_to = ?, title = ?, description = ?, note = ?, hours = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE task_id = ?";
+        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.task SET title = ?, description = ?, note = ?, hours = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE task_id = ?";
         // Make a boolean to check if the task was updated (sentinel). Makes the code more readable.
         boolean taskUpdated = false;
         try
@@ -246,16 +245,14 @@ public class TaskRepository {
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             // prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
-            // set AssignedTo parameter
-            preparedStatement.setString(1, task.getAssignedTo());
             // set title parameter
-            preparedStatement.setString(2, task.getTitle());
+            preparedStatement.setString(1, task.getTitle());
             // set description parameter
-            preparedStatement.setString(3, task.getDescription());
+            preparedStatement.setString(2, task.getDescription());
             // set note parameter
-            preparedStatement.setString(4, task.getNote());
+            preparedStatement.setString(3, task.getNote());
             // set hours parameter
-            preparedStatement.setInt(5, task.getHours());
+            preparedStatement.setInt(4, task.getHours());
             // set flag parameter
             preparedStatement.setBoolean(6, task.isFlag());
             // set start_date parameter
@@ -325,64 +322,75 @@ public class TaskRepository {
     --------------------------------------------------------------------*/
 
     //Method 8 Generic sorting method. You can define your sorting parameter.
-    public List<Task> getAllTasksSorted(String sortingParameter) {
-        List<Task> allTasksList = new ArrayList<>();
+    public List<Task> getTasksSorted(String sortingParameter)
+    {
+        List<Task> sortedTasksList = new ArrayList<>();
         //query to get all tasks
         final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task ORDER BY " + sortingParameter;
-        try {
+        try
+        {
             //db connection
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             // create statement. This will be used to execute the query.
             Statement statement = connection.createStatement();
             // execute query and store result in resultSet.
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
-            // loop through resultSet and add each task to allTasksList.
-            while (resultSet.next()) {
-                //create task object and add to allTasksList.
+            // loop through resultSet and add each task to sortedTasksList.
+            while (resultSet.next())
+            {
+                //create task object and add to sortedTasksList.
                 Task task = getTask(resultSet);
-                allTasksList.add(task);
+                sortedTasksList.add(task);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
             //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
-        return allTasksList;
+        return sortedTasksList;
     }
 
     //Method 9 sort by hours. This method will sort the tasks by hours.
-    public List<Task> getAllTasksSortedByHours() {
-        return getAllTasksSorted("hours");
+    public List<Task> getAllTasksSortedByHours()
+    {
+        return getTasksSorted("hours");
     }
 
     //Method 10 sort by department. This method will sort the tasks by department.
-    public List<Task> getAllTasksSortedByDepartment() {
-        return getAllTasksSorted("department");
+    public List<Task> getAllTasksSortedByDepartment()
+    {
+        return getTasksSorted("department");
     }
 
     //Method 11 sort by start date. This method will sort the tasks by start date.
-    public List<Task> getAllTasksSortedByStartDate() {
-        return getAllTasksSorted("start_date");
+    public List<Task> getAllTasksSortedByStartDate()
+    {
+        return getTasksSorted("start_date");
     }
 
-    //sort by end date
-    public List<Task> getAllTasksSortedByEndDate() {
-        return getAllTasksSorted("end_date");
+    //Method 12 sort by end date. This method will sort the tasks by end date.
+    public List<Task> getAllTasksSortedByEndDate()
+    {
+        return getTasksSorted("end_date");
     }
 
-    //sort by status
-    public List<Task> getAllTasksSortedByStatus() {
-        return getAllTasksSorted("start_date");
+    //Method 13 sort by status. This method will sort the tasks by status (unassigned, assigned, in progress, done).
+    public List<Task> getAllTasksSortedByStatus()
+    {
+        return getTasksSorted("start_date");
     }
 
     //sort by flag
-    public List<Task> getAllTasksSortedByFlag() {
-        return getAllTasksSorted("start_date");
+    public List<Task> getAllTasksSortedByFlag()
+    {
+        return getTasksSorted("start_date");
     }
 
     /*--------------------------------------------------------------------
-                            // Overview Metoder
+                            // Projekt kalkulering Metoder
     --------------------------------------------------------------------*/
 
     public int timeOverview() {
