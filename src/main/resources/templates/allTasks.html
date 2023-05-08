@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Tasks</title>
+  <link rel="stylesheet" th:href="@{/css/allTasks.css}">
 </head>
 <body>
 <div class="container">
@@ -40,16 +41,19 @@
       <td th:text="${task.note}">
         666
       </td>
-      <td th:text="${task.pay_rate}">
+      <td th:text="${task.hours}">
+        666
+      </td>
+      <td th:text="${task.payRate}">
         666
       </td>
       <td th:text="${task.flag}">
         666
       </td>
-      <td th:text="${task.start_date}">
+      <td th:text="${task.start_Date}">
         666
       </td>
-      <td th:text="${task.end_date}">
+      <td th:text="${task.end_Date}">
         666
       </td>
       <td th:text="${task.status}">
