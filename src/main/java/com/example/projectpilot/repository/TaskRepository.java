@@ -25,20 +25,20 @@ public class TaskRepository {
     //Method 1 get task from SQL. This method will return a task object from the database.
     private Task getTask(ResultSet resultSet) throws SQLException
     {
-        int taskID = resultSet.getInt(1);
-        int userID = resultSet.getInt(2);
+        int task_id = resultSet.getInt(1);
+        int user_id= resultSet.getInt(2);
         String title = resultSet.getString(3);
         String description = resultSet.getString(4);
         String note = resultSet.getString(5);
         int hours = resultSet.getInt(6);
-        int payRate = resultSet.getInt(7);
-        boolean flag = resultSet.getBoolean(9);
-        String startDate = resultSet.getString(10);
-        String endDate = resultSet.getString(11);
-        String status = resultSet.getString(12);
-        String department = resultSet.getString(13);
+        int pay_rate = resultSet.getInt(7);
+        boolean flag = resultSet.getBoolean(8);
+        String start_date = resultSet.getString(9);
+        String end_date = resultSet.getString(10);
+        String status = resultSet.getString(11);
+        String department = resultSet.getString(12);
         //create task object and return task object.
-        return new Task(taskID, userID, title, description, note, hours, payRate, flag, startDate, endDate, status, department);
+        return new Task(task_id, user_id, title, description, note, hours, pay_rate, flag, start_date, end_date, status, department);
     }
 
     //Method 2 get all tasks. This method will return a list of all tasks in the database.
@@ -487,7 +487,7 @@ public class TaskRepository {
     public int totalPriceByID(int userID) {
         int sumPriceByID = 0;
         try {
-            String query = "SELECT SUM(hours * payRate) FROM ProjectPilotDB.task WHERE userID=?";
+            String query = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE userID=?";
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userID);
