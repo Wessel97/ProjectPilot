@@ -37,6 +37,34 @@ public class MainController {
     public MainController () {
     }
 
+    @GetMapping("/checkUser")
+    public String checkUserName(@RequestParam(value = "email") String email)
+    {
+        boolean userExists = userRepository.checkIfUserExists(email);
+        if (userExists)
+        {
+            return "User exists";
+        }
+        else
+        {
+            return "User does not exist";
+        }
+    }
+
+    @PostMapping("/verifyUser")
+    public String verifyUsernameAndPassword(@RequestParam(value = "email") String email, @RequestParam(value = "password") String password)
+    {
+        boolean userVerified = userRepository.verifyUser(email, password);
+        if (userVerified)
+        {
+            return "User verified";
+        }
+        else
+        {
+            return "User not verified";
+        }
+    }
+
 
     @GetMapping("allTasks")
     public String showStart(Model model) {
