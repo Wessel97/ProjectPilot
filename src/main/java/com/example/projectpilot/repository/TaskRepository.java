@@ -18,9 +18,8 @@ public class TaskRepository {
     private String PWD;
 
     /*--------------------------------------------------------------------
-                                //Get metoder.
+                        //Get metoder (metode 1-5)
      ------------------------------------------------------------------*/
-
 
     //Method 1 get task from SQL. This method will return a task object from the database.
     private Task getTask(ResultSet resultSet) throws SQLException
@@ -186,7 +185,7 @@ public class TaskRepository {
     }
 
      /*--------------------------------------------------------------------
-                    //Add + update + delete metoder.
+                  //Add + update + delete metoder (metode 6-8)
     --------------------------------------------------------------------*/
 
     //Method 6 add task. This method will add a task to the database.
@@ -320,7 +319,7 @@ public class TaskRepository {
     }
 
     /*--------------------------------------------------------------------
-                            // Sort Metoder
+                            // Sort Metoder (Metode 9-15)
     --------------------------------------------------------------------*/
 
     //Method 9 Generic sorting method. You can define your sorting parameter.
@@ -392,7 +391,7 @@ public class TaskRepository {
     }
 
     /*--------------------------------------------------------------------
-                            // Projekt kalkulering Metoder
+                 // Projekt kalkulering Metoder (Metode 16-21)
     --------------------------------------------------------------------*/
 
     // Method 16 calculates the total number of hours for all tasks.
