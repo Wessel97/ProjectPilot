@@ -8,10 +8,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
 import java.sql.Date;
 
 @Controller
@@ -37,24 +35,26 @@ public class MainController {
     public MainController () {
     }
 
-
+    // Viser Start
     @GetMapping("/")
     public String showStart(Model model) {
         return "start";
     }
 
+    // Viser alle tasks
     @GetMapping("/allTasks")
     public String showAllTasks(Model model) {
         model.addAttribute("task", taskRepository.getAllTasks());
         return "allTasks";
     }
 
-
+    // Viser add tasks siden
     @GetMapping("/addTask")
     public String showAddTask() {
         return "addTask";
     }
 
+    // Poster ny task
     @PostMapping("/addTask")
     public String addTask(@RequestParam("task-title") String newTitle,
                           @RequestParam("task-description") String newDescription,
@@ -79,6 +79,42 @@ public class MainController {
         taskRepository.addTask(newTask);
 
         // Går tilbage til alle tasks
+        return "redirect:/allTasks";
+    }
+
+    // Viser update task siden
+    @GetMapping("/updateTask/{task_id}")
+    public String showUpdateTask(@PathVariable("task_id") int updateId, Model model) {
+        //find produkt med id=updateId i databasen
+        Task updateTask = taskRepository.getTaskByTaskId(updateId);
+
+        //tilføj produkt til viewmodel, så det kan bruges i Thymeleaf
+        model.addAttribute("task", updateTask);
+
+        //fortæl Spring hvilken HTML-side, der skal vises
+        return "updateTask";
+    }
+
+    // Poster update til eksisterende task (UDEN FLAG)
+    @PostMapping("/updateTask")
+    public String updateTask(@RequestParam("task-task_id") int updateTaskId,
+                                @RequestParam("task-user_id") int updateUserId,
+                                @RequestParam("task-title") String updateTitle,
+                                @RequestParam("task-description") String updateDescription,
+                                @RequestParam("task-note") String updateNote,
+                                @RequestParam("task-hours") int updateHours,
+                                @RequestParam("task-pay_rate") int updatePayRate,
+                                @RequestParam("task-start_date") String updateStartDate,
+                                @RequestParam("task-end_date") String updateEndDate,
+                                @RequestParam("task-status") String updateStatus,
+                                @RequestParam("task-department") String updateDepartment) {
+        //lav produkt ud fra parametre
+        Task updateTask = new Task(updateTaskId, updateUserId, updateTitle, updateDescription, updateNote, updateHours, updatePayRate, updateStartDate, updateEndDate, updateStatus, updateDepartment);
+
+        //kald opdater i repository
+        taskRepository.updateTask(updateTask);
+
+        //rediriger til oversigtssiden
         return "redirect:/allTasks";
     }
 

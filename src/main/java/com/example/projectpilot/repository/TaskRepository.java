@@ -268,45 +268,105 @@ public class TaskRepository {
             }
     }
 
-    // Method 7 update task. This method will update the selected task in the database. Without returning anything.
-    public boolean updateTask(Task task)
+//    // Method 7 update task. This method will update the selected task in the database. Without returning anything.
+//    public boolean updateTask(Task task)
+//    {
+//        //query to update user
+//        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.task SET title = ?, description = ?, note = ?, hours = ?, pay_rate = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE task_id = ?";
+//        // Make a boolean to check if the task was updated (sentinel). Makes the code more readable.
+//        boolean taskUpdated = false;
+//        try
+//        {
+//            // db connection
+//            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+//            // prepared statement
+//            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+//            // set title parameter
+//            preparedStatement.setString(1, task.getTitle());
+//            // set description parameter
+//            preparedStatement.setString(2, task.getDescription());
+//            // set note parameter
+//            preparedStatement.setString(3, task.getNote());
+//            // set hours parameter
+//            preparedStatement.setInt(4, task.getHours());
+//            // set pay_rate parameter
+//            preparedStatement.setInt(5, task.getPayRate());
+//            // set flag parameter
+//            preparedStatement.setBoolean(6, task.isFlag());
+//            // set start_date parameter
+//            preparedStatement.setString(7, task.getStart_Date());
+//            // set end_date parameter
+//            preparedStatement.setString(8, task.getEnd_Date());
+//            // set status parameter
+//            preparedStatement.setString(9, task.getStatus());
+//            // set department parameter
+//            preparedStatement.setString(10, task.getDepartment());
+//
+//            // execute statement
+//            int updatedRow = preparedStatement.executeUpdate();
+//            // if updatedRow is 1, task was updated.
+//            if(updatedRow == 1)
+//            {
+//                taskUpdated = true;
+//            }
+//        }
+//        catch (SQLException e)
+//        {
+//            //Handle any errors while querying the database.
+//            System.out.println("Error trying to query database: " + e);
+//            //This method will print the error, what line it is on and what method it is in.
+//            e.printStackTrace();
+//        }
+//        // return true if task was updated, false if not.
+//        return taskUpdated;
+//    }
+
+    public void updateTask(Task task)
     {
-        //query to update user
-        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.task SET title = ?, description = ?, note = ?, hours = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE task_id = ?";
-        // Make a boolean to check if the task was updated (sentinel). Makes the code more readable.
-        boolean taskUpdated = false;
+        final String UPDATE_QUERY = "UPDATE task SET title = ?, description = ?, note = ?, hours = ?, pay_rate = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE task_id = ?";
+
         try
         {
             // db connection
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             // prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
-            // set title parameter
-            preparedStatement.setString(1, task.getTitle());
-            // set description parameter
-            preparedStatement.setString(2, task.getDescription());
-            // set note parameter
-            preparedStatement.setString(3, task.getNote());
-            // set hours parameter
-            preparedStatement.setInt(4, task.getHours());
-            // set flag parameter
-            preparedStatement.setBoolean(6, task.isFlag());
-            // set start_date parameter
-            preparedStatement.setString(7, task.getStart_Date());
-            // set end_date parameter
-            preparedStatement.setString(8, task.getEnd_Date());
-            // set status parameter
-            preparedStatement.setString(9, task.getStatus());
-            // set department parameter
-            preparedStatement.setString(10, task.getDepartment());
 
-            // execute statement
-            int updatedRow = preparedStatement.executeUpdate();
-            // if updatedRow is 1, task was updated.
-            if(updatedRow == 1)
-            {
-                taskUpdated = true;
-            }
+            String title = task.getTitle();
+            String description = task.getDescription();
+            String note = task.getNote();
+            int hours = task.getHours();
+            int payRate = task.getPayRate();
+            boolean flag = task.isFlag();
+            String start_date = task.getStart_Date();
+            String end_date = task.getEnd_Date();
+            String status = task.getStatus();
+            String department = task.getDepartment();
+            int task_id = task.getTask_id();
+
+            preparedStatement.setString(1, title);
+            // set description parameter
+            preparedStatement.setString(2, description);
+            // set note parameter
+            preparedStatement.setString(3, note);
+            // set hours parameter
+            preparedStatement.setInt(4, hours);
+            // set pay_rate parameter
+            preparedStatement.setInt(5, payRate);
+            // set flag parameter
+            preparedStatement.setBoolean(6, flag);
+            // set start_date parameter
+            preparedStatement.setString(7, start_date);
+            // set end_date parameter
+            preparedStatement.setString(8, end_date);
+            // set status parameter
+            preparedStatement.setString(9, status);
+            // set department parameter
+            preparedStatement.setString(10, department);
+            // set task_id parameter
+            preparedStatement.setInt(11, task_id);
+
+            preparedStatement.executeUpdate();
         }
         catch (SQLException e)
         {
@@ -315,8 +375,6 @@ public class TaskRepository {
             //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
-        // return true if task was updated, false if not.
-        return taskUpdated;
     }
 
     //Method 8 delete task by ID. This method will return true if the task was successfully deleted from the database.
