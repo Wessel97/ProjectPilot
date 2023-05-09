@@ -197,7 +197,7 @@ public class UserRepository
         }
     }
 
-    // Method 7 verify user. This method will return true if the user exists in the database.
+    // Method 7 verify user. This method will return true if the login credentials are matched in the database.
     public boolean verifyUser(String email, String password)
     {
         // Query to find user
