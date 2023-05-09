@@ -189,53 +189,83 @@ public class TaskRepository {
                     //Add + update + delete metoder.
     --------------------------------------------------------------------*/
 
-    //Method 6 add task. This method will add a task to the database.
-    public boolean addTask(Task task)
-    {
-        //query to insert task
-        final String INSERT_QUERY = "INSERT INTO task(title, description, note, hours, start_date, end_date, status, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        // Make a boolean to check if the task was added (sentinel). Makes the code more readable.
-        boolean taskAdded = false;
-        try
-        {
-            //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
-            //set title
-            preparedStatement.setString(1, task.getTitle());
-            //set description
-            preparedStatement.setString(2, task.getDescription());
-            //set note
-            preparedStatement.setString(3, task.getNote());
-            //set hours
-            preparedStatement.setInt(4, task.getHours());
-            //set start_date
-            preparedStatement.setString(5, task.getStart_Date());
-            //set end_date
-            preparedStatement.setString(6, task.getEnd_Date());
-            //set status
-            preparedStatement.setString(7, task.getStatus());
-            //set department
-            preparedStatement.setString(8, task.getDepartment());
-            //execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected.
-            int rowsAffected = preparedStatement.executeUpdate();
-            //return true if rowsAffected is 1, it will return false if rowsAffected is 0 or more than 1.
+//    //Method 6 add task. This method will add a task to the database.
+//    public boolean addTask(Task task)
+//    {
+//        //query to insert task
+//        final String INSERT_QUERY = "INSERT INTO task(title, description, note, hours, start_date, end_date, status, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+//        // Make a boolean to check if the task was added (sentinel). Makes the code more readable.
+//        boolean taskAdded = false;
+//        try
+//        {
+//            //db connection
+//            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+//            //prepared statement
+//            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
+//            //set title
+//            preparedStatement.setString(1, task.getTitle());
+//            //set description
+//            preparedStatement.setString(2, task.getDescription());
+//            //set note
+//            preparedStatement.setString(3, task.getNote());
+//            //set hours
+//            preparedStatement.setInt(4, task.getHours());
+//            //set start_date
+//            preparedStatement.setString(5, task.getStart_Date());
+//            //set end_date
+//            preparedStatement.setString(6, task.getEnd_Date());
+//            //set status
+//            preparedStatement.setString(7, task.getStatus());
+//            //set department
+//            preparedStatement.setString(8, task.getDepartment());
+//            //execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected.
+//            int rowsAffected = preparedStatement.executeUpdate();
+//            //return true if rowsAffected is 1, it will return false if rowsAffected is 0 or more than 1.
+//
+//            if(rowsAffected == 1)
+//            {
+//                taskAdded = true;
+//            }
+//        }
+//        catch (SQLException e)
+//        {
+//            //Handle any errors while querying the database.
+//            System.out.println("Error trying to query database: " + e);
+//            //This method will print the error, what line it is on and what method it is in.
+//            e.printStackTrace();
+//        }
+//        //return false if task was not added or there was an error in the try block.
+//        return taskAdded;
+//    }
 
-            if(rowsAffected == 1)
-            {
-                taskAdded = true;
+
+
+    public void addTask(Task task)
+    {
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            final String CREATE_QUERY = "INSERT INTO task(title, description, note, hours, start_date, end_date, status, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            // Make a boolean to check if the task was added (sentinel). Makes the code more readable.
+
+            PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY);
+            preparedStatement.setString(1, task.getTitle());
+            preparedStatement.setString(2, task.getDescription());
+            preparedStatement.setString(3, task.getNote());
+            preparedStatement.setInt(4, task.getHours());
+            preparedStatement.setString(5, task.getStart_Date());
+            preparedStatement.setString(6, task.getEnd_Date());
+            preparedStatement.setString(7, task.getStatus());
+            preparedStatement.setString(8, task.getDepartment());
+
+            preparedStatement.executeUpdate();
             }
-        }
-        catch (SQLException e)
-        {
-            //Handle any errors while querying the database.
-            System.out.println("Error trying to query database: " + e);
-            //This method will print the error, what line it is on and what method it is in.
-            e.printStackTrace();
-        }
-        //return false if task was not added or there was an error in the try block.
-        return taskAdded;
+            catch (SQLException e)
+            {
+                //Handle any errors while querying the database.
+                System.out.println("Error trying to query database: " + e);
+                //This method will print the error, what line it is on and what method it is in.
+                e.printStackTrace();
+            }
     }
 
     // Method 7 update task. This method will update the selected task in the database. Without returning anything.

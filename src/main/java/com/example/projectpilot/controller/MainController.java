@@ -45,7 +45,7 @@ public class MainController {
     }
 
     // Pga. testing purposes så er startsiden nu en side der viser add tasks
-    @GetMapping("addTask")
+    @GetMapping("/allTasks")
     public String showAddTask() {
         return "addTask";
     }
@@ -74,7 +74,7 @@ public class MainController {
         taskRepository.addTask(newTask);
 
         // Går tilbage til alle tasks
-        return "addTask";
+        return "redirect:/allTasks";
     }
 
 
