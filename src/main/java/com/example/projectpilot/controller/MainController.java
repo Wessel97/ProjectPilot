@@ -38,7 +38,7 @@ public class MainController {
     }
 
     @GetMapping("/checkUser")
-    public String checkUserName(@RequestParam(value = "email") String email)
+    public String checkUsername(@RequestParam(value = "email") String email)
     {
         boolean userExists = userRepository.checkIfUserExists(email);
         if (userExists)
@@ -52,7 +52,7 @@ public class MainController {
     }
 
     @PostMapping("/verifyUser")
-    public String verifyUsernameAndPassword(@RequestParam(value = "email") String email, @RequestParam(value = "password") String password)
+    public String checkUsernameAndPassword(@RequestParam(value = "email") String email, @RequestParam(value = "password") String password)
     {
         boolean userVerified = userRepository.verifyUser(email, password);
         if (userVerified)
@@ -61,7 +61,7 @@ public class MainController {
         }
         else
         {
-            return "User not verified";
+            return "username and password doesn't match";
         }
     }
 
