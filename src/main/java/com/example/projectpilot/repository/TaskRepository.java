@@ -193,7 +193,7 @@ public class TaskRepository {
     public boolean addTask(Task task)
     {
         //query to insert task
-        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.task (title, description, hours, start_date, end_date, department) VALUES (?, ?, ?, ?, ?, ?)";
+        final String INSERT_QUERY = "INSERT INTO task(title, description, note, hours, start_date, end_date, status, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         // Make a boolean to check if the task was added (sentinel). Makes the code more readable.
         boolean taskAdded = false;
         try
@@ -206,14 +206,18 @@ public class TaskRepository {
             preparedStatement.setString(1, task.getTitle());
             //set description
             preparedStatement.setString(2, task.getDescription());
+            //set note
+            preparedStatement.setString(3, task.getNote());
             //set hours
-            preparedStatement.setInt(3, task.getHours());
+            preparedStatement.setInt(4, task.getHours());
             //set start_date
             preparedStatement.setString(5, task.getStart_Date());
             //set end_date
             preparedStatement.setString(6, task.getEnd_Date());
+            //set status
+            preparedStatement.setString(7, task.getStatus());
             //set department
-            preparedStatement.setString(7, task.getDepartment());
+            preparedStatement.setString(8, task.getDepartment());
             //execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected.
             int rowsAffected = preparedStatement.executeUpdate();
             //return true if rowsAffected is 1, it will return false if rowsAffected is 0 or more than 1.
