@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.sql.Date;
+import java.sql.SQLException;
 
 @Controller
 public class MainController {
@@ -35,34 +36,6 @@ public class MainController {
     }
 
     public MainController () {
-    }
-
-    @GetMapping("/checkUser")
-    public String checkUserName(@RequestParam(value = "email") String email)
-    {
-        boolean userExists = userRepository.checkIfUserExists(email);
-        if (userExists)
-        {
-            return "User exists";
-        }
-        else
-        {
-            return "User does not exist";
-        }
-    }
-
-    @PostMapping("/verifyUser")
-    public String verifyUsernameAndPassword(@RequestParam(value = "email") String email, @RequestParam(value = "password") String password)
-    {
-        boolean userVerified = userRepository.verifyUser(email, password);
-        if (userVerified)
-        {
-            return "User verified";
-        }
-        else
-        {
-            return "User not verified";
-        }
     }
 
 
@@ -135,18 +108,64 @@ public class MainController {
         return "start";
     }
 
-    //Viser login-siden
-    @GetMapping("/login")
-    public String showLogin() {
+    @GetMapping("/")
+    public String showIndex(HttpSession session, Model model){
+        //hvis username ikke er sat, så rediriger til login
+        if (session.getAttribute("email") == null){
+            return "redirect:/login";
+        }
+        return "HVORDUSKALHEN";
+    }
+
+    @GetMapping ("/login")
+    public String showLogin(){
         return "login";
     }
 
-    // Skal logge useren ind (Mangler kode)
     @PostMapping("/login")
-    public String login() {
-        return "userTasks";
+    public String login(@RequestParam("email") String email,
+                        @RequestParam("password") String password,
+                        Model model,
+                        HttpSession session){
+        //Check if user with mail already exists
+        if(!userRepository.verifyUser(password, email)){
+            model.addAttribute("errorMessage", "Email or password invalid");
+            return "login";
+        }
+        else
+        {
+            User user = userRepository.getUserByEmailAndPassword(email, password);
+            session.setAttribute("user", user);
+            return "redirect:/";
+        }
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+    }
+
+    @GetMapping("/register")
+    public String registerUser(){
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String registerUser(@RequestParam("first_name") String firstname,
+                               @RequestParam("last_name") String lastname,
+                               @RequestParam("email") String email,
+                               @RequestParam("password") String password, Model model){
+        //Check if user with mail already exists
+        if(!userRepository.checkIfUserExists(email)){
+            User user = new User(firstname, lastname, email, password);
+            userRepository.addUser(user);
+            return "redirect:/";
+        }else {
+            model.addAttribute("errorMessage", "Email already in use");
+            return "register";
+        }
+    }
 
     // Viser alle Tasks
     @GetMapping ("/allTasks")

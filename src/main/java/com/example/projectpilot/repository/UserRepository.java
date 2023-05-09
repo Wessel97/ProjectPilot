@@ -166,6 +166,35 @@ public class UserRepository
         return null;
     }
 
+    public User getUserByEmailAndPassword(String email, String password){
+        //SQL QUERY
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE password = ? AND email = ?";
+        User user = new User();
+        user.setEmail(email);
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
+            preparedStatement.setString(1, password);
+            preparedStatement.setString(2, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            int id = resultSet.getInt(1);
+            String first_name = resultSet.getString(2);
+            String last_name = resultSet.getString(3);
+            user.setID(id);
+            user.setFirstName(first_name);
+            user.setLastName(last_name);
+
+        } catch (SQLException e){
+            System.out.println("Error - Password");
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+
     // Method 6 update user. This method will update the selected user in the database. Without returning anything.
     public void updateUser(User user)
     {
