@@ -37,12 +37,49 @@ public class MainController {
     public MainController () {
     }
 
-    // Viser Start siden
-    @GetMapping("/")
+
+    @GetMapping("allTasks")
     public String showStart(Model model) {
         model.addAttribute("task", taskRepository.getAllTasks());
         return "allTasks";
     }
+
+    // Pga. testing purposes så er startsiden nu en side der viser add tasks
+    @GetMapping("/")
+    public String showAddTask(Model model) {
+        return "addTask";
+    }
+
+    @PostMapping("/addTask")
+    public String addTask(@RequestParam("task-title") String newTitle,
+                          @RequestParam("task-description") String newDescription,
+                          @RequestParam("task-note") String newNote,
+                          @RequestParam("task-hours") int newHours,
+                          @RequestParam("task-flag") boolean newFlag,
+                          @RequestParam("task-start_date") String newStartDate,
+                          @RequestParam("task-end_date") String newEndDate,
+                          @RequestParam("task-status") String newStatus,
+                          @RequestParam("task-department") String newDepartment) {
+        // Laver en ny Task
+        Task newTask = new Task();
+        newTask.setTitle(newTitle);
+        newTask.setDescription(newDescription);
+        newTask.setNote(newNote);
+        newTask.setHours(newHours);
+        newTask.setFlag(newFlag);
+        newTask.setStart_Date(newStartDate);
+        newTask.setEnd_Date(newEndDate);
+        newTask.setStatus(newStatus);
+        newTask.setDepartment(newDepartment);
+
+        // Gemmer i taskRepository
+        taskRepository.addTask(newTask);
+
+        // Går tilbage til alle tasks
+        return "allTasks";
+    }
+
+
 
     // Viser "opret bruger" siden
     @GetMapping("/addUser")
