@@ -6,6 +6,7 @@ import com.example.projectpilot.repository.TaskRepository;
 import com.example.projectpilot.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -58,8 +59,8 @@ public class MainController {
                           @RequestParam("task-description") String newDescription,
                           @RequestParam("task-note") String newNote,
                           @RequestParam("task-hours") int newHours,
-                          @RequestParam("task-start_date") String newStartDate,
-                          @RequestParam("task-end_date") String newEndDate,
+                          @RequestParam("task-start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date newStartDate,
+                          @RequestParam("task-end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date newEndDate,
                           @RequestParam("task-status") String newStatus,
                           @RequestParam("task-department") String newDepartment) {
         // Laver en ny Task
@@ -185,8 +186,8 @@ public class MainController {
                                 @RequestParam("task-note") String updateNote,
                                 @RequestParam("task-hours") int updateHours,
                                 @RequestParam("task-pay_rate") int updatePayRate,
-                                @RequestParam("task-start_date") String updateStartDate,
-                                @RequestParam("task-end_date") String updateEndDate,
+                                @RequestParam("task-start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date updateStartDate,
+                                @RequestParam("task-end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date updateEndDate,
                                 @RequestParam("task-status") String updateStatus,
                                 @RequestParam("task-department") String updateDepartment) {
         //lav produkt ud fra parametre

@@ -32,8 +32,8 @@ public class TaskRepository {
         int hours = resultSet.getInt(6);
         int pay_rate = resultSet.getInt(7);
         boolean flag = resultSet.getBoolean(8);
-        String start_date = resultSet.getString(9);
-        String end_date = resultSet.getString(10);
+        Date start_date = resultSet.getDate(9);
+        Date end_date = resultSet.getDate(10);
         String status = resultSet.getString(11);
         String department = resultSet.getString(12);
         //create task object and return task object.
@@ -188,87 +188,7 @@ public class TaskRepository {
                   //Add + update + delete metoder (metode 6-8)
     --------------------------------------------------------------------*/
 
-//    //Method 6 add task. This method will add a task to the database.
-//    public boolean addTask(Task task)
-//    {
-//        //query to insert task
-//        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.task (title ,description ,hours ,start_date , end_date, department) VALUES (?, ?, ?, ?, ?, ?)";
-//        // Make a boolean to check if the task was added (sentinel). Makes the code more readable.
-//        boolean taskAdded = false;
-//        try
-//        {
-//            //db connection
-//            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
-//            //prepared statement
-//            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
-//            //set title
-//            preparedStatement.setString(1, task.getTitle());
-//            //set description
-//            preparedStatement.setString(2, task.getDescription());
-//            //set hours
-//            preparedStatement.setInt(3, task.getHours());
-//            //set start_date
-//            preparedStatement.setString(4, task.getStart_Date());
-//            //set end_date
-//            preparedStatement.setString(5, task.getEnd_Date());
-//            //set department
-//            preparedStatement.setString(6, task.getDepartment());
-//            //execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected.
-//            int rowsAffected = preparedStatement.executeUpdate();
-//            //return true if rowsAffected is 1, it will return false if rowsAffected is 0 or more than 1.
-//=======
-//    //Method 6 add task. This method will add a task to the database.
-//    public boolean addTask(Task task)
-//    {
-//        //query to insert task
-//        final String INSERT_QUERY = "INSERT INTO task(title, description, note, hours, start_date, end_date, status, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-//        // Make a boolean to check if the task was added (sentinel). Makes the code more readable.
-//        boolean taskAdded = false;
-//        try
-//        {
-//            //db connection
-//            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
-//            //prepared statement
-//            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
-//            //set title
-//            preparedStatement.setString(1, task.getTitle());
-//            //set description
-//            preparedStatement.setString(2, task.getDescription());
-//            //set note
-//            preparedStatement.setString(3, task.getNote());
-//            //set hours
-//            preparedStatement.setInt(4, task.getHours());
-//            //set start_date
-//            preparedStatement.setString(5, task.getStart_Date());
-//            //set end_date
-//            preparedStatement.setString(6, task.getEnd_Date());
-//            //set status
-//            preparedStatement.setString(7, task.getStatus());
-//            //set department
-//            preparedStatement.setString(8, task.getDepartment());
-//            //execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected.
-//            int rowsAffected = preparedStatement.executeUpdate();
-//            //return true if rowsAffected is 1, it will return false if rowsAffected is 0 or more than 1.
-//
-//            if(rowsAffected == 1)
-//            {
-//                taskAdded = true;
-//            }
-//        }
-//        catch (SQLException e)
-//        {
-//            //Handle any errors while querying the database.
-//            System.out.println("Error trying to query database: " + e);
-//            //This method will print the error, what line it is on and what method it is in.
-//            e.printStackTrace();
-//        }
-//        //return false if task was not added or there was an error in the try block.
-//        return taskAdded;
-//    }
-
-
-
-
+    //Method 6 add task. This method will add a task to the database.
     public void addTask(Task task)
     {
         try {
@@ -281,8 +201,8 @@ public class TaskRepository {
             preparedStatement.setString(2, task.getDescription());
             preparedStatement.setString(3, task.getNote());
             preparedStatement.setInt(4, task.getHours());
-            preparedStatement.setString(5, task.getStart_Date());
-            preparedStatement.setString(6, task.getEnd_Date());
+            preparedStatement.setDate(5, task.getStart_Date());
+            preparedStatement.setDate(6, task.getEnd_Date());
             preparedStatement.setString(7, task.getStatus());
             preparedStatement.setString(8, task.getDepartment());
 
@@ -297,59 +217,7 @@ public class TaskRepository {
             }
     }
 
-//    // Method 7 update task. This method will update the selected task in the database. Without returning anything.
-//    public boolean updateTask(Task task)
-//    {
-//        //query to update user
-//        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.task SET title = ?, description = ?, note = ?, hours = ?, pay_rate = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE task_id = ?";
-//        // Make a boolean to check if the task was updated (sentinel). Makes the code more readable.
-//        boolean taskUpdated = false;
-//        try
-//        {
-//            // db connection
-//            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
-//            // prepared statement
-//            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
-//            // set title parameter
-//            preparedStatement.setString(1, task.getTitle());
-//            // set description parameter
-//            preparedStatement.setString(2, task.getDescription());
-//            // set note parameter
-//            preparedStatement.setString(3, task.getNote());
-//            // set hours parameter
-//            preparedStatement.setInt(4, task.getHours());
-//            // set pay_rate parameter
-//            preparedStatement.setInt(5, task.getPayRate());
-//            // set flag parameter
-//            preparedStatement.setBoolean(6, task.isFlag());
-//            // set start_date parameter
-//            preparedStatement.setString(7, task.getStart_Date());
-//            // set end_date parameter
-//            preparedStatement.setString(8, task.getEnd_Date());
-//            // set status parameter
-//            preparedStatement.setString(9, task.getStatus());
-//            // set department parameter
-//            preparedStatement.setString(10, task.getDepartment());
-//
-//            // execute statement
-//            int updatedRow = preparedStatement.executeUpdate();
-//            // if updatedRow is 1, task was updated.
-//            if(updatedRow == 1)
-//            {
-//                taskUpdated = true;
-//            }
-//        }
-//        catch (SQLException e)
-//        {
-//            //Handle any errors while querying the database.
-//            System.out.println("Error trying to query database: " + e);
-//            //This method will print the error, what line it is on and what method it is in.
-//            e.printStackTrace();
-//        }
-//        // return true if task was updated, false if not.
-//        return taskUpdated;
-//    }
-
+    // Method 7 update task. This method will update the selected task in the database. Without returning anything.
     public void updateTask(Task task)
     {
         final String UPDATE_QUERY = "UPDATE task SET title = ?, description = ?, note = ?, hours = ?, pay_rate = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE task_id = ?";
@@ -367,8 +235,8 @@ public class TaskRepository {
             int hours = task.getHours();
             int payRate = task.getPayRate();
             boolean flag = task.isFlag();
-            String start_date = task.getStart_Date();
-            String end_date = task.getEnd_Date();
+            Date start_date = task.getStart_Date();
+            Date end_date = task.getEnd_Date();
             String status = task.getStatus();
             String department = task.getDepartment();
             int task_id = task.getTask_id();
@@ -385,9 +253,9 @@ public class TaskRepository {
             // set flag parameter
             preparedStatement.setBoolean(6, flag);
             // set start_date parameter
-            preparedStatement.setString(7, start_date);
+            preparedStatement.setDate(7, start_date);
             // set end_date parameter
-            preparedStatement.setString(8, end_date);
+            preparedStatement.setDate(8, end_date);
             // set status parameter
             preparedStatement.setString(9, status);
             // set department parameter
@@ -503,13 +371,13 @@ public class TaskRepository {
     //Method 14 sort by status. This method will sort the tasks by status (unassigned, assigned, in progress, done).
     public List<Task> getAllTasksSortedByStatus()
     {
-        return getTasksSorted("start_date");
+        return getTasksSorted("status");
     }
 
     //Method 15 sort by flag. This method will sort the tasks by flag (true or false).
     public List<Task> getAllTasksSortedByFlag()
     {
-        return getTasksSorted("start_date");
+        return getTasksSorted("flag");
     }
 
     /*--------------------------------------------------------------------

@@ -1,5 +1,7 @@
 package com.example.projectpilot.model;
 
+import java.sql.Date;
+
 public class Task {
 
     // Parameters
@@ -11,13 +13,13 @@ public class Task {
     private int hours;
     private int pay_rate;
     private boolean flag;
-    private String start_date;
-    private String end_date;
+    private Date start_date;
+    private Date end_date;
     private String status;
     private String department;
 
     // Constructor
-    public Task(int task_id, int user_id, String title, String description, String note, int hours, int pay_rate, boolean flag, String start_date, String end_date, String status, String department)
+    public Task(int task_id, int user_id, String title, String description, String note, int hours, int pay_rate, boolean flag, Date start_date, Date end_date, String status, String department)
     {
         this.task_id = task_id;
         this.user_id = user_id;
@@ -33,7 +35,7 @@ public class Task {
         this.department = department;
     }
 
-    public Task(int task_id, int user_id, String title, String description, String note, int hours, int pay_rate, String start_date, String end_date, String status, String department)
+    public Task(int task_id, int user_id, String title, String description, String note, int hours, int pay_rate, Date start_date, Date end_date, String status, String department)
     {
         this.task_id = task_id;
         this.user_id = user_id;
@@ -52,7 +54,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(String title, String description, String note, int hours, String start_date, String end_date, String status, String department)
+    public Task(String title, String description, String note, int hours, Date start_date, Date end_date, String status, String department)
     {
         this.title = title;
         this.description = description;
@@ -129,19 +131,19 @@ public class Task {
         this.flag = flag;
     }
 
-    public String getStart_Date() {
+    public Date getStart_Date() {
         return start_date;
     }
 
-    public void setStart_Date(String start_date) {
+    public void setStart_Date(Date start_date) {
         this.start_date = start_date;
     }
 
-    public String getEnd_Date() {
+    public Date getEnd_Date() {
         return end_date;
     }
 
-    public void setEnd_Date(String end_date) {
+    public void setEnd_Date(Date end_date) {
         this.end_date = end_date;
     }
 
