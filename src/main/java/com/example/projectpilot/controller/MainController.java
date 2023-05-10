@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -61,11 +62,16 @@ public class MainController {
                           @RequestParam("task-description") String newDescription,
                           @RequestParam("task-note") String newNote,
                           @RequestParam("task-hours") int newHours,
-                          @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date newStartDate,
-                          @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date newEndDate,
+                          @RequestParam("task-start_date") String newStartDateString, // Accept the date as a String
+                          @RequestParam("task-end_date") String newEndDateString, // Accept the date as a String
                           @RequestParam("task-status") String newStatus,
                           @RequestParam("task-department") String newDepartment) {
-        // Laver en ny Task
+
+        // Parse the start and end dates to java.sql.Date objects
+        java.sql.Date newStartDate = java.sql.Date.valueOf(newStartDateString);
+        java.sql.Date newEndDate = java.sql.Date.valueOf(newEndDateString);
+
+        // Create a new Task
         Task newTask = new Task();
         newTask.setTitle(newTitle);
         newTask.setDescription(newDescription);
@@ -76,15 +82,12 @@ public class MainController {
         newTask.setStatus(newStatus);
         newTask.setDepartment(newDepartment);
 
-        // Gemmer i taskRepository
+        // Save the new task in the taskRepository
         taskRepository.addTask(newTask);
 
-        // Går tilbage til alle tasks
+        // Redirect to the "allTasks" page
         return "redirect:/allTasks";
     }
-
-
-
 
     // Viser "opret bruger" siden
     @GetMapping("/addUser")

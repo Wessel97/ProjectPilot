@@ -10,7 +10,7 @@
     <h1>Opret nyt task</h1>
     <form action="addTask" method="post">
 
-<!--        Vi bruger task-title i stedet for title, da flere objeker kan have de samme parameter navne-->
+<!--        Vi bruger task-title i stedet for title, da flere objekter kan have de samme parameter navne-->
         <label for="title-field">Task titel:</label>
         <input id="title-field" name="task-title" type="text">
 
@@ -24,16 +24,16 @@
         <input id="hours-field" name="task-hours" type="number">
 
         <label for="start_date-field">Task start date:</label>
-        <input id="start_date-field" placeholder="dd-mm-yyyy" name="task-start_date" type="date" th:value="${task.start_Date}">
+        <input id="start_date-field" placeholder="26-08-2022" name="task-start_date" type="date" th:value="${task.start_Date}">
 
         <label for="end_date-field">Task end date:</label>
-        <input id="end_date-field" placeholder="dd-mm-yyyy" name="task-end_date" type="date" th:value="${task.end_Date}">
+        <input id="end_date-field" placeholder="27-08-2022" name="task-end_date" type="date" th:value="${task.end_Date}">
 
 
         <label for="status-field">Task status:</label>
         <input id="status-field" name="task-status" type="text">
 
-        <label for="department-field">Task deparment:</label>
+        <label for="department-field">Task department:</label>
         <input id="department-field" name="task-department" type="text">
 
         <input type="submit" value="ADD TASK">
