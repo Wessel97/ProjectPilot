@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -62,32 +62,33 @@ public class MainController {
                           @RequestParam("task-description") String newDescription,
                           @RequestParam("task-note") String newNote,
                           @RequestParam("task-hours") int newHours,
-                          @RequestParam("task-start_date") String newStartDateString, // Accept the date as a String
-                          @RequestParam("task-end_date") String newEndDateString, // Accept the date as a String
+                          @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate newStartDate,
+                          @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate newEndDate,
                           @RequestParam("task-status") String newStatus,
                           @RequestParam("task-department") String newDepartment) {
 
-        // Parse the start and end dates to java.sql.Date objects
-        java.sql.Date newStartDate = java.sql.Date.valueOf(newStartDateString);
-        java.sql.Date newEndDate = java.sql.Date.valueOf(newEndDateString);
+        // Convert LocalDate to java.sql.Date
+        Date sqlStartDate = Date.valueOf(newStartDate);
+        Date sqlEndDate = Date.valueOf(newEndDate);
 
-        // Create a new Task
+        // Laver en ny Task
         Task newTask = new Task();
         newTask.setTitle(newTitle);
         newTask.setDescription(newDescription);
         newTask.setNote(newNote);
         newTask.setHours(newHours);
-        newTask.setStart_Date(newStartDate);
-        newTask.setEnd_Date(newEndDate);
+        newTask.setStart_Date(sqlStartDate);
+        newTask.setEnd_Date(sqlEndDate);
         newTask.setStatus(newStatus);
         newTask.setDepartment(newDepartment);
 
-        // Save the new task in the taskRepository
+        // Gemmer i taskRepository
         taskRepository.addTask(newTask);
 
-        // Redirect to the "allTasks" page
+        // Går tilbage til alle tasks
         return "redirect:/allTasks";
     }
+
 
     // Viser "opret bruger" siden
     @GetMapping("/addUser")
@@ -191,12 +192,19 @@ public class MainController {
                                 @RequestParam("task-note") String updateNote,
                                 @RequestParam("task-hours") int updateHours,
                                 @RequestParam("task-pay_rate") int updatePayRate,
-                                @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date updateStartDate,
-                                @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date updateEndDate,
+                                @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate updateStartDate,
+                                @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate updateEndDate,
                                 @RequestParam("task-status") String updateStatus,
                                 @RequestParam("task-department") String updateDepartment) {
+
+            // Convert LocalDate to java.sql.Date
+            Date sqlStartDate = Date.valueOf(updateStartDate);
+            Date sqlEndDate = Date.valueOf(updateEndDate);
+
+
+
         //lav produkt ud fra parametre
-        Task updateTask = new Task(updateTaskId, updateUserId, updateTitle, updateDescription, updateNote, updateHours, updatePayRate, updateStartDate, updateEndDate, updateStatus, updateDepartment);
+        Task updateTask = new Task(updateTaskId, updateUserId, updateTitle, updateDescription, updateNote, updateHours, updatePayRate, sqlStartDate, sqlEndDate, updateStatus, updateDepartment);
 
         //kald opdater i repository
         taskRepository.updateTask(updateTask);
