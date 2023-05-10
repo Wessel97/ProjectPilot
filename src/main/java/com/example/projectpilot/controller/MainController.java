@@ -35,7 +35,7 @@ public class MainController {
 
     public MainController () {
     }
-    
+
     @GetMapping("/")
     public String showStart(HttpSession session, Model model){
         //hvis username ikke er sat, så rediriger til login
@@ -127,7 +127,7 @@ public class MainController {
                         Model model,
                         HttpSession session){
         //Check if user with mail already exists
-        if(!userRepository.verifyUser(password, email)){
+        if(userRepository.verifyUser(email, password)){
             model.addAttribute("errorMessage", "Email or password invalid");
             return "login";
         }
@@ -135,7 +135,7 @@ public class MainController {
         {
             User user = userRepository.getUserByEmailAndPassword(email, password);
             session.setAttribute("user", user);
-            return "redirect:/";
+            return "redirect:/allTasks";
         }
     }
 
