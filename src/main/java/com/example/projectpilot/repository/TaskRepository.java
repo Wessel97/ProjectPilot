@@ -407,7 +407,7 @@ public class TaskRepository {
     }
 
     //Method 8 delete task by ID. This method will return true if the task was successfully deleted from the database.
-    public boolean deleteTaskByID(Task task)
+    public boolean deleteTaskByID(int taskId)
     {
         //query to delete user
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.task WHERE task_id = ?";
@@ -420,7 +420,7 @@ public class TaskRepository {
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(task_id)
-            preparedStatement.setInt(1, task.getTask_id());
+            preparedStatement.setInt(1, taskId);
             //execute statement
             int foundTask = preparedStatement.executeUpdate();
             //return true if task was found and deleted (foundTask should be 1).

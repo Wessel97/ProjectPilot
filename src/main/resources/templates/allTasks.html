@@ -22,58 +22,35 @@
     <th>End Date</th>
     <th>Status</th>
     <th>Department</th>
-
+    <th>Update</th>
+    <th>Delete</th>
     </thead>
     <tbody>
     <tr th:each="task : ${task}">
-      <td th:text="${task.task_id}">
-        42
-      </td>
-      <td th:text="${task.user_id}">
-        meningen med alting
-      </td>
-      <td th:text="${task.title}">
-        666
-      </td>
-      <td th:text="${task.description}">
-        666
-      </td>
-      <td th:text="${task.note}">
-        666
-      </td>
-      <td th:text="${task.hours}">
-        666
-      </td>
-      <td th:text="${task.payRate}">
-        666
-      </td>
-      <td th:text="${task.flag}">
-        666
-      </td>
-      <td th:text="${task.start_Date}">
-        666
-      </td>
-      <td th:text="${task.end_Date}">
-        666
-      </td>
-      <td th:text="${task.status}">
-        666
-      </td>
-      <td th:text="${task.department}">
-        666
-      </td>
-
+      <td th:text="${task.task_id}">42</td>
+      <td th:text="${task.user_id}">meningen med alting</td>
+      <td th:text="${task.title}">666</td>
+      <td th:text="${task.description}">666</td>
+      <td th:text="${task.note}">666</td>
+      <td th:text="${task.hours}">666</td>
+      <td th:text="${task.payRate}">666</td>
+      <td th:text="${task.flag}">666</td>
+      <td th:text="${task.start_Date}">666</td>
+      <td th:text="${task.end_Date}">666</td>
+      <td th:text="${task.status}">666</td>
+      <td th:text="${task.department}">666</td>
       <td>
         <a th:href="@{'/updateTask/' + ${task.task_id}}" href="/updateTask"><button>UPDATE</button></a>
       </td>
-
+      <td>
+        <form th:action="@{'/deleteTask/' + ${task.task_id}}" method="post">
+          <button type="submit">DELETE</button>
+        </form>
+      </td>
     </tr>
     </tbody>
-
-    <a href="/addTask"><button>Add Task</button></a>
-
   </table>
+  <a href="/addTask"><button>Add Task</button></a>
 </div>
-
 </body>
 </html>

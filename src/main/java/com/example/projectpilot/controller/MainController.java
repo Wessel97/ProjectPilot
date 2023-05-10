@@ -194,6 +194,13 @@ public class MainController {
         //rediriger til oversigtssiden
         return "redirect:/allTasks";
     }
+    // Sletter en task
+    @PostMapping("/deleteTask/{task_id}")
+    public String deleteTask(@PathVariable("task_id") int taskId) {
+        // Slet task med given taskId fra taskRepository
+        taskRepository.deleteTaskByID(taskId);
 
-
+        // Går tilbage til alle tasks
+        return "redirect:/allTasks";
+    }
 }
