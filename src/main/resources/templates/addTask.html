@@ -24,10 +24,10 @@
         <input id="hours-field" name="task-hours" type="number">
 
         <label for="start_date-field">Task start date:</label>
-        <input id="start_date-field" name="task-start_date" type="date" th:value="${#dates.format(task.start_Date, 'dd-MM-yyyy')}" placeholder="dd-mm-yyyy">
+        <input id="start_date-field" placeholder="dd-mm-yyyy" name="task-start_date" type="date" th:value="${task.start_Date}">
 
         <label for="end_date-field">Task end date:</label>
-        <input id="end_date-field" name="task-end_date" type="date" th:value="${#dates.format(task.end_Date, 'dd-MM-yyyy')}" placeholder="dd-mm-yyyy">
+        <input id="end_date-field" placeholder="dd-mm-yyyy" name="task-end_date" type="date" th:value="${task.end_Date}">
 
 
         <label for="status-field">Task status:</label>
