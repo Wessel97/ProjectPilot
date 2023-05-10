@@ -147,12 +147,15 @@ public class MainController {
     public String registerUser(@RequestParam("first_name") String firstname,
                                @RequestParam("last_name") String lastname,
                                @RequestParam("email") String email,
-                               @RequestParam("password") String password, Model model){
+                               @RequestParam("password") String password,
+                               Model model,
+                               HttpSession session){
         //Check if user with mail already exists
         if(!userRepository.checkIfUserExists(email)){
             User user = new User(firstname, lastname, email, password);
             userRepository.addUser(user);
-            return "redirect:/";
+            session.setAttribute("user", user);
+            return "redirect:/allTasks";
         }else {
             model.addAttribute("errorMessage", "Email already in use");
             return "register";
