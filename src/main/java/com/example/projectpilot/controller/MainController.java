@@ -8,10 +8,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
 import java.sql.Date;
 import java.sql.SQLException;
 
@@ -37,25 +35,32 @@ public class MainController {
 
     public MainController () {
     }
-    
-    @GetMapping("allTasks")
+
+    // Viser Start
+    @GetMapping("/")
     public String showStart(Model model) {
+        return "start";
+    }
+
+    // Viser alle tasks
+    @GetMapping("/allTasks")
+    public String showAllTasks(Model model) {
         model.addAttribute("task", taskRepository.getAllTasks());
         return "allTasks";
     }
 
-    // Pga. testing purposes så er startsiden nu en side der viser add tasks
-    @GetMapping("/")
-    public String showAddTask(Model model) {
+    // Viser add tasks siden
+    @GetMapping("/addTask")
+    public String showAddTask() {
         return "addTask";
     }
 
+    // Poster ny task
     @PostMapping("/addTask")
     public String addTask(@RequestParam("task-title") String newTitle,
                           @RequestParam("task-description") String newDescription,
                           @RequestParam("task-note") String newNote,
                           @RequestParam("task-hours") int newHours,
-                          @RequestParam("task-flag") boolean newFlag,
                           @RequestParam("task-start_date") String newStartDate,
                           @RequestParam("task-end_date") String newEndDate,
                           @RequestParam("task-status") String newStatus,
@@ -66,7 +71,6 @@ public class MainController {
         newTask.setDescription(newDescription);
         newTask.setNote(newNote);
         newTask.setHours(newHours);
-        newTask.setFlag(newFlag);
         newTask.setStart_Date(newStartDate);
         newTask.setEnd_Date(newEndDate);
         newTask.setStatus(newStatus);
@@ -76,8 +80,9 @@ public class MainController {
         taskRepository.addTask(newTask);
 
         // Går tilbage til alle tasks
-        return "allTasks";
+        return "redirect:/allTasks";
     }
+
 
 
 
@@ -166,12 +171,6 @@ public class MainController {
         }
     }
 
-    // Viser alle Tasks
-    @GetMapping ("/allTasks")
-    public String showAllTasks(Model model) {
-        model.addAttribute("tasks", taskRepository.getAllTasks());
-        return "allTasks";
-    }
 
     // Viser alle tasks for den enkelte user der er logget ind (MANGLER MODE)
     @GetMapping ("/userTasks")
@@ -181,33 +180,118 @@ public class MainController {
     }
 
 
-    @GetMapping("/updateTask/{id}")
-    public String showUpdate(@PathVariable("id") int updateId, Model model) {
+    // Viser update task siden
+    @GetMapping("/updateTask/{task_id}")
+    public String showUpdateTask(@PathVariable("task_id") int updateId, Model model) {
+        //find produkt med id=updateId i databasen
         Task updateTask = taskRepository.getTaskByTaskId(updateId);
 
-        model.addAttribute("product", updateTask);
+        //tilføj produkt til viewmodel, så det kan bruges i Thymeleaf
+        model.addAttribute("task", updateTask);
 
+        //fortæl Spring hvilken HTML-side, der skal vises
         return "updateTask";
     }
 
+    // Poster update til eksisterende task (UDEN FLAG)
     @PostMapping("/updateTask")
-    public String updateTask(@RequestParam("task-title") String updateTitle,
-                             @RequestParam("task-description") String updateDescription,
-                             @RequestParam("task-note") String updateNote,
-                             @RequestParam("task-hour") int updateHour,
-                             @RequestParam("task-flag") boolean updateFlag,
-                             @RequestParam("task-startDate") String updateStartDate,
-                             @RequestParam("task-endDate") String updateEndDate,
-                             @RequestParam("task-status") String updateStatus,
-                             @RequestParam("task-department") String updateDepartment) {
-        Task updateTask = new Task(updateTitle, updateDescription, updateNote, updateHour, updateFlag, updateStartDate, updateEndDate, updateStatus, updateDepartment);
+    public String updateTask(@RequestParam("task-task_id") int updateTaskId,
+                                @RequestParam("task-user_id") int updateUserId,
+                                @RequestParam("task-title") String updateTitle,
+                                @RequestParam("task-description") String updateDescription,
+                                @RequestParam("task-note") String updateNote,
+                                @RequestParam("task-hours") int updateHours,
+                                @RequestParam("task-pay_rate") int updatePayRate,
+                                @RequestParam("task-start_date") String updateStartDate,
+                                @RequestParam("task-end_date") String updateEndDate,
+                                @RequestParam("task-status") String updateStatus,
+                                @RequestParam("task-department") String updateDepartment) {
+        //lav produkt ud fra parametre
+        Task updateTask = new Task(updateTaskId, updateUserId, updateTitle, updateDescription, updateNote, updateHours, updatePayRate, updateStartDate, updateEndDate, updateStatus, updateDepartment);
 
+        //kald opdater i repository
         taskRepository.updateTask(updateTask);
 
+        //rediriger til oversigtssiden
         return "redirect:/allTasks";
     }
 
 
+//
+//    // Viser "opret bruger" siden
+//    @GetMapping("/addUser")
+//    public String showAddUser(Model model) {
+//        return "addUser";
+//    }
+//
+//    // Opretter den nye user til user repository (med HTML form)
+//    @PostMapping("/addUser")
+//    public String addUser(@RequestParam("user-firstname") String newFirstName,
+//                          @RequestParam("user-lastname") String newLastName,
+//                          @RequestParam("user-email") String newEmail,
+//                          @RequestParam("user-password") String newPassword) {
+//        //lave en ny User
+//        User newUser = new User();
+//        newUser.setFirstName(newFirstName);
+//        newUser.setLastName(newLastName);
+//        newUser.setEmail(newEmail);
+//        newUser.setPassword(newPassword);
+//
+//        //Gem ny User
+//        userRepository.addUser(newUser);
+//
+//        //Tilbage til start så man kan logge ind
+//        return "start";
+//    }
+
+//    //Viser login-siden
+//    @GetMapping("/login")
+//    public String showLogin() {
+//        return "login";
+//    }
+//
+//    // Skal logge useren ind (Mangler kode)
+//    @PostMapping("/login")
+//    public String login() {
+//        return "userTasks";
+//    }
+//
+//
+//    // Viser alle tasks for den enkelte user der er logget ind (MANGLER MODE)
+//    @GetMapping ("/userTasks")
+//    public String showUserTasks(int id, Model model) {
+//        model.addAttribute("tasks", taskRepository.getAllTasksByUserID(id));
+//        return "userTasks";
+//    }
+//
+//
+//    @GetMapping("/updateTask/{id}")
+//    public String showUpdate(@PathVariable("id") int updateId, Model model) {
+//        Task updateTask = taskRepository.getTaskByTaskId(updateId);
+//
+//        model.addAttribute("product", updateTask);
+//
+//        return "updateTask";
+//    }
+//
+//    @PostMapping("/updateTask")
+//    public String updateTask(@RequestParam("task-title") String updateTitle,
+//                             @RequestParam("task-description") String updateDescription,
+//                             @RequestParam("task-note") String updateNote,
+//                             @RequestParam("task-hour") int updateHour,
+//                             @RequestParam("task-flag") boolean updateFlag,
+//                             @RequestParam("task-startDate") String updateStartDate,
+//                             @RequestParam("task-endDate") String updateEndDate,
+//                             @RequestParam("task-status") String updateStatus,
+//                             @RequestParam("task-department") String updateDepartment) {
+//        Task updateTask = new Task(updateTitle, updateDescription, updateNote, updateHour, updateFlag, updateStartDate, updateEndDate, updateStatus, updateDepartment);
+//
+//        taskRepository.updateTask(updateTask);
+//
+//        return "redirect:/allTasks";
+//    }
+//
+//
 
 
 

@@ -62,8 +62,15 @@
       <td th:text="${task.department}">
         666
       </td>
+
+      <td>
+        <a th:href="@{'/updateTask/' + ${task.task_id}}" href="/updateTask"><button>UPDATE</button></a>
+      </td>
+
     </tr>
     </tbody>
+
+    <a href="/addTask"><button>Add Task</button></a>
 
   </table>
 </div>

@@ -33,11 +33,35 @@ public class Task {
         this.department = department;
     }
 
+    public Task(int task_id, int user_id, String title, String description, String note, int hours, int pay_rate, String start_date, String end_date, String status, String department)
+    {
+        this.task_id = task_id;
+        this.user_id = user_id;
+        this.title = title;
+        this.description = description;
+        this.note = note;
+        this.hours = hours;
+        this.pay_rate = pay_rate;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.status = status;
+        this.department = department;
+    }
+
     // Empty Constructor
     public Task() {
     }
 
-    public Task(String title, String description, String note, int hour, boolean flag, String start_date, String end_date, String status, String department) {
+    public Task(String title, String description, String note, int hours, String start_date, String end_date, String status, String department)
+    {
+        this.title = title;
+        this.description = description;
+        this.note = note;
+        this.hours = hours;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.status = status;
+        this.department = department;
     }
 
     // Getters and Setters
