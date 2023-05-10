@@ -5,7 +5,7 @@
 </head>
 <body>
 <div th:text="${session.user}"></div>
-<form action="/register" th:action="@{/register}" method="POST">
+<form action="/register" method="post">
     <div class="container">
         <div class="box">
             <h1 id="registerHead">REGISTER</h1>
@@ -28,7 +28,7 @@
                     <td><input type="password" id="password" placeholder="Password" name="password" required></td>
                 </tr>
             </table>
-            <a href="/">Already have an account?</a>
+            <a href="/static">Already have an account?</a>
             <div class="create-account">
                 <input type="submit" id="submitButton" class="button-30" value="Create account">
             </div>

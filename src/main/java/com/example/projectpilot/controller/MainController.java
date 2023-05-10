@@ -19,19 +19,12 @@ public class MainController {
     private UserRepository userRepository;
     private TaskRepository taskRepository;
 
+    @Autowired
     public MainController(UserRepository userRepository, TaskRepository taskRepository) {
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
     }
 
-    public MainController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public MainController(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
 
     public MainController () {
     }
@@ -127,7 +120,7 @@ public class MainController {
                         Model model,
                         HttpSession session){
         //Check if user with mail already exists
-        if(userRepository.verifyUser(email, password)){
+        if(!userRepository.verifyUser(email, password)){
             model.addAttribute("errorMessage", "Email or password invalid");
             return "login";
         }
