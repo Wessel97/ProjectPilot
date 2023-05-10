@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -147,12 +148,15 @@ public class MainController {
     public String registerUser(@RequestParam("first_name") String firstname,
                                @RequestParam("last_name") String lastname,
                                @RequestParam("email") String email,
-                               @RequestParam("password") String password, Model model){
+                               @RequestParam("password") String password,
+                               Model model,
+                               HttpSession session){
         //Check if user with mail already exists
         if(!userRepository.checkIfUserExists(email)){
             User user = new User(firstname, lastname, email, password);
             userRepository.addUser(user);
-            return "redirect:/";
+            session.setAttribute("user", user);
+            return "redirect:/allTasks";
         }else {
             model.addAttribute("errorMessage", "Email already in use");
             return "register";
@@ -199,8 +203,15 @@ public class MainController {
     public String deleteTask(@PathVariable("task_id") int taskId) {
         // Slet task med given taskId fra taskRepository
         taskRepository.deleteTaskByID(taskId);
-
+        
         // Går tilbage til alle tasks
         return "redirect:/allTasks";
+    }
+
+    @GetMapping("/userTasks/{id}")
+    public String showUserTasks(@PathVariable("id") int userId, HttpSession session) {
+        List<Task> tasks = taskRepository.getAllTasksByUserID(userId);
+        session.setAttribute("tasks", tasks);
+        return "userTasks";
     }
 }
