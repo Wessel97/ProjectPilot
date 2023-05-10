@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -33,7 +32,7 @@ public class MainController {
 
     @GetMapping("/")
     public String showStart(HttpSession session, Model model){
-        //hvis username ikke er sat, så rediriger til login
+        //hvis username ikke er sat, så rediger til login
         if (session.getAttribute("email") == null){
             return "redirect:/login";
         }
@@ -49,7 +48,10 @@ public class MainController {
 
     // Viser add tasks siden
     @GetMapping("/addTask")
-    public String showAddTask() {
+    public String showAddTask(Model model) {
+        // Create a new Task object and add it to the model
+        Task task = new Task();
+        model.addAttribute("task", task);
         return "addTask";
     }
 
@@ -59,8 +61,8 @@ public class MainController {
                           @RequestParam("task-description") String newDescription,
                           @RequestParam("task-note") String newNote,
                           @RequestParam("task-hours") int newHours,
-                          @RequestParam("task-start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date newStartDate,
-                          @RequestParam("task-end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date newEndDate,
+                          @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date newStartDate,
+                          @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date newEndDate,
                           @RequestParam("task-status") String newStatus,
                           @RequestParam("task-department") String newDepartment) {
         // Laver en ny Task
@@ -186,8 +188,8 @@ public class MainController {
                                 @RequestParam("task-note") String updateNote,
                                 @RequestParam("task-hours") int updateHours,
                                 @RequestParam("task-pay_rate") int updatePayRate,
-                                @RequestParam("task-start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date updateStartDate,
-                                @RequestParam("task-end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date updateEndDate,
+                                @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date updateStartDate,
+                                @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date updateEndDate,
                                 @RequestParam("task-status") String updateStatus,
                                 @RequestParam("task-department") String updateDepartment) {
         //lav produkt ud fra parametre
@@ -196,7 +198,7 @@ public class MainController {
         //kald opdater i repository
         taskRepository.updateTask(updateTask);
 
-        //rediriger til oversigtssiden
+        //rediger til oversigtssiden
         return "redirect:/allTasks";
     }
     // Sletter en task

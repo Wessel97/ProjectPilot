@@ -29,13 +29,18 @@
         <input id="pay_rate-field" name="task-pay_rate" type="number" th:value="${task.payRate}">
 
         <label for="start_date-field">Task start date:</label>
-        <input id="start_date-field" name="task-start_date" type="text" th:value="${task.start_Date}">
+        <input id="start_date-field" placeholder="dd-mm-yyyy" name="task-start_date" type="date" th:value="${task.start_Date}">
 
         <label for="end_date-field">Task end date:</label>
-        <input id="end_date-field" name="task-end_date" type="text" th:value="${task.end_Date}">
+        <input id="end_date-field" placeholder="dd-mm-yyyy" name="task-end_date" type="date" th:value="${task.end_Date}">
 
         <label for="status-field">Task status:</label>
-        <input id="status-field" name="task-status" type="text" th:value="${task.status}">
+            <select id="status-field" name="task-status">
+                    <option value="Pending" th:selected="${task.status == 'Pending'}">Pending</option>
+                    <option value="Assigned" th:selected="${task.status == 'Assigned'}">Assigned</option>
+                    <option value="In progress" th:selected="${task.status == 'In progress'}">In progress</option>
+                    <option value="Finished" th:selected="${task.status == 'Finished'}">Finished</option>
+            </select>
 
         <label for="department-field">Task department:</label>
         <input id="department-field" name="task-department" type="text" th:value="${task.department}">
