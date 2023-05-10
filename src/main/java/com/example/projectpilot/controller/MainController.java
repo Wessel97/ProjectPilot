@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -198,5 +199,11 @@ public class MainController {
         return "redirect:/allTasks";
     }
 
+    @GetMapping("/userTasks/{id}")
+    public String showUserTasks(@PathVariable("id") int userId, HttpSession session) {
+        List<Task> tasks = taskRepository.getAllTasksByUserID(userId);
+        session.setAttribute("tasks", tasks);
+        return "userTasks";
+    }
 
 }

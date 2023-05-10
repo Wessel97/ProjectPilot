@@ -27,19 +27,19 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="task : ${task}">
-            <td th:text="${task.task_id}">42</td>
-            <td th:text="${task.user_id}">meningen med alting</td>
-            <td th:text="${task.title}">666</td>
-            <td th:text="${task.description}">666</td>
-            <td th:text="${task.note}">666</td>
-            <td th:text="${task.hours}">666</td>
-            <td th:text="${task.payRate}">666</td>
-            <td th:text="${task.flag}" class="flag">666</td>
-            <td th:text="${task.start_Date}">666</td>
-            <td th:text="${task.end_Date}">666</td>
-            <td th:text="${task.status}" class="status">666</td>
-            <td th:text="${task.department}">666</td>
+        <tr th:each="task : ${session.tasks}">
+            <td th:text="${task.task_id}">[task_id]</td>
+            <td th:text="${task.user_id}">[user_id]</td>
+            <td th:text="${task.title}">[title]</td>
+            <td th:text="${task.description}">[description]</td>
+            <td th:text="${task.note}">[note]</td>
+            <td th:text="${task.hours}">[hours]</td>
+            <td th:text="${task.payRate}">[payRate]</td>
+            <td th:text="${task.flag}" class="flag">[flag]</td>
+            <td th:text="${task.start_Date}">[start_Date]</td>
+            <td th:text="${task.end_Date}">[end_Date]</td>
+            <td th:text="${task.status}" class="status">[status]</td>
+            <td th:text="${task.department}">[department]</td>
             <td>
                 <a th:href="@{'/updateTask/' + ${task.task_id}}">
                     <button>UPDATE</button>
@@ -52,4 +52,3 @@
 
 </body>
 </html>
-
