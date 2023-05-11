@@ -45,6 +45,11 @@
                     <button>UPDATE</button>
                 </a>
             </td>
+            <td>
+                <form th:action="@{'/deleteTask/' + ${task.task_id}}" method="post">
+                    <button type="submit">DELETE</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
