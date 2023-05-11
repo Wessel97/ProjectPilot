@@ -35,13 +35,8 @@ public class MainController
     }
 
     @GetMapping("/")
-    public String showStart(HttpSession session, Model model)
+    public String showStart()
     {
-        //hvis username ikke er sat, så rediger til login
-        if ( session.getAttribute("user") == null )
-        {
-            return "redirect:/login";
-        }
         return "start";
     }
 
@@ -51,7 +46,7 @@ public class MainController
     {
         if ( session.getAttribute("user") == null )
         {
-            return "redirect:/login";
+            return "redirect:/";
         }
         model.addAttribute("task", taskRepository.getAllTasks());
         return "allTasks";
@@ -63,7 +58,7 @@ public class MainController
     {
         if ( session.getAttribute("user") == null )
         {
-            return "redirect:/login";
+            return "redirect:/";
         }
         // Create a new Task object and add it to the model
         Task task = new Task();
@@ -85,7 +80,7 @@ public class MainController
     {
         if ( session.getAttribute("user") == null )
         {
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         // Convert LocalDate to java.sql.Date
@@ -117,7 +112,7 @@ public class MainController
     {
         if ( session.getAttribute("user") == null )
         {
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         return "addUser";
@@ -133,7 +128,7 @@ public class MainController
     {
         if ( session.getAttribute("user") == null )
         {
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         //lave en ny User
@@ -182,7 +177,7 @@ public class MainController
     public String logout(HttpSession session)
     {
         session.invalidate();
-        return "redirect:/login";
+        return "redirect:/";
     }
 
     @GetMapping("/register")
@@ -221,7 +216,7 @@ public class MainController
     {
         if ( session.getAttribute("user") == null )
         {
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         //find produkt med id=updateId i databasen
@@ -251,7 +246,7 @@ public class MainController
     {
         if ( session.getAttribute("user") == null )
         {
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         // Convert LocalDate to java.sql.Date
@@ -275,7 +270,7 @@ public class MainController
     {
         if ( session.getAttribute("user") == null )
         {
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         // Slet task med given taskId fra taskRepository
@@ -290,7 +285,7 @@ public class MainController
     {
         if ( session.getAttribute("user") == null )
         {
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         List<Task> tasks = taskRepository.getAllTasksByUserID(userId);
