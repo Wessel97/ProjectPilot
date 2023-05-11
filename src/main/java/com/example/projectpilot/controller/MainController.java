@@ -279,17 +279,18 @@ public class MainController
         // Går tilbage til alle tasks
         return "redirect:/allTasks";
     }
-
-    @GetMapping("/userTasks/{id}")
-    public String showUserTasks(@PathVariable("id") int userId, HttpSession session)
+/*
+    @GetMapping("/userTasks/{user_id}")
+    public String showUserTasks(@PathVariable("user_id") int userId, HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
-        {
-            return "redirect:/";
-        }
+        User user = (User) session.getAttribute("user");
+        Task tasklist = taskRepository.get(wishlistID, user.getId());
+        List<Wish> listOfWishes = wishRepository.getWishesByWishlistID(wishList.getId());
+        session.setAttribute("wishlistFromWishlistView", wishList);
+        session.setAttribute("listOfWishes", listOfWishes);
 
-        List<Task> tasks = taskRepository.getAllTasksByUserID(userId);
-        session.setAttribute("tasks", tasks);
-        return "userTasks";
+        return "wishlist-page";
     }
+*/
+
 }

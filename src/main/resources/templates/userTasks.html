@@ -28,6 +28,7 @@
         </thead>
         <tbody>
         <tr th:each="task : ${session.tasks}">
+            <td th:text="${session.tasks.getTask_id()}">[task_id]</td>
             <td th:text="${task.task_id}">[task_id]</td>
             <td th:text="${task.user_id}">[user_id]</td>
             <td th:text="${task.title}">[title]</td>
