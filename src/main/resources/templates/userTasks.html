@@ -36,8 +36,8 @@
             <td th:text="${task.hours}">[hours]</td>
             <td th:text="${task.payRate}">[payRate]</td>
             <td th:text="${task.flag}" class="flag">[flag]</td>
-            <td th:text="${task.start_Date}">[start_Date]</td>
-            <td th:text="${task.end_Date}">[end_Date]</td>
+            <td th:text="${#dates.format(task.start_Date, 'dd-MM-yyyy')}">[start_Date]</td>
+            <td th:text="${#dates.format(task.end_Date, 'dd-MM-yyyy')}">[end_Date]</td>
             <td th:text="${task.status}" class="status">[status]</td>
             <td th:text="${task.department}">[department]</td>
             <td>
