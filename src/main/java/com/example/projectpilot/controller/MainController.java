@@ -16,25 +16,30 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-public class MainController {
+public class MainController
+{
 
     private UserRepository userRepository;
     private TaskRepository taskRepository;
 
     @Autowired
-    public MainController(UserRepository userRepository, TaskRepository taskRepository) {
+    public MainController(UserRepository userRepository, TaskRepository taskRepository)
+    {
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
     }
 
 
-    public MainController () {
+    public MainController()
+    {
     }
 
     @GetMapping("/")
-    public String showStart(HttpSession session, Model model){
+    public String showStart(HttpSession session, Model model)
+    {
         //hvis username ikke er sat, så rediger til login
-        if (session.getAttribute("email") == null){
+        if ( session.getAttribute("user") == null )
+        {
             return "redirect:/login";
         }
         return "start";
@@ -42,14 +47,24 @@ public class MainController {
 
     // Viser alle tasks
     @GetMapping("/allTasks")
-    public String showAllTasks(Model model) {
+    public String showAllTasks(HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/login";
+        }
         model.addAttribute("task", taskRepository.getAllTasks());
         return "allTasks";
     }
 
     // Viser add tasks siden
     @GetMapping("/addTask")
-    public String showAddTask(Model model) {
+    public String showAddTask(HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/login";
+        }
         // Create a new Task object and add it to the model
         Task task = new Task();
         model.addAttribute("task", task);
@@ -65,7 +80,13 @@ public class MainController {
                           @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate newStartDate,
                           @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate newEndDate,
                           @RequestParam("task-status") String newStatus,
-                          @RequestParam("task-department") String newDepartment) {
+                          @RequestParam("task-department") String newDepartment,
+                          HttpSession session)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/login";
+        }
 
         // Convert LocalDate to java.sql.Date
         Date sqlStartDate = Date.valueOf(newStartDate);
@@ -92,7 +113,13 @@ public class MainController {
 
     // Viser "opret bruger" siden
     @GetMapping("/addUser")
-    public String showAddUser(Model model) {
+    public String showAddUser(HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/login";
+        }
+
         return "addUser";
     }
 
@@ -101,7 +128,14 @@ public class MainController {
     public String addUser(@RequestParam("user-firstname") String newFirstName,
                           @RequestParam("user-lastname") String newLastName,
                           @RequestParam("user-email") String newEmail,
-                          @RequestParam("user-password") String newPassword) {
+                          @RequestParam("user-password") String newPassword,
+                          HttpSession session)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/login";
+        }
+
         //lave en ny User
         User newUser = new User();
         newUser.setFirstName(newFirstName);
@@ -117,18 +151,22 @@ public class MainController {
     }
 
 
-    @GetMapping ("/login")
-    public String showLogin(){
+    @GetMapping("/login")
+    public String showLogin()
+    {
         return "login";
+        //Ingen HttpSession her da man her logger ind.
     }
 
     @PostMapping("/login")
     public String login(@RequestParam("email") String email,
                         @RequestParam("password") String password,
                         Model model,
-                        HttpSession session){
+                        HttpSession session)
+    {
         //Check if user with mail already exists
-        if(!userRepository.verifyUser(email, password)){
+        if ( !userRepository.verifyUser(email, password) )
+        {
             model.addAttribute("errorMessage", "Email or password invalid");
             return "login";
         }
@@ -141,14 +179,17 @@ public class MainController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session)
+    {
         session.invalidate();
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     @GetMapping("/register")
-    public String registerUser(){
+    public String registerUser()
+    {
         return "register";
+        //Ingen HTTPSession her fordi alle skal kunne lave et login.
     }
 
     @PostMapping("/register")
@@ -157,14 +198,18 @@ public class MainController {
                                @RequestParam("email") String email,
                                @RequestParam("password") String password,
                                Model model,
-                               HttpSession session){
+                               HttpSession session)
+    {
         //Check if user with mail already exists
-        if(!userRepository.checkIfUserExists(email)){
+        if ( !userRepository.checkIfUserExists(email) )
+        {
             User user = new User(firstname, lastname, email, password);
             userRepository.addUser(user);
             session.setAttribute("user", user);
             return "redirect:/allTasks";
-        }else {
+        }
+        else
+        {
             model.addAttribute("errorMessage", "Email already in use");
             return "register";
         }
@@ -172,7 +217,13 @@ public class MainController {
 
     // Viser update task siden
     @GetMapping("/updateTask/{task_id}")
-    public String showUpdateTask(@PathVariable("task_id") int updateId, Model model) {
+    public String showUpdateTask(@PathVariable("task_id") int updateId, HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/login";
+        }
+
         //find produkt med id=updateId i databasen
         Task updateTask = taskRepository.getTaskByTaskId(updateId);
 
@@ -186,21 +237,26 @@ public class MainController {
     // Poster update til eksisterende task (UDEN FLAG)
     @PostMapping("/updateTask")
     public String updateTask(@RequestParam("task-task_id") int updateTaskId,
-                                @RequestParam("task-user_id") int updateUserId,
-                                @RequestParam("task-title") String updateTitle,
-                                @RequestParam("task-description") String updateDescription,
-                                @RequestParam("task-note") String updateNote,
-                                @RequestParam("task-hours") int updateHours,
-                                @RequestParam("task-pay_rate") int updatePayRate,
-                                @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate updateStartDate,
-                                @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate updateEndDate,
-                                @RequestParam("task-status") String updateStatus,
-                                @RequestParam("task-department") String updateDepartment) {
+                             @RequestParam("task-user_id") int updateUserId,
+                             @RequestParam("task-title") String updateTitle,
+                             @RequestParam("task-description") String updateDescription,
+                             @RequestParam("task-note") String updateNote,
+                             @RequestParam("task-hours") int updateHours,
+                             @RequestParam("task-pay_rate") int updatePayRate,
+                             @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate updateStartDate,
+                             @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate updateEndDate,
+                             @RequestParam("task-status") String updateStatus,
+                             @RequestParam("task-department") String updateDepartment,
+                             HttpSession session)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/login";
+        }
 
-            // Convert LocalDate to java.sql.Date
-            Date sqlStartDate = Date.valueOf(updateStartDate);
-            Date sqlEndDate = Date.valueOf(updateEndDate);
-
+        // Convert LocalDate to java.sql.Date
+        Date sqlStartDate = Date.valueOf(updateStartDate);
+        Date sqlEndDate = Date.valueOf(updateEndDate);
 
 
         //lav produkt ud fra parametre
@@ -212,18 +268,31 @@ public class MainController {
         //rediger til oversigtssiden
         return "redirect:/allTasks";
     }
+
     // Sletter en task
     @PostMapping("/deleteTask/{task_id}")
-    public String deleteTask(@PathVariable("task_id") int taskId) {
+    public String deleteTask(@PathVariable("task_id") int taskId, HttpSession session)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/login";
+        }
+
         // Slet task med given taskId fra taskRepository
         taskRepository.deleteTaskByID(taskId);
-        
+
         // Går tilbage til alle tasks
         return "redirect:/allTasks";
     }
 
     @GetMapping("/userTasks/{id}")
-    public String showUserTasks(@PathVariable("id") int userId, HttpSession session) {
+    public String showUserTasks(@PathVariable("id") int userId, HttpSession session)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/login";
+        }
+
         List<Task> tasks = taskRepository.getAllTasksByUserID(userId);
         session.setAttribute("tasks", tasks);
         return "userTasks";
