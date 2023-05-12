@@ -18,7 +18,7 @@ public class Task {
     private String status;
     private String department;
 
-    // Constructor
+    // Constructor with all parameters.
     public Task(int task_id, int user_id, String title, String description, String note, int hours, int pay_rate, boolean flag, Date start_date, Date end_date, String status, String department)
     {
         this.task_id = task_id;
