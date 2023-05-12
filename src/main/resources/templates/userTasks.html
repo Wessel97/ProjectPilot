@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Tasks</title>
-    <link rel="stylesheet" href="../static/css/userTasks.css">
+    <link rel="stylesheet" th:href="@{/css/userTasks.css}">
 </head>
 <body>
 <div class="container">
     <h1>Task List</h1>
     <table>
         <thead>
-        <tr>
             <th>Task ID</th>
             <th>User ID</th>
             <th>Title</th>
@@ -23,27 +22,25 @@
             <th>End Date</th>
             <th>Status</th>
             <th>Department</th>
-            <th>Action</th>
-        </tr>
+            <th>Update</th>
+            <th>Delete</th>
         </thead>
         <tbody>
-        <tr th:each="task : ${session.tasks}">
-            <td th:text="${task.task_id}">[task_id]</td>
-            <td th:text="${task.user_id}">[user_id]</td>
-            <td th:text="${task.title}">[title]</td>
-            <td th:text="${task.description}">[description]</td>
-            <td th:text="${task.note}">[note]</td>
-            <td th:text="${task.hours}">[hours]</td>
-            <td th:text="${task.payRate}">[payRate]</td>
-            <td th:text="${task.flag}" class="flag">[flag]</td>
-            <td th:text="${#dates.format(task.start_Date, 'dd-MM-yyyy')}">[start_Date]</td>
-            <td th:text="${#dates.format(task.end_Date, 'dd-MM-yyyy')}">[end_Date]</td>
-            <td th:text="${task.status}" class="status">[status]</td>
-            <td th:text="${task.department}">[department]</td>
+        <tr th:each="task : ${task}">
+            <td th:text="${task.task_id}">42</td>
+            <td th:text="${task.user_id}">meningen med alting</td>
+            <td th:text="${task.title}">666</td>
+            <td th:text="${task.description}">666</td>
+            <td th:text="${task.note}">666</td>
+            <td th:text="${task.hours}">666</td>
+            <td th:text="${task.payRate}">666</td>
+            <td th:text="${task.flag}">666</td>
+            <td th:text="${#dates.format(task.start_Date, 'dd-MM-yyyy')}"></td>
+            <td th:text="${#dates.format(task.end_Date, 'dd-MM-yyyy')}"></td>
+            <td th:text="${task.status}">666</td>
+            <td th:text="${task.department}">666</td>
             <td>
-                <a th:href="@{'/updateTask/' + ${task.task_id}}">
-                    <button>UPDATE</button>
-                </a>
+                <a th:href="@{'/updateTask/' + ${task.task_id}}" href="/updateTask"><button>UPDATE</button></a>
             </td>
             <td>
                 <form th:action="@{'/deleteTask/' + ${task.task_id}}" method="post">
