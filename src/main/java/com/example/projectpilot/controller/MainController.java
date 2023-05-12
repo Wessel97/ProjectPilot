@@ -280,16 +280,20 @@ public class MainController
         return "redirect:/allTasks";
     }
 
-    @GetMapping("/userTasks/{user_id}")
-    public String showUserTasks(@PathVariable("user_id") int userId, HttpSession session,Model model)
+    @GetMapping("/userTasks/")
+    public String showUserTasks(HttpSession session,Model model)
     {
         if ( session.getAttribute("user") == null )
         {
             return "redirect:/";
         }
-        List<Task> task = taskRepository.getAllTasksByUserID(userId);
-        model.addAttribute("task", task);
-        //session.setAttribute("task", taskRepository.getAllTasksByUserID(list));
+
+        User user = (User) session.getAttribute("user");
+        List<Task> taskList = taskRepository.getAllTasksByUserID(user.getID());
+        session.setAttribute("taskList", taskList);
+        model.addAttribute("task", taskList);
+
         return "userTasks";
     }
+
 }
