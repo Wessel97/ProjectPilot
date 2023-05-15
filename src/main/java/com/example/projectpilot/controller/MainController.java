@@ -290,7 +290,8 @@ public class MainController
 
         User user = (User) session.getAttribute("user");
         List<Task> taskList = taskRepository.getAllTasksByUserID(user.getID());
-        session.setAttribute("taskList", taskList);
+        // Den her gør ikke noget, så den skal nok bare slettes tilsidsts
+        //session.setAttribute("taskList", taskList);
         model.addAttribute("task", taskList);
 
         return "userTasks";
