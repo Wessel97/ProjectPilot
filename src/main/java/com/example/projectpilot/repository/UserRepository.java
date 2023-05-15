@@ -137,7 +137,7 @@ public class UserRepository
     }
 
     //Method 5 get user by ID. This method will return a user object if the user exists in the database.
-    public User getUserByID(String id)
+    public User getUserByID(int id)
     {
         //query to find user
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE id = ?";
@@ -148,7 +148,7 @@ public class UserRepository
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters for prepared statement (user_id)
-            preparedStatement.setString(1, id);
+            preparedStatement.setInt(1, id);
             //execute statement
             ResultSet resultSet = preparedStatement.executeQuery();
             //return user if user exists
