@@ -308,6 +308,35 @@ public class TaskRepository {
         return taskDeleted;
     }
 
+    public void assignTo(Task task, int userID)
+    {
+        final String UPDATE_QUERY = "UPDATE task SET user_id WHERE task_id = ?";
+
+        try
+        {
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+
+            int user_id = task.getUser_id();
+
+            int task_id = task.getTask_id();
+
+            preparedStatement.setInt(4, user_id);
+
+            preparedStatement.setInt(11, task_id);
+
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            //Handle any errors while querying the database.
+            System.out.println("Error trying to query database: " + e);
+            //This method will print the error, what line it is on and what method it is in.
+            e.printStackTrace();
+        }
+    }
+
     /*--------------------------------------------------------------------
                             // Sort Metoder (Metode 9-15)
     --------------------------------------------------------------------*/

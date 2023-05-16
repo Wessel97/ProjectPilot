@@ -291,7 +291,7 @@ public class MainController
         return "redirect:/allTasks";
     }
 
-    @GetMapping("/userTasks/")
+    @GetMapping("/userTasks")
     public String showUserTasks(HttpSession session,Model model)
     {
         if ( session.getAttribute("user") == null )
