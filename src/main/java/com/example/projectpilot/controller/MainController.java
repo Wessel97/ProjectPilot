@@ -52,6 +52,17 @@ public class MainController
         return "allTasks";
     }
 
+    @GetMapping("/allUsers")
+    public String showAllUsers(HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        model.addAttribute("user", userRepository.getAllUsers());
+        return "allUsers";
+    }
+
     // Viser add tasks siden
     @GetMapping("/addTask")
     public String showAddTask(HttpSession session, Model model)
@@ -296,5 +307,7 @@ public class MainController
 
         return "userTasks";
     }
+
+
 
 }

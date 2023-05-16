@@ -1,0 +1,66 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Style the container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Style the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+/* Style the table headers */
+th {
+    text-align: left;
+    padding: 10px;
+    background-color: #ddd;
+}
+
+/* Style the table cells */
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+/* Style the select dropdowns */
+select {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 3px;
+}
+
+/* Style the input fields */
+input[type="text"] {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+}
+
+/* Style the assign button */
+button {
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Style the status dropdown */
+select[name="status"] {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 3px;
+}
