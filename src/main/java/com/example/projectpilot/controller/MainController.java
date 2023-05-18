@@ -64,13 +64,23 @@ public class MainController
         return "allUsers";
     }
 
+    @GetMapping("/admin")
+    public String admin(HttpSession session)
+    {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getId() != 1) {
+            return "redirect:/";
+        }
+        return "admin";
+    }
+
 
 
     // Viser add tasks siden
     @GetMapping("/addTask")
     public String showAddTask(HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("user") == null)
         {
             return "redirect:/";
         }
