@@ -166,26 +166,36 @@ public class UserRepository
         return null;
     }
 
-    public User getUserByEmailAndPassword(String email, String password){
-        //SQL QUERY
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE password = ? AND email = ?";
+    public User getUserByEmailAndPassword(String email, String password) {
+        // SQL QUERY
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
         User user = new User();
         user.setEmail(email);
         try {
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
 
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
-            preparedStatement.setString(1, password);
-            preparedStatement.setString(2, email);
+            preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            resultSet.next();
-            int id = resultSet.getInt(1);
-            String first_name = resultSet.getString(2);
-            String last_name = resultSet.getString(3);
-            user.setID(id);
-            user.setFirstName(first_name);
-            user.setLastName(last_name);
+            if (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                String first_name = resultSet.getString(2);
+                String last_name = resultSet.getString(3);
+                String hashedPassword = resultSet.getString(5); // Retrieve hashed password
+
+                if (encoder.matches(password, hashedPassword)) { // Compare plain password with hashed one
+                    user.setID(id);
+                    user.setFirstName(first_name);
+                    user.setLastName(last_name);
+                } else {
+                    System.out.println("Invalid password");
+                    return null;
+                }
+            } else {
+                System.out.println("User not found");
+                return null;
+            }
 
         } catch (SQLException e){
             System.out.println("Error - Password");
@@ -247,10 +257,15 @@ public class UserRepository
             if (resultSet.next()) {
                 // If a user exists, retrieve the stored password
                 String savedCode = resultSet.getString("password");
-                // Verify the entered password against the stored password
-                if (encoder.matches(password, savedCode)) {
+                if (savedCode == null) {
+                    System.out.println("Password not found for the user");
+                } else if (encoder.matches(password, savedCode)) {
                     userExists = true;
+                } else {
+                    System.out.println("Invalid password");
                 }
+            } else {
+                System.out.println("User not found");
             }
         } catch (SQLException e) {
             System.out.println("Could not verify user");
@@ -259,6 +274,8 @@ public class UserRepository
         // Return the sentinel
         return userExists;
     }
+
+
 
 
     //Method 8 delete user by ID. This method will return true if the user was successfully deleted from the database.
