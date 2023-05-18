@@ -55,7 +55,7 @@ public class UserRepository
             //get result set
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
             //loop through result set
-            while (resultSet.next())
+            while ( resultSet.next() )
             {
                 //get user from result set
                 User user = getUser(resultSet);
@@ -88,11 +88,12 @@ public class UserRepository
             //execute statement
             ResultSet resultSet = preparedStatement.executeQuery();
             // Check if there is a row in the resultSet with the specified email
-            if (resultSet.next())
+            if ( resultSet.next() )
             {
                 return true;
             }
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.out.println("Could not query database");
             e.printStackTrace();
@@ -102,12 +103,13 @@ public class UserRepository
     }
 
 
-
     //Method 4 add user. This method will return true if the user was successfully added to the database.
-    public boolean addUser(User user) {
+    public boolean addUser(User user)
+    {
         // Query to insert user
         final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.user (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
-        try {
+        try
+        {
             // DB connection
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             // Prepared statement
@@ -125,10 +127,13 @@ public class UserRepository
             // Execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
             int rowsAffected = preparedStatement.executeUpdate();
             // Return true if rowsAffected is 1
-            if (rowsAffected == 1) {
+            if ( rowsAffected == 1 )
+            {
                 return true;
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Could not query database");
             e.printStackTrace();
         }
@@ -152,7 +157,7 @@ public class UserRepository
             //execute statement
             ResultSet resultSet = preparedStatement.executeQuery();
             //return user if user exists
-            if (resultSet.next())
+            if ( resultSet.next() )
             {
                 return getUser(resultSet);
             }
@@ -166,38 +171,48 @@ public class UserRepository
         return null;
     }
 
-    public User getUserByEmailAndPassword(String email, String password) {
+    public User getUserByEmailAndPassword(String email, String password)
+    {
         // SQL QUERY
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
         User user = new User();
         user.setEmail(email);
-        try {
+        try
+        {
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
 
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
+            if ( resultSet.next() )
+            {
                 int id = resultSet.getInt(1);
                 String first_name = resultSet.getString(2);
                 String last_name = resultSet.getString(3);
                 String hashedPassword = resultSet.getString(5); // Retrieve hashed password
 
-                if (encoder.matches(password, hashedPassword)) { // Compare plain password with hashed one
+                if ( encoder.matches(password, hashedPassword) )
+                { // Compare plain password with hashed one
                     user.setID(id);
                     user.setFirstName(first_name);
                     user.setLastName(last_name);
-                } else {
+                }
+                else
+                {
                     System.out.println("Invalid password");
                     return null;
                 }
-            } else {
+            }
+            else
+            {
                 System.out.println("User not found");
                 return null;
             }
 
-        } catch (SQLException e){
+        }
+        catch (SQLException e)
+        {
             System.out.println("Error - Password");
             e.printStackTrace();
         }
@@ -237,14 +252,16 @@ public class UserRepository
     }
 
     // Method 7 verify user. This method will return true if the login credentials are matched in the database.
-    public boolean verifyUser(String email, String password) {
+    public boolean verifyUser(String email, String password)
+    {
         // Make a sentinel to check user, assume the user does not exist
         boolean userExists = false;
 
         // Query to find user
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
         // Try to query the database
-        try {
+        try
+        {
             // Establish a database connection
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             // Prepare the SQL query
@@ -254,28 +271,36 @@ public class UserRepository
             // Execute the query and retrieve the result
             ResultSet resultSet = preparedStatement.executeQuery();
             // Check if a user with the given email exists
-            if (resultSet.next()) {
+            if ( resultSet.next() )
+            {
                 // If a user exists, retrieve the stored password
                 String savedCode = resultSet.getString("password");
-                if (savedCode == null) {
+                if ( savedCode == null )
+                {
                     System.out.println("Password not found for the user");
-                } else if (encoder.matches(password, savedCode)) {
+                }
+                else if ( encoder.matches(password, savedCode) )
+                {
                     userExists = true;
-                } else {
+                }
+                else
+                {
                     System.out.println("Invalid password");
                 }
-            } else {
+            }
+            else
+            {
                 System.out.println("User not found");
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Could not verify user");
             e.printStackTrace();
         }
         // Return the sentinel
         return userExists;
     }
-
-
 
 
     //Method 8 delete user by ID. This method will return true if the user was successfully deleted from the database.
@@ -294,7 +319,7 @@ public class UserRepository
             //execute statement
             int foundUser = preparedStatement.executeUpdate();
             //return true if user was found and deleted (foundUser should be 1).
-            if(foundUser == 1)
+            if ( foundUser == 1 )
             {
                 return true;
             }
