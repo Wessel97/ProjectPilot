@@ -70,7 +70,7 @@ VALUES ('Thymeleaf', 'Lav nu noget', 7, '2023-01-01', '2023-02-09', 'Unassigned'
 INSERT INTO task (user_id, title, description, hours, start_date, end_date, status, department_id)
 VALUES (1, 'Er du stadig ik færdig?', 'Useriøst', 18, '2023-05-02', '2023-06-19', 'Assigned', 3);
 
-
+/* https://bcrypt-generator.com/ to make hash code (10) */
 
 
 /* Old code
