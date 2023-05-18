@@ -71,7 +71,20 @@ public class MainController
         if (user == null || user.getId() != 1) {
             return "redirect:/";
         }
+
         return "admin";
+    }
+
+    @GetMapping("/addDepartment")
+    public String showDepartment(HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null)
+        {
+            return "redirect:/";
+        }
+        // Create a new Task object and add it to the model
+
+        return "addDepartment";
     }
 
 
@@ -351,6 +364,9 @@ public class MainController
 
         return "userTasks";
     }
+
+    //med showDepartmentTask så skal jeg bruge request param i forhold til ovenover i
+    //showUserTasks hvor jeg brugte session til id'et
 
 
 
