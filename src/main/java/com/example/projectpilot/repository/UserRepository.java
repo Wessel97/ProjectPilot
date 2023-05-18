@@ -3,6 +3,7 @@ package com.example.projectpilot.repository;
 import com.example.projectpilot.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ public class UserRepository
     private String UID;
     @Value("${spring.datasource.password}") //Bugbusters23
     private String PWD;
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
     //Method 1 get user from SQL. This method will return a user object from the database.
     private User getUser(ResultSet resultSet) throws SQLException
@@ -101,38 +104,35 @@ public class UserRepository
 
 
     //Method 4 add user. This method will return true if the user was successfully added to the database.
-    public boolean addUser(User user)
-    {
-        //query to insert user
+    public boolean addUser(User user) {
+        // Query to insert user
         final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.user (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
-        try
-        {
-            //db connection
+        try {
+            // DB connection
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
-            //prepared statement
+            // Prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
-            //set first_name
+            // Set first_name
             preparedStatement.setString(1, user.getFirstName());
-            //set last_name
+            // Set last_name
             preparedStatement.setString(2, user.getLastName());
-            //set email
+            // Set email
             preparedStatement.setString(3, user.getEmail());
-            //set password
-            preparedStatement.setString(4, user.getPassword());
-            //execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
+            // Encrypt password
+            String encryptedPassword = encoder.encode(user.getPassword());
+            // Set encrypted password
+            preparedStatement.setString(4, encryptedPassword);
+            // Execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
             int rowsAffected = preparedStatement.executeUpdate();
-            //return true if rowsAffected is 1
-            if(rowsAffected == 1)
-            {
+            // Return true if rowsAffected is 1
+            if (rowsAffected == 1) {
                 return true;
             }
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        //return false if user was not added
+        // Return false if user was not added
         return false;
     }
 
@@ -166,26 +166,36 @@ public class UserRepository
         return null;
     }
 
-    public User getUserByEmailAndPassword(String email, String password){
-        //SQL QUERY
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE password = ? AND email = ?";
+    public User getUserByEmailAndPassword(String email, String password) {
+        // SQL QUERY
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
         User user = new User();
         user.setEmail(email);
         try {
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
 
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
-            preparedStatement.setString(1, password);
-            preparedStatement.setString(2, email);
+            preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            resultSet.next();
-            int id = resultSet.getInt(1);
-            String first_name = resultSet.getString(2);
-            String last_name = resultSet.getString(3);
-            user.setID(id);
-            user.setFirstName(first_name);
-            user.setLastName(last_name);
+            if (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                String first_name = resultSet.getString(2);
+                String last_name = resultSet.getString(3);
+                String hashedPassword = resultSet.getString(5); // Retrieve hashed password
+
+                if (encoder.matches(password, hashedPassword)) { // Compare plain password with hashed one
+                    user.setID(id);
+                    user.setFirstName(first_name);
+                    user.setLastName(last_name);
+                } else {
+                    System.out.println("Invalid password");
+                    return null;
+                }
+            } else {
+                System.out.println("User not found");
+                return null;
+            }
 
         } catch (SQLException e){
             System.out.println("Error - Password");
@@ -227,40 +237,46 @@ public class UserRepository
     }
 
     // Method 7 verify user. This method will return true if the login credentials are matched in the database.
-    public boolean verifyUser(String email, String password)
-    {
-        // Query to find user
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ? AND password = ?";
-        //Make a sentinel to check user, assume the user does not exist
+    public boolean verifyUser(String email, String password) {
+        // Make a sentinel to check user, assume the user does not exist
         boolean userExists = false;
+
+        // Query to find user
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
         // Try to query the database
-        try
-        {
+        try {
             // Establish a database connection
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             // Prepare the SQL query
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             // Set the parameters for the query (email)
             preparedStatement.setString(1, email);
-            // Set the parameters for the query (password)
-            preparedStatement.setString(2, password);
             // Execute the query and retrieve the result
             ResultSet resultSet = preparedStatement.executeQuery();
-            // Check if a user with the given email and password exists
-            if (resultSet.next())
-            {
-                // If a user exists, set the sentinel to true
-                userExists = true;
+            // Check if a user with the given email exists
+            if (resultSet.next()) {
+                // If a user exists, retrieve the stored password
+                String savedCode = resultSet.getString("password");
+                if (savedCode == null) {
+                    System.out.println("Password not found for the user");
+                } else if (encoder.matches(password, savedCode)) {
+                    userExists = true;
+                } else {
+                    System.out.println("Invalid password");
+                }
+            } else {
+                System.out.println("User not found");
             }
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Could not query database");
+        } catch (SQLException e) {
+            System.out.println("Could not verify user");
             e.printStackTrace();
         }
         // Return the sentinel
         return userExists;
     }
+
+
+
 
     //Method 8 delete user by ID. This method will return true if the user was successfully deleted from the database.
     public boolean deleteUserByID(User user)
