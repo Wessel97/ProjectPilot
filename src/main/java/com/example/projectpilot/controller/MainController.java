@@ -279,25 +279,32 @@ public class MainController
     }
 
     @GetMapping("/assignUser/{task_id}")
-    public String showAssignUser(@PathVariable("task_id") int updateId, HttpSession session, Model model)
+    public String showAssignUser(@PathVariable("task_id") int task_Id, HttpSession session, Model model)
     {
         if ( session.getAttribute("user") == null )
         {
             return "redirect:/";
         }
-        model.addAttribute("user", userRepository.getAllUsers());
+        Task task = taskRepository.getTaskByTaskId(task_Id);
+
+        // Set the task object as a model attribute
+        model.addAttribute("task", task);
+        model.addAttribute("users", userRepository.getAllUsers());
         return "assignUser";
     }
 
     @PostMapping("/assignUser")
-    public String assignUser(@RequestParam("task_id") int task_id, @RequestParam("user_id") int user_id, HttpSession session)
+    // Fejlen er umiddelbart at userId kun får 1, selvom kan man se på htmlen at den henter forskellige userid'er
+    // muligvis er det RequestParam??
+    public String assignUser(@RequestParam("task_id") int task_id, @RequestParam("userId") int userId, HttpSession session)
     {
-        if (session.getAttribute("user") == null) {
+        if (session.getAttribute("user") == null)
+        {
             return "redirect:/";
         }
         Task updateTask = taskRepository.getTaskByTaskId(task_id);
 
-        taskRepository.assignTo(updateTask, user_id);
+        taskRepository.assignTo(updateTask, userId);
 
         return "redirect:/allTasks";
     }

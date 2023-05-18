@@ -8,27 +8,31 @@
 <body>
 <div class="container">
     <h1>ASSIGN USER</h1>
-    <table>
-        <thead>
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        </thead>
-        <tbody>
-        <tr th:each="user : ${user}">
-            <td th:text="${user.id}">ID</td>
-            <td th:text="${user.firstName}">FORNAVN</td>
-            <td th:text="${user.lastName}">EFTERNAVN</td>
-            <td th:text="${user.email}">EMAIL</td>
-            <td>
-                <a th:href="@{'/allTasks'}" method="post">
+    <form action="/assignUser" method="post">
+        <table>
+            <thead>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th></th>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}">ID</td>
+                <td th:text="${user.firstName}">FORNAVN</td>
+                <td th:text="${user.lastName}">EFTERNAVN</td>
+                <td th:text="${user.email}">EMAIL</td>
+                <td>
+                    <input type="hidden" name="task_id" th:value="${task.task_id}" />
+                    <input type="hidden" name="userId" th:value="${user.id}" />
                     <button type="submit">Assign</button>
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
 </div>
 </body>
 </html>
+
