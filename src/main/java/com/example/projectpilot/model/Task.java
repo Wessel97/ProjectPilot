@@ -66,6 +66,10 @@ public class Task {
         this.department = department;
     }
 
+    public Task(int udateUserId)
+    {
+    }
+
     // Getters and Setters
     public int getTask_id() {
         return task_id;

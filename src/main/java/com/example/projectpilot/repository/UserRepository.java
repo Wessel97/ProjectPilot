@@ -32,7 +32,7 @@ public class UserRepository
         //get password from result set
         String password = resultSet.getString(5);
         //create user object
-        return new User(first_name, last_name, email, password);
+        return new User(id, first_name, last_name, email, password);
     }
 
     //Method 2 get all users. This method will return a list of all users in the database.
@@ -215,7 +215,7 @@ public class UserRepository
             //set password
             preparedStatement.setString(4, user.getPassword());
             //set user_id
-            preparedStatement.setInt(5, user.getID());
+            preparedStatement.setInt(5, user.getId());
             //execute statement
             preparedStatement.executeUpdate();
         }
@@ -274,7 +274,7 @@ public class UserRepository
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(user_id)
-            preparedStatement.setInt(1, user.getID());
+            preparedStatement.setInt(1, user.getId());
             //execute statement
             int foundUser = preparedStatement.executeUpdate();
             //return true if user was found and deleted (foundUser should be 1).

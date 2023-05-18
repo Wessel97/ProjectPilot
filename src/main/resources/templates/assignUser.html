@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Users</title>
-    <link rel="stylesheet" th:href="@{/css/allUsers.css}">
+    <link rel="stylesheet" th:href="@{/css/assignUser.css}">
 </head>
 <body>
 <div class="container">
-    <h1>Users</h1>
+    <h1>ASSIGN USER</h1>
     <table>
         <thead>
         <th>ID</th>
@@ -22,16 +22,13 @@
             <td th:text="${user.lastName}">EFTERNAVN</td>
             <td th:text="${user.email}">EMAIL</td>
             <td>
-                <form action="/logout" method="get">
-                    <button type="submit">Logout</button>
-                </form>
+                <a th:href="@{'/allTasks'}" method="post">
+                    <button type="submit">Assign</button>
+                </a>
             </td>
         </tr>
         </tbody>
     </table>
-    <a href="/addTask"><button>Add Task</button></a>
-    <a href="/userTasks/"><button>User Tasks</button></a>
-
 </div>
 </body>
 </html>

@@ -5,6 +5,7 @@ import com.example.projectpilot.model.User;
 import com.example.projectpilot.repository.TaskRepository;
 import com.example.projectpilot.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -62,6 +63,8 @@ public class MainController
         model.addAttribute("user", userRepository.getAllUsers());
         return "allUsers";
     }
+
+
 
     // Viser add tasks siden
     @GetMapping("/addTask")
@@ -275,6 +278,31 @@ public class MainController
         return "redirect:/allTasks";
     }
 
+    @GetMapping("/assignUser/{task_id}")
+    public String showAssignUser(@PathVariable("task_id") int updateId, HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        model.addAttribute("user", userRepository.getAllUsers());
+        return "assignUser";
+    }
+
+    @PostMapping("/assignUser")
+    public String assignUser(@RequestParam("task_id") int task_id, @RequestParam("user_id") int user_id, HttpSession session)
+    {
+        if (session.getAttribute("user") == null) {
+            return "redirect:/";
+        }
+        Task updateTask = taskRepository.getTaskByTaskId(task_id);
+
+        taskRepository.assignTo(updateTask, user_id);
+
+        return "redirect:/allTasks";
+    }
+
+
     // Sletter en task
     @PostMapping("/deleteTask/{task_id}")
     public String deleteTask(@PathVariable("task_id") int taskId, HttpSession session)
@@ -283,7 +311,6 @@ public class MainController
         {
             return "redirect:/";
         }
-
         // Slet task med given taskId fra taskRepository
         taskRepository.deleteTaskByID(taskId);
 
@@ -300,7 +327,7 @@ public class MainController
         }
 
         User user = (User) session.getAttribute("user");
-        List<Task> taskList = taskRepository.getAllTasksByUserID(user.getID());
+        List<Task> taskList = taskRepository.getAllTasksByUserID(user.getId());
         // Den her gør ikke noget, så den skal nok bare slettes tilsidsts
         //session.setAttribute("taskList", taskList);
         model.addAttribute("task", taskList);
