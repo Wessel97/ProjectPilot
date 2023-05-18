@@ -64,13 +64,36 @@ public class MainController
         return "allUsers";
     }
 
+    @GetMapping("/admin")
+    public String admin(HttpSession session)
+    {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getId() != 1) {
+            return "redirect:/";
+        }
+
+        return "admin";
+    }
+
+    @GetMapping("/addDepartment")
+    public String showDepartment(HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null)
+        {
+            return "redirect:/";
+        }
+        // Create a new Task object and add it to the model
+
+        return "addDepartment";
+    }
+
 
 
     // Viser add tasks siden
     @GetMapping("/addTask")
     public String showAddTask(HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("user") == null)
         {
             return "redirect:/";
         }
@@ -341,6 +364,9 @@ public class MainController
 
         return "userTasks";
     }
+
+    //med showDepartmentTask så skal jeg bruge request param i forhold til ovenover i
+    //showUserTasks hvor jeg brugte session til id'et
 
 
 

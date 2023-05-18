@@ -7,6 +7,8 @@ public class Task {
     // Parameters
     private int task_id;
     private int user_id;
+
+    private int department_id;
     private String title;
     private String description;
     private String note;
