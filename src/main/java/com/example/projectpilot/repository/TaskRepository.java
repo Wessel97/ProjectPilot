@@ -160,7 +160,6 @@ public class TaskRepository {
     public Task getTaskByTaskId(int taskId)
     {
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE task_id = ?";
-        // Make a boolean to check if the task was found (sentinel). Makes the code more readable.
         Task selectTask = null;
         try
         {

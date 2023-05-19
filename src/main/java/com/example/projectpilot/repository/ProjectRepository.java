@@ -1,13 +1,14 @@
 package com.example.projectpilot.repository;
 
-import com.example.projectpilot.model.Department;
+import com.example.projectpilot.model.Project;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DepartmentRepository {
+public class ProjectRepository
+{
 
     @Value("${spring.datasource.url}") //jdbc:mysql://localhost:3306/ProjectPilotDB
     private String DB_URL;
@@ -16,23 +17,24 @@ public class DepartmentRepository {
     @Value("${spring.datasource.password}") //Bugbusters23
     private String PWD;
 
-    public Department getDepartment(ResultSet resultSet) throws SQLException
+    public Project getProject(ResultSet resultSet) throws SQLException
     {
         //get department_id from result set
-        int department_id = resultSet.getInt(1);
+        int projectID = resultSet.getInt(1);
         //get first_name from result set
-        String departmentName = resultSet.getString(2);
+        String projectName = resultSet.getString(2);
 
         //create user object
-        return new Department(department_id, departmentName);
+        return new Project(projectID, projectName);
     }
 
-    public List<Department> getAllDepartments(){
-        //create list of departments
-        List<Department> departmentList = new ArrayList<>();
+    public List<Project> getAllProjects()
+    {
+        //create list of users
+        List<Project> projectList = new ArrayList<>();
         //execute statement, here there is no exceptions that need to be caught. It does need to be in try/catch.
         // Limit the scope of a try block to only the code that might throw an exception.
-        final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.department";
+        final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.project";
         try
         {
             //db connection
@@ -45,11 +47,11 @@ public class DepartmentRepository {
             while ( resultSet.next() )
             {
                 //get user from result set
-                Department department = getDepartment(resultSet);
+                Project project = getProject(resultSet);
                 //add user to list
-                departmentList.add(department);
+                projectList.add(project);
                 //print user
-                System.out.println(department);
+                System.out.println(project);
             }
         }
         catch (SQLException e)
@@ -57,13 +59,13 @@ public class DepartmentRepository {
             System.out.println("Error querying database");
             e.printStackTrace();
         }
-        return departmentList;
+        return projectList;
 
     }
 
-    public boolean checkIfDepartmentExists(String checkName)
+    public boolean checkIfProjectExists(String checkName)
     {
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.department WHERE name = ?";
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.project WHERE name = ?";
         try
         {
             //db connection
@@ -86,11 +88,13 @@ public class DepartmentRepository {
             e.printStackTrace();
         }
         //return false if user does not exist
-        return false;}
+        return false;
+    }
 
-    public boolean addDepartment(Department department){
+    public boolean addProject(Project project)
+    {
         // Query to insert user
-        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.department (name) VALUES (?)";
+        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.project (name) VALUES (?)";
         try
         {
             // DB connection
@@ -98,7 +102,7 @@ public class DepartmentRepository {
             // Prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
             // Set first_name
-            preparedStatement.setString(1, department.getDepartmentName());
+            preparedStatement.setString(1, project.getProjectName());
             // Execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
             int rowsAffected = preparedStatement.executeUpdate();
             // Return true if rowsAffected is 1
@@ -117,10 +121,11 @@ public class DepartmentRepository {
 
     }
 
-    public Department getDepartmentById(int departmentId){
+    public Project getProjectByID(int projectID)
+    {
         //query to find user
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.department WHERE id = ?";
-        Department selectDepartment = null;
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.project WHERE id = ?";
+        Project selectedProject = null;
         try
         {
             //db connection
@@ -128,13 +133,13 @@ public class DepartmentRepository {
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters for prepared statement (user_id)
-            preparedStatement.setInt(1, departmentId);
+            preparedStatement.setInt(1, projectID);
             //execute statement
             ResultSet resultSet = preparedStatement.executeQuery();
             //return user if user exists
             if ( resultSet.next() )
             {
-                selectDepartment = getDepartment(resultSet);
+                selectedProject = getProject(resultSet);
             }
         }
         catch (SQLException e)
@@ -143,11 +148,12 @@ public class DepartmentRepository {
             e.printStackTrace();
         }
         //return null if user does not exist
-        return selectDepartment;
+        return selectedProject;
     }
 
-    public void updateDepartment(Department department){ //query to update user
-        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.department SET name = ? WHERE id = ?";
+    public void updateProject(Project project)
+    { //query to update user
+        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.project SET name = ? WHERE id = ?";
         try
         {
             //db connection
@@ -155,9 +161,9 @@ public class DepartmentRepository {
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             //set parameters for prepared statement
-            preparedStatement.setString(1, department.getDepartmentName());
+            preparedStatement.setString(1, project.getProjectName());
             //set user_id
-            preparedStatement.setInt(2, department.getDepartment_id());
+            preparedStatement.setInt(2, project.getProjectID());
             //execute statement
             preparedStatement.executeUpdate();
         }
@@ -165,11 +171,13 @@ public class DepartmentRepository {
         {
             System.out.println("Could not query database");
             e.printStackTrace();
-        }}
+        }
+    }
 
-    public boolean deleteDepartmentById(Department department){
+    public boolean deleteProjectById(Project project)
+    {
         //query to delete user
-        final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.department WHERE id = ?";
+        final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.project WHERE id = ?";
         try
         {
             //db connection
@@ -177,11 +185,11 @@ public class DepartmentRepository {
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(user_id)
-            preparedStatement.setInt(1, department.getDepartment_id());
+            preparedStatement.setInt(1, project.getProjectID());
             //execute statement
-            int foundDepartment = preparedStatement.executeUpdate();
+            int foundUser = preparedStatement.executeUpdate();
             //return true if user was found and deleted (foundUser should be 1).
-            if ( foundDepartment == 1 )
+            if ( foundUser == 1 )
             {
                 return true;
             }
@@ -191,10 +199,7 @@ public class DepartmentRepository {
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        //return false if department was not found and deleted
+        //return false if user was not found and deleted
         return false;
     }
-
-
-
 }
