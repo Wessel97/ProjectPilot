@@ -10,7 +10,7 @@
     <form action="/updateTask" method="post">
 
 <!--        Man skal ikke kunne ændre "task_id" men skal man kunne ændre user_id ?-->
-        <input id="task_id-field" name="task-task_id" type="hidden" th:value="${task.task_id}">
+        <input id="task_id-field" name="task-task_id" type="hidden" th:value="${task.id}">
         <input id="user_id-field" name="task-user_id" type="hidden" th:value="${task.user_id}">
 
         <label for="title-field">Task titel:</label>

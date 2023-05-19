@@ -24,7 +24,7 @@
             <td th:text="${user.email}">EMAIL</td>
             <td>
                 <form action="/assignUser" method="post">
-                    <input type="hidden" name="task_id" th:value="${task.task_id}" />
+                    <input type="hidden" name="task_id" th:value="${task.id}" />
                     <input type="hidden" name="userId" th:value="${user.id}" />
                     <button type="submit">Assign</button>
                 </form>

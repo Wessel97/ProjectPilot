@@ -248,8 +248,8 @@ public class MainController
     }
 
     // Viser update task siden
-    @GetMapping("/updateTask/{task_id}")
-    public String showUpdateTask(@PathVariable("task_id") int updateId, HttpSession session, Model model)
+    @GetMapping("/updateTask/{id}")
+    public String showUpdateTask(@PathVariable("id") int updateId, HttpSession session, Model model)
     {
         if ( session.getAttribute("user") == null )
         {
@@ -301,8 +301,8 @@ public class MainController
         return "redirect:/allTasks";
     }
 
-    @GetMapping("/assignUser/{task_id}")
-    public String showAssignUser(@PathVariable("task_id") int task_Id, HttpSession session, Model model)
+    @GetMapping("/assignUser/{id}")
+    public String showAssignUser(@PathVariable("id") int task_Id, HttpSession session, Model model)
     {
         if ( session.getAttribute("user") == null )
         {
@@ -334,8 +334,8 @@ public class MainController
 
 
     // Sletter en task
-    @PostMapping("/deleteTask/{task_id}")
-    public String deleteTask(@PathVariable("task_id") int taskId, HttpSession session)
+    @PostMapping("/deleteTask/{id}")
+    public String deleteTask(@PathVariable("id") int taskId, HttpSession session)
     {
         if ( session.getAttribute("user") == null )
         {
