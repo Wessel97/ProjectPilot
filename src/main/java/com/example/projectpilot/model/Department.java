@@ -5,9 +5,7 @@ public class Department {
 
     private String departmentName;
 
-    public Department(){
-
-    }
+    public Department(){}
 
     public Department(int department_id, String departmentName) {
         this.department_id = department_id;
