@@ -13,14 +13,14 @@ import java.util.List;
 @Repository
 public class UserRepository
 {
-    private DatabaseService databaseService;
+    private final DatabaseService databaseService;
 
     @Autowired
     public UserRepository(DatabaseService databaseService) {
         this.databaseService = databaseService;
     }
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
     //Method 1 get user from SQL. This method will return a user object from the database.
     private User getUser(ResultSet resultSet) throws SQLException

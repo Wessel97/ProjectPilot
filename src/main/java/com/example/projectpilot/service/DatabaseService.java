@@ -10,7 +10,7 @@ import java.sql.SQLException;
 @Service
 public class DatabaseService {
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     @Autowired
     public DatabaseService(DataSource dataSource) {

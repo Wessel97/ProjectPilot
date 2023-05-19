@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class TaskRepository {
 
-    private DatabaseService databaseService;
+    private final DatabaseService databaseService;
 
     @Autowired
     public TaskRepository(DatabaseService databaseService) {
@@ -164,7 +164,7 @@ public class TaskRepository {
     // Method 4 get task by task ID. This method will find the task with the given ID.
     public Task getTaskByTaskId(int taskId)
     {
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE task_id = ?";
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE id = ?";
         Task selectTask = null;
         try
         {
@@ -264,7 +264,7 @@ public class TaskRepository {
     // Method 7 update task. This method will update the selected task in the database. Without returning anything.
     public void updateTask(Task task)
     {
-        final String UPDATE_QUERY = "UPDATE task SET title = ?, description = ?, note = ?, hours = ?, pay_rate = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE task_id = ?";
+        final String UPDATE_QUERY = "UPDATE task SET title = ?, description = ?, note = ?, hours = ?, pay_rate = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE id = ?";
 
         try
         {
@@ -322,7 +322,7 @@ public class TaskRepository {
     public boolean deleteTaskByID(int taskId)
     {
         //query to delete user
-        final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.task WHERE task_id = ?";
+        final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.task WHERE id = ?";
         // Make a boolean to check if the task was deleted (sentinel). Makes the code more readable.
         boolean taskDeleted = false;
         try
@@ -353,7 +353,7 @@ public class TaskRepository {
     }
 
     public void assignTo(Task task, int userID) {
-        final String UPDATE_QUERY = "UPDATE task SET user_id = ? WHERE task_id = ?";
+        final String UPDATE_QUERY = "UPDATE task SET user_id = ? WHERE id = ?";
 
         try
         {

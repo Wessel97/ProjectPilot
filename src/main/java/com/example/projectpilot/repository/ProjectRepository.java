@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class ProjectRepository
 {
-    private DatabaseService databaseService;
+    private final DatabaseService databaseService;
 
     @Autowired
     public ProjectRepository(DatabaseService databaseService) {
