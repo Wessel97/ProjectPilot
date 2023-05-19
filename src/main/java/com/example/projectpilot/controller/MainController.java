@@ -81,8 +81,20 @@ public class MainController
         return "admin";
     }
 
+    @GetMapping("/allDepartments")
+    public String allDepartments(HttpSession session, Model model)
+    {
+        if(session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        model.addAttribute("department", departmentRepository.getAllDepartments());
+
+        return "allDepartments";
+    }
+
     @GetMapping("/addDepartment")
-    public String showDepartment(HttpSession session, Model model)
+    public String addDepartment(HttpSession session, Model model)
     {
         if ( session.getAttribute("user") == null)
         {
@@ -93,6 +105,22 @@ public class MainController
         return "addDepartment";
     }
 
+    @GetMapping("/showDepartment/{id}")
+    public String showDepartment(@PathVariable("id") int id, HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null)
+        {
+            return "redirect:/";
+        }
+
+        List<Task> taskList = taskRepository.getAllTasksByDepartmentID(id);
+        model.addAttribute("task", taskList);
+
+        return "showDepartment";
+    }
+
+    //
+    //
 
 
     // Viser add tasks siden
@@ -371,20 +399,7 @@ public class MainController
         return "userTasks";
     }
 
-    @GetMapping("/allDepartments")
-    public String allDepartments(HttpSession session, Model model)
-    {
-        if(session.getAttribute("user") == null )
-        {
-            return "redirect:/";
-        }
-        model.addAttribute("department", departmentRepository.getAllDepartments());
 
-        return "allDepartments";
-    }
-
-    //med showDepartmentTask så skal jeg bruge request param i forhold til ovenover i
-    //showUserTasks hvor jeg brugte session til id'et
 
 
 }

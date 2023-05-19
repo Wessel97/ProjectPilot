@@ -158,7 +158,7 @@ public class DepartmentRepository {
             //set parameters for prepared statement
             preparedStatement.setString(1, department.getDepartmentName());
             //set user_id
-            preparedStatement.setInt(2, department.getDepartment_id());
+            preparedStatement.setInt(2, department.getId());
             //execute statement
             preparedStatement.executeUpdate();
         }
@@ -178,7 +178,7 @@ public class DepartmentRepository {
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(user_id)
-            preparedStatement.setInt(1, department.getDepartment_id());
+            preparedStatement.setInt(1, department.getId());
             //execute statement
             int foundDepartment = preparedStatement.executeUpdate();
             //return true if user was found and deleted (foundUser should be 1).

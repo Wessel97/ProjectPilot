@@ -123,7 +123,7 @@ public class TaskRepository {
         // Initialize an empty list to store tasks with the given userID
         List<Task> userIdTasksList = new ArrayList<>();
         // Define the SQL query to find all tasks with the given userID
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE department_id = ?";
         try
         {
             // Establish a connection to the database
