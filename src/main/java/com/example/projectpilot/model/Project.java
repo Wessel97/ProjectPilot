@@ -5,7 +5,9 @@ public class Project
     private int projectID;
     private String projectName;
 
-    public Project() {}
+    public Project()
+    {
+    }
 
     public Project(int projectID, String projectName)
     {
