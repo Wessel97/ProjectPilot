@@ -56,7 +56,7 @@ CREATE TABLE task (
                       project VARCHAR(45) NULL,
                       PRIMARY KEY (id),
                       FOREIGN KEY (user_id) REFERENCES user(id),
-                      FOREIGN KEY (department_id) REFERENCES department(id),
+                      FOREIGN KEY (department_id) REFERENCES department(id)
 );
 
 -- Insert a dummy user
@@ -71,17 +71,19 @@ INSERT INTO project (name)
 VALUES ('Talking AI'), ('Webpage for Jens'), ('Drone software'), ('Christmas party');
 
 -- Insert some sample tasks
-INSERT INTO task (title, description, note, hours, pay_rate, flag, start_date, end_date, status, department, project)
-VALUES ('Title 1', 'Description 1', 'Note 1', 40, 500, 0, '2023-05-01', '2023-05-31', 'Active', 'Department 1', 'Project 1');
+-- Insert some sample tasks
+INSERT INTO task (user_id, department_id, title, description, note, hours, pay_rate, flag, start_date, end_date, status)
+VALUES (1, 1, 'Title 1', 'Description 1', 'Note 1', 40, 500, 0, '2023-05-01', '2023-05-31', 'Active');
 
-INSERT INTO task (title, description, note, hours, pay_rate, flag, start_date, end_date, status, department, project)
-VALUES ('Title 2', 'Description 2', 'Note 2', 30, 500, 0, '2023-06-01', '2023-06-30', 'Active', 'Department 2', 'Project 2');
+INSERT INTO task (user_id, department_id, title, description, note, hours, pay_rate, flag, start_date, end_date, status)
+VALUES (1, 2, 'Title 2', 'Description 2', 'Note 2', 30, 500, 0, '2023-06-01', '2023-06-30', 'Active');
 
-INSERT INTO task (title, description, note, hours, pay_rate, flag, start_date, end_date, status, department, project)
-VALUES ('Title 3', 'Description 3', 'Note 3', 20, 500, 0, '2023-07-01', '2023-07-31', 'Active', 'Department 3', 'Project 3');
+INSERT INTO task (user_id, department_id, title, description, note, hours, pay_rate, flag, start_date, end_date, status)
+VALUES (1, 3, 'Title 3', 'Description 3', 'Note 3', 20, 500, 0, '2023-07-01', '2023-07-31', 'Active');
 
-INSERT INTO task (title, description, note, hours, pay_rate, flag, start_date, end_date, status, department, project)
-VALUES ('Title 4', 'Description 4', 'Note 4', 50, 500, 0, '2023-08-01', '2023-08-31', 'Active', 'Department 4', 'Project 4');
+INSERT INTO task (user_id, department_id, title, description, note, hours, pay_rate, flag, start_date, end_date, status)
+VALUES (1, 4, 'Title 4', 'Description 4', 'Note 4', 50, 500, 0, '2023-08-01', '2023-08-31', 'Active');
+
 
 /* https://bcrypt-generator.com/ to make hash code (10) */
 
