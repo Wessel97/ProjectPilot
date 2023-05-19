@@ -1,7 +1,9 @@
 package com.example.projectpilot.controller;
 
+import com.example.projectpilot.model.Department;
 import com.example.projectpilot.model.Task;
 import com.example.projectpilot.model.User;
+import com.example.projectpilot.repository.DepartmentRepository;
 import com.example.projectpilot.repository.TaskRepository;
 import com.example.projectpilot.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
@@ -23,11 +25,15 @@ public class MainController
     private UserRepository userRepository;
     private TaskRepository taskRepository;
 
+    private DepartmentRepository departmentRepository;
+
     @Autowired
-    public MainController(UserRepository userRepository, TaskRepository taskRepository)
+    public MainController(UserRepository userRepository, TaskRepository taskRepository,
+                          DepartmentRepository departmentRepository)
     {
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
+        this.departmentRepository = departmentRepository;
     }
 
 
@@ -365,9 +371,20 @@ public class MainController
         return "userTasks";
     }
 
+    @GetMapping("/allDepartments")
+    public String allDepartments(HttpSession session, Model model)
+    {
+        if(session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        model.addAttribute("department", departmentRepository.getAllDepartments());
+
+        return "allDepartments";
+    }
+
     //med showDepartmentTask så skal jeg bruge request param i forhold til ovenover i
     //showUserTasks hvor jeg brugte session til id'et
-
 
 
 }

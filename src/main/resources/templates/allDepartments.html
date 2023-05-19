@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tasks</title>
+    <link rel="stylesheet" th:href="@{/css/allTasks.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Task List</h1>
+    <table>
+        <thead>
+        <th>Department ID</th>
+        <th>Name</th>
+        </thead>
+        <tbody>
+        <tr th:each="department : ${department}">
+            <td th:text="${department.id}">42</td>
+            <td th:text="${department.name}">42</td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/addTask"><button>Add Task</button></a>
+    <a href="/userTasks"><button>User Tasks</button></a>
+    <a href="/allTasks"><button>All Users</button></a>
+    <a href="/admin"><button>Admin</button></a>
+    <a href="/allDepartments"><button>Admin</button></a>
+
+
+</div>
+</body>
+</html>
