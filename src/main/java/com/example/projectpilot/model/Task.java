@@ -5,9 +5,8 @@ import java.sql.Date;
 public class Task {
 
     // Parameters
-    private int task_id;
+    private int id;
     private int user_id;
-
     private int department_id;
     private String title;
     private String description;
@@ -19,12 +18,15 @@ public class Task {
     private Date end_date;
     private String status;
     private String department;
+    private String project;
+
 
     // Constructor with all parameters.
-    public Task(int task_id, int user_id, String title, String description, String note, int hours, int pay_rate, boolean flag, Date start_date, Date end_date, String status, String department)
+    public Task(int id, int user_id, int department_id, String title, String description, String note, int hours, int pay_rate, boolean flag, Date start_date, Date end_date, String status, String department, String project)
     {
-        this.task_id = task_id;
+        this.id = id;
         this.user_id = user_id;
+        this.department_id = department_id;
         this.title = title;
         this.description = description;
         this.note = note;
@@ -35,11 +37,12 @@ public class Task {
         this.end_date = end_date;
         this.status = status;
         this.department = department;
+        this.project = project;
     }
 
-    public Task(int task_id, int user_id, String title, String description, String note, int hours, int pay_rate, Date start_date, Date end_date, String status, String department)
+    public Task(int id, int user_id, String title, String description, String note, int hours, int pay_rate, Date start_date, Date end_date, String status, String department)
     {
-        this.task_id = task_id;
+        this.id = id;
         this.user_id = user_id;
         this.title = title;
         this.description = description;
@@ -73,12 +76,12 @@ public class Task {
     }
 
     // Getters and Setters
-    public int getTask_id() {
-        return task_id;
+    public int getId() {
+        return id;
     }
 
-    public void setTask_id(int task_id) {
-        this.task_id = task_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getUser_id() {
@@ -167,6 +170,22 @@ public class Task {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public int getDepartment_id() {
+        return department_id;
+    }
+
+    public void setDepartment_id(int department_id) {
+        this.department_id = department_id;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
     }
 }
 

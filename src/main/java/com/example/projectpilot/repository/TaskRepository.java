@@ -24,20 +24,22 @@ public class TaskRepository {
     //Method 1 get task from SQL. This method will return a task object from the database.
     private Task getTask(ResultSet resultSet) throws SQLException
     {
-        int task_id = resultSet.getInt(1);
-        int user_id= resultSet.getInt(2);
-        String title = resultSet.getString(3);
-        String description = resultSet.getString(4);
-        String note = resultSet.getString(5);
-        int hours = resultSet.getInt(6);
-        int pay_rate = resultSet.getInt(7);
-        boolean flag = resultSet.getBoolean(8);
-        Date start_date = resultSet.getDate(9);
-        Date end_date = resultSet.getDate(10);
-        String status = resultSet.getString(11);
-        String department = resultSet.getString(12);
+        int id = resultSet.getInt(1);
+        int user_id = resultSet.getInt(2);
+        int department_id = resultSet.getInt(3);
+        String title = resultSet.getString(4);
+        String description = resultSet.getString(5);
+        String note = resultSet.getString(6);
+        int hours = resultSet.getInt(7);
+        int pay_rate = resultSet.getInt(8);
+        boolean flag = resultSet.getBoolean(9);
+        Date start_date = resultSet.getDate(10);
+        Date end_date = resultSet.getDate(11);
+        String status = resultSet.getString(12);
+        String department = resultSet.getString(13);
+        String project = resultSet.getString(14);
         //create task object and return task object.
-        return new Task(task_id, user_id, title, description, note, hours, pay_rate, flag, start_date, end_date, status, department);
+        return new Task(id, user_id, department_id, title, description, note, hours, pay_rate, flag, start_date, end_date, status, department, project);
     }
 
     //Method 2 get all tasks. This method will return a list of all tasks in the database.
@@ -278,7 +280,7 @@ public class TaskRepository {
             Date end_date = task.getEnd_Date();
             String status = task.getStatus();
             String department = task.getDepartment();
-            int task_id = task.getTask_id();
+            int task_id = task.getId();
 
             preparedStatement.setString(1, title);
             // set description parameter
@@ -354,7 +356,7 @@ public class TaskRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
 
 
-            int task_id = task.getTask_id();
+            int task_id = task.getId();
 
             preparedStatement.setInt(1, userID);
             preparedStatement.setInt(2, task_id);

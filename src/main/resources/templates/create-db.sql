@@ -7,7 +7,6 @@ USE projectpilotdb;
 -- Note: You might need to adjust these commands according to the actual foreign key names in your database.
 ALTER TABLE task DROP FOREIGN KEY task_ibfk_1;
 ALTER TABLE task DROP FOREIGN KEY task_ibfk_2;
-ALTER TABLE task DROP FOREIGN KEY task_ibfk_3;
 
 -- Drop tables if they exist
 DROP TABLE IF EXISTS user;
@@ -41,8 +40,9 @@ CREATE TABLE project(
 
 -- Create task table
 CREATE TABLE task (
-                      task_id INT NOT NULL AUTO_INCREMENT,
+                      id INT NOT NULL AUTO_INCREMENT,
                       user_id INT NULL,
+                      department_id INT NULL,
                       title VARCHAR(45) NOT NULL,
                       description VARCHAR(320) NULL,
                       note VARCHAR(320) NULL,
@@ -52,12 +52,11 @@ CREATE TABLE task (
                       start_date DATE NOT NULL,
                       end_date DATE NOT NULL,
                       status VARCHAR(45) NOT NULL,
-                      department_id INT NOT NULL,
-                      project_id INT NOT NULL,
-                      PRIMARY KEY (task_id),
+                      department VARCHAR(45) NULL,
+                      project VARCHAR(45) NULL,
+                      PRIMARY KEY (id),
                       FOREIGN KEY (user_id) REFERENCES user(id),
                       FOREIGN KEY (department_id) REFERENCES department(id),
-                      FOREIGN KEY (project_id) REFERENCES project(id)
 );
 
 -- Insert a dummy user
@@ -72,17 +71,17 @@ INSERT INTO project (name)
 VALUES ('Talking AI'), ('Webpage for Jens'), ('Drone software'), ('Christmas party');
 
 -- Insert some sample tasks
-INSERT INTO task (title, description, hours, start_date, end_date, status, department_id, project_id)
-VALUES ('Hjemmesiden', 'fix HTML koden', 10, '2023-01-01', '2023-02-02', 'Unassigned', 1, 2);
+INSERT INTO task (title, description, note, hours, pay_rate, flag, start_date, end_date, status, department, project)
+VALUES ('Title 1', 'Description 1', 'Note 1', 40, 500, 0, '2023-05-01', '2023-05-31', 'Active', 'Department 1', 'Project 1');
 
-INSERT INTO task (user_id, title, description, hours, start_date, end_date, status, department_id, project_id)
-VALUES (1, 'CSS Kode', 'fix CSS koden', 5, '2023-05-02', '2023-06-19', 'Assigned', 1, 3);
+INSERT INTO task (title, description, note, hours, pay_rate, flag, start_date, end_date, status, department, project)
+VALUES ('Title 2', 'Description 2', 'Note 2', 30, 500, 0, '2023-06-01', '2023-06-30', 'Active', 'Department 2', 'Project 2');
 
-INSERT INTO task (title, description, hours, start_date, end_date, status, department_id, project_id)
-VALUES ('Thymeleaf', 'Lav nu noget', 7, '2023-01-01', '2023-02-09', 'Unassigned', 2, 1);
+INSERT INTO task (title, description, note, hours, pay_rate, flag, start_date, end_date, status, department, project)
+VALUES ('Title 3', 'Description 3', 'Note 3', 20, 500, 0, '2023-07-01', '2023-07-31', 'Active', 'Department 3', 'Project 3');
 
-INSERT INTO task (user_id, title, description, hours, start_date, end_date, status, department_id, project_id)
-VALUES (1, 'Er du stadig ik færdig?', 'Useriøst', 18, '2023-05-02', '2023-06-19', 'Assigned', 3, 2);
+INSERT INTO task (title, description, note, hours, pay_rate, flag, start_date, end_date, status, department, project)
+VALUES ('Title 4', 'Description 4', 'Note 4', 50, 500, 0, '2023-08-01', '2023-08-31', 'Active', 'Department 4', 'Project 4');
 
 /* https://bcrypt-generator.com/ to make hash code (10) */
 
