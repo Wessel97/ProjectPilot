@@ -8,16 +8,19 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @Service
-public class DatabaseService {
+public class DatabaseService
+{
 
     private final DataSource dataSource;
 
     @Autowired
-    public DatabaseService(DataSource dataSource) {
+    public DatabaseService(DataSource dataSource)
+    {
         this.dataSource = dataSource;
     }
-
-    public Connection getConnection() throws SQLException {
+    
+    public Connection getConnection() throws SQLException
+    {
         return dataSource.getConnection();
     }
 }

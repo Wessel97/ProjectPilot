@@ -35,8 +35,7 @@ public class TaskController
             return "redirect:/";
         }
         // Create a new Task object and add it to the model
-        Task task = new Task();
-        model.addAttribute("task", task);
+        model.addAttribute("task", new Task());
         return "addTask";
     }
 
@@ -91,7 +90,7 @@ public class TaskController
         //find produkt med id=updateId i databasen
         Task updateTask = taskRepository.getTaskByTaskId(updateId);
 
-        //tilføj produkt til viewmodel, så det kan bruges i Thymeleaf
+        //tilføj produkt til view model, så det kan bruges i Thymeleaf
         model.addAttribute("task", updateTask);
 
         //fortæl Spring hvilken HTML-side, der skal vises

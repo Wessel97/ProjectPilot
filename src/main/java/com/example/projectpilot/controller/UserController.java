@@ -2,8 +2,6 @@ package com.example.projectpilot.controller;
 
 import com.example.projectpilot.model.Task;
 import com.example.projectpilot.model.User;
-import com.example.projectpilot.repository.DepartmentRepository;
-import com.example.projectpilot.repository.ProjectRepository;
 import com.example.projectpilot.repository.TaskRepository;
 import com.example.projectpilot.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
@@ -16,24 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserController
 {
 
-    private UserRepository userRepository;
-    private TaskRepository taskRepository;
-    private DepartmentRepository departmentRepository;
-    private ProjectRepository projectRepository;
-
+    private final UserRepository userRepository;
+    private final TaskRepository taskRepository;
     @Autowired
-    public UserController(UserRepository userRepository, TaskRepository taskRepository,
-                          DepartmentRepository departmentRepository, ProjectRepository projectRepository)
+    public UserController(UserRepository userRepository, TaskRepository taskRepository)
     {
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
-        this.departmentRepository = departmentRepository;
-        this.projectRepository = projectRepository;
-    }
-
-
-    public UserController()
-    {
     }
 
     @GetMapping("/")
@@ -71,7 +58,7 @@ public class UserController
         }
     }
 
-    // This method is used to logout the user and invalidate the session.
+    // This method is used to log out the user and invalidate the session.
     @GetMapping("/logout")
     public String logout(HttpSession session)
     {
@@ -113,7 +100,7 @@ public class UserController
 
     // This method is used to show all users.
     @GetMapping("/addUser")
-    public String showAddUser(HttpSession session, Model model)
+    public String showAddUser(HttpSession session)
     {
         if ( session.getAttribute("user") == null )
         {
@@ -169,7 +156,7 @@ public class UserController
 
     // This method is used to assign a user to a task.
     @PostMapping("/assignUser")
-    // Fejlen er umiddelbart at userId kun får 1, selvom kan man se på htmlen at den henter forskellige userid'er
+    // Fejlen er umiddelbart at userId kun får 1, selvom kan man se på html at den henter forskellige userid
     // muligvis er det RequestParam??
     public String assignUser(@RequestParam("task_id") int task_id, @RequestParam("userId") int userId, HttpSession session)
     {
@@ -184,7 +171,7 @@ public class UserController
         return "redirect:/allTasks";
     }
 
-    // This method is used to show all users page whith alle users.
+    // This method is used to show all users page with alle users.
     @GetMapping("/allUsers")
     public String showAllUsers(HttpSession session, Model model)
     {

@@ -3,7 +3,6 @@ package com.example.projectpilot.controller;
 import com.example.projectpilot.model.Project;
 import com.example.projectpilot.repository.ProjectRepository;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class projectController
+public class ProjectController
 {
     private final ProjectRepository projectRepository;
 
-    public projectController(ProjectRepository projectRepository)
+    public ProjectController(ProjectRepository projectRepository)
     {
         this.projectRepository = projectRepository;
     }
@@ -57,14 +56,14 @@ public class projectController
     }
 
     @PostMapping("/addProject")
-    public String addProject(@RequestParam("projectName") String projectName, HttpSession session)
+    public String addProject(@RequestParam("project-name") String newName, HttpSession session)
     {
         if ( session.getAttribute("user") == null )
         {
             return "redirect:/";
         }
         Project newProject = new Project();
-        newProject.setProjectName(projectName);
+        newProject.setProjectName(newName);
         projectRepository.addProject(newProject);
         return "redirect:/allProjects";
     }
@@ -76,8 +75,8 @@ public class projectController
         {
             return "redirect:/";
         }
-        Project project = projectRepository.getProjectByID(projectId);
-        model.addAttribute("project", project);
+        Project updateProject = projectRepository.getProjectByID(projectId);
+        model.addAttribute("project", updateProject);
         return "updateProject";
     }
 

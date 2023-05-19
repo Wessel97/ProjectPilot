@@ -37,7 +37,7 @@ public class DepartmentController
     }
 
     @GetMapping("/addDepartment")
-    public String addDepartment(HttpSession session, Model model)
+    public String addDepartment(HttpSession session)
     {
         if ( session.getAttribute("user") == null )
         {
