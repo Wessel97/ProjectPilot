@@ -16,7 +16,10 @@
         <tbody>
         <tr th:each="department : ${department}">
             <td th:text="${department.id}">42</td>
-            <td th:text="${department.name}">42</td>
+            <td th:text="${department.departmentName}">42</td>
+            <td>
+                <a th:href="@{'/showDepartment/' + ${department.id}}" href="/showDepartment"><button>ENTER</button></a>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -24,8 +27,6 @@
     <a href="/userTasks"><button>User Tasks</button></a>
     <a href="/allTasks"><button>All Users</button></a>
     <a href="/admin"><button>Admin</button></a>
-    <a href="/allDepartments"><button>Admin</button></a>
-
 
 </div>
 </body>
