@@ -1,6 +1,7 @@
 package com.example.projectpilot.repository;
 import com.example.projectpilot.model.Task;
-import org.springframework.beans.factory.annotation.Value;
+import com.example.projectpilot.service.DatabaseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -10,12 +11,14 @@ import java.util.List;
 @Repository
 public class TaskRepository {
 
-    @Value("${spring.datasource.url}") //jdbc:mysql://localhost:3306/ProjectPilotDB
-    private String DB_URL;
-    @Value("${spring.datasource.username}") //ProjectPilotDB
-    private String UID;
-    @Value("${spring.datasource.password}") //Bugbusters23
-    private String PWD;
+    private DatabaseService databaseService;
+
+    @Autowired
+    public TaskRepository(DatabaseService databaseService) {
+        this.databaseService = databaseService;
+    }
+
+
 
     /*--------------------------------------------------------------------
                         //Get metoder (metode 1-5)
@@ -50,7 +53,7 @@ public class TaskRepository {
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //create statement
             Statement statement = connection.createStatement();
             //execute statement
@@ -88,7 +91,7 @@ public class TaskRepository {
         try
         {
             // Establish a connection to the database
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             // Prepare a statement with the given FIND_QUERY
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             // Set the userId parameter for the prepared statement
@@ -127,7 +130,7 @@ public class TaskRepository {
         try
         {
             // Establish a connection to the database
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             // Prepare a statement with the given FIND_QUERY
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             // Set the userId parameter for the prepared statement
@@ -165,7 +168,7 @@ public class TaskRepository {
         Task selectTask = null;
         try
         {
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             preparedStatement.setInt(1, taskId);
 
@@ -195,7 +198,7 @@ public class TaskRepository {
         try
         {
             // Establish a connection to the database
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             // Prepare a statement with the given FIND_QUERY
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             // Set the userId parameter for the prepared statement
@@ -233,7 +236,7 @@ public class TaskRepository {
     public void addTask(Task task)
     {
         try {
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             final String CREATE_QUERY = "INSERT INTO task(title, description, note, hours, start_date, end_date, status, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             // Make a boolean to check if the task was added (sentinel). Makes the code more readable.
 
@@ -266,7 +269,7 @@ public class TaskRepository {
         try
         {
             // db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             // prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
 
@@ -325,7 +328,7 @@ public class TaskRepository {
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(task_id)
@@ -352,8 +355,10 @@ public class TaskRepository {
     public void assignTo(Task task, int userID) {
         final String UPDATE_QUERY = "UPDATE task SET user_id = ? WHERE task_id = ?";
 
-        try (Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
+        try
+        {
+            Connection connection = databaseService.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
 
 
             int task_id = task.getId();
@@ -382,7 +387,7 @@ public class TaskRepository {
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             // create statement. This will be used to execute the query.
             Statement statement = connection.createStatement();
             // execute query and store result in resultSet.
@@ -450,7 +455,7 @@ public class TaskRepository {
         int sumHours = 0;
         try {
             String query = "SELECT SUM(hours) FROM ProjectPilotDB.task";
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -467,7 +472,7 @@ public class TaskRepository {
         int sumHoursByDept = 0;
         try {
             String query = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE department = ?";
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, department);
             ResultSet resultSet = statement.executeQuery();
@@ -485,7 +490,7 @@ public class TaskRepository {
         int sumHoursByID = 0;
         try {
             String query = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE user_id = ?";
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userID);
             ResultSet resultSet = statement.executeQuery();
@@ -503,7 +508,7 @@ public class TaskRepository {
         int sumPrice = 0;
         try {
             String query = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task";
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -520,7 +525,7 @@ public class TaskRepository {
         int sumPriceByDept = 0;
         try {
             String query = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE department = ?";
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, department);
             ResultSet resultSet = statement.executeQuery();
@@ -538,7 +543,7 @@ public class TaskRepository {
         int sumPriceByID = 0;
         try {
             String query = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE user_id=?";
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userID);
             ResultSet resultSet = statement.executeQuery();

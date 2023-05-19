@@ -1,21 +1,23 @@
 package com.example.projectpilot.repository;
 
 import com.example.projectpilot.model.Project;
-import org.springframework.beans.factory.annotation.Value;
+import com.example.projectpilot.service.DatabaseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ProjectRepository
 {
+    private DatabaseService databaseService;
 
-    @Value("${spring.datasource.url}") //jdbc:mysql://localhost:3306/ProjectPilotDB
-    private String DB_URL;
-    @Value("${spring.datasource.username}") //ProjectPilotDB
-    private String UID;
-    @Value("${spring.datasource.password}") //Bugbusters23
-    private String PWD;
+    @Autowired
+    public ProjectRepository(DatabaseService databaseService) {
+        this.databaseService = databaseService;
+    }
 
     public Project getProject(ResultSet resultSet) throws SQLException
     {
@@ -38,7 +40,7 @@ public class ProjectRepository
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //create statement
             Statement statement = connection.createStatement();
             //get result set
@@ -69,7 +71,7 @@ public class ProjectRepository
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters
@@ -98,7 +100,7 @@ public class ProjectRepository
         try
         {
             // DB connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             // Prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
             // Set first_name
@@ -129,7 +131,7 @@ public class ProjectRepository
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters for prepared statement (user_id)
@@ -157,7 +159,7 @@ public class ProjectRepository
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             //set parameters for prepared statement
@@ -181,7 +183,7 @@ public class ProjectRepository
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(user_id)

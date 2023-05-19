@@ -1,7 +1,8 @@
 package com.example.projectpilot.repository;
 
 import com.example.projectpilot.model.User;
-import org.springframework.beans.factory.annotation.Value;
+import com.example.projectpilot.service.DatabaseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -12,12 +13,12 @@ import java.util.List;
 @Repository
 public class UserRepository
 {
-    @Value("${spring.datasource.url}") //jdbc:mysql://localhost:3306/ProjectPilotDB
-    private String DB_URL;
-    @Value("${spring.datasource.username}") //ProjectPilotDB
-    private String UID;
-    @Value("${spring.datasource.password}") //Bugbusters23
-    private String PWD;
+    private DatabaseService databaseService;
+
+    @Autowired
+    public UserRepository(DatabaseService databaseService) {
+        this.databaseService = databaseService;
+    }
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
@@ -49,7 +50,7 @@ public class UserRepository
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //create statement
             Statement statement = connection.createStatement();
             //get result set
@@ -80,7 +81,7 @@ public class UserRepository
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters
@@ -111,7 +112,7 @@ public class UserRepository
         try
         {
             // DB connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             // Prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
             // Set first_name
@@ -149,7 +150,7 @@ public class UserRepository
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters for prepared statement (user_id)
@@ -179,7 +180,7 @@ public class UserRepository
         user.setEmail(email);
         try
         {
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
 
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             preparedStatement.setString(1, email);
@@ -228,7 +229,7 @@ public class UserRepository
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             //set parameters for prepared statement
@@ -263,7 +264,7 @@ public class UserRepository
         try
         {
             // Establish a database connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             // Prepare the SQL query
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             // Set the parameters for the query (email)
@@ -311,7 +312,7 @@ public class UserRepository
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(user_id)

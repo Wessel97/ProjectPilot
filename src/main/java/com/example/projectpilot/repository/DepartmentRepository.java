@@ -1,21 +1,23 @@
 package com.example.projectpilot.repository;
 
 import com.example.projectpilot.model.Department;
-import org.springframework.beans.factory.annotation.Value;
+import com.example.projectpilot.service.DatabaseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-@Repository
-public class DepartmentRepository {
 
-    @Value("${spring.datasource.url}") //jdbc:mysql://localhost:3306/ProjectPilotDB
-    private String DB_URL;
-    @Value("${spring.datasource.username}") //ProjectPilotDB
-    private String UID;
-    @Value("${spring.datasource.password}") //Bugbusters23
-    private String PWD;
+@Repository
+public class DepartmentRepository
+{
+    private DatabaseService databaseService;
+
+    @Autowired
+    public DepartmentRepository(DatabaseService databaseService) {
+        this.databaseService = databaseService;
+    }
 
     public Department getDepartment(ResultSet resultSet) throws SQLException
     {
@@ -37,7 +39,7 @@ public class DepartmentRepository {
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //create statement
             Statement statement = connection.createStatement();
             //get result set
@@ -68,7 +70,7 @@ public class DepartmentRepository {
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters
@@ -95,7 +97,7 @@ public class DepartmentRepository {
         try
         {
             // DB connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             // Prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
             // Set first_name
@@ -125,7 +127,7 @@ public class DepartmentRepository {
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters for prepared statement (user_id)
@@ -152,7 +154,7 @@ public class DepartmentRepository {
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             //set parameters for prepared statement
@@ -174,7 +176,7 @@ public class DepartmentRepository {
         try
         {
             //db connection
-            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(user_id)
