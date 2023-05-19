@@ -8,14 +8,14 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 @Repository
 public class ProjectRepository
 {
     private final DatabaseService databaseService;
 
     @Autowired
-    public ProjectRepository(DatabaseService databaseService) {
+    public ProjectRepository(DatabaseService databaseService)
+    {
         this.databaseService = databaseService;
     }
 
@@ -25,7 +25,6 @@ public class ProjectRepository
         int projectID = resultSet.getInt(1);
         //get first_name from result set
         String projectName = resultSet.getString(2);
-
         //create user object
         return new Project(projectID, projectName);
     }
@@ -62,7 +61,6 @@ public class ProjectRepository
             e.printStackTrace();
         }
         return projectList;
-
     }
 
     public boolean checkIfProjectExists(String checkName)
@@ -120,7 +118,6 @@ public class ProjectRepository
         }
         // Return false if user was not added
         return false;
-
     }
 
     public Project getProjectByID(int projectID)
