@@ -5,6 +5,7 @@ import com.example.projectpilot.model.User;
 import com.example.projectpilot.repository.TaskRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
+@Controller
 public class TaskController
 {
     private final TaskRepository taskRepository;
