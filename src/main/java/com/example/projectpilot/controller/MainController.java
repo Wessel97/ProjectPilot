@@ -50,18 +50,154 @@ public class MainController
         return "start";
     }
 
-    // Viser alle tasks
-    @GetMapping("/allTasks")
-    public String showAllTasks(HttpSession session, Model model)
+
+    /*--------------------------------------------------------------------
+                            // User methods
+    --------------------------------------------------------------------*/
+
+    // This method is used to show the login page.
+    @GetMapping("/login")
+    public String showLogin()
+    {
+        return "login";
+        //Ingen HttpSession her da man her logger ind.
+    }
+
+    // This method is used to verify the user.
+    @PostMapping("/login")
+    public String login(@RequestParam("email") String email,
+                        @RequestParam("password") String password,
+                        Model model,
+                        HttpSession session)
+    {
+        //Check if user with mail already exists
+        if ( !userRepository.verifyUser(email, password) )
+        {
+            model.addAttribute("errorMessage", "Email or password invalid");
+            return "login";
+        }
+        else
+        {
+            User user = userRepository.getUserByEmailAndPassword(email, password);
+            session.setAttribute("user", user);
+            return "redirect:/allTasks";
+        }
+    }
+
+    // This method is used to logout the user and invalidate the session.
+    @GetMapping("/logout")
+    public String logout(HttpSession session)
+    {
+        session.invalidate();
+        return "redirect:/";
+    }
+
+    // This method is used to show the register page.
+    @GetMapping("/register")
+    public String registerUser()
+    {
+        return "register";
+        //Ingen HTTPSession her fordi alle skal kunne lave et login.
+    }
+
+    // This method is used to register the user.
+    @PostMapping("/register")
+    public String registerUser(@RequestParam("first_name") String firstname,
+                               @RequestParam("last_name") String lastname,
+                               @RequestParam("email") String email,
+                               @RequestParam("password") String password,
+                               Model model,
+                               HttpSession session)
+    {
+        //Check if user with mail already exists
+        if ( !userRepository.checkIfUserExists(email) )
+        {
+            User user = new User(firstname, lastname, email, password);
+            userRepository.addUser(user);
+            session.setAttribute("user", user);
+            return "redirect:/allTasks";
+        }
+        else
+        {
+            model.addAttribute("errorMessage", "Email already in use");
+            return "register";
+        }
+    }
+
+    // This method is used to show all users.
+    @GetMapping("/addUser")
+    public String showAddUser(HttpSession session, Model model)
     {
         if ( session.getAttribute("user") == null )
         {
             return "redirect:/";
         }
-        model.addAttribute("task", taskRepository.getAllTasks());
-        return "allTasks";
+
+        return "addUser";
     }
 
+
+    // This method is used to add a user.
+    @PostMapping("/addUser")
+    public String addUser(@RequestParam("user-firstname") String newFirstName,
+                          @RequestParam("user-lastname") String newLastName,
+                          @RequestParam("user-email") String newEmail,
+                          @RequestParam("user-password") String newPassword,
+                          HttpSession session)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+
+        //lave en ny User
+        User newUser = new User();
+        newUser.setFirstName(newFirstName);
+        newUser.setLastName(newLastName);
+        newUser.setEmail(newEmail);
+        newUser.setPassword(newPassword);
+
+        //Gem ny User
+        userRepository.addUser(newUser);
+
+        //Tilbage til start så man kan logge ind
+        return "start";
+    }
+
+    // This method is used to show the assignUser page.
+    @GetMapping("/assignUser/{id}")
+    public String showAssignUser(@PathVariable("id") int task_Id, HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        Task task = taskRepository.getTaskByTaskId(task_Id);
+
+        // Set the task object as a model attribute
+        model.addAttribute("task", task);
+        model.addAttribute("users", userRepository.getAllUsers());
+        return "assignUser";
+    }
+
+    // This method is used to assign a user to a task.
+    @PostMapping("/assignUser")
+    // Fejlen er umiddelbart at userId kun får 1, selvom kan man se på htmlen at den henter forskellige userid'er
+    // muligvis er det RequestParam??
+    public String assignUser(@RequestParam("task_id") int task_id, @RequestParam("userId") int userId, HttpSession session)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        Task updateTask = taskRepository.getTaskByTaskId(task_id);
+
+        taskRepository.assignTo(updateTask, userId);
+
+        return "redirect:/allTasks";
+    }
+
+    // This method is used to show all users page whith alle users.
     @GetMapping("/allUsers")
     public String showAllUsers(HttpSession session, Model model)
     {
@@ -73,6 +209,7 @@ public class MainController
         return "allUsers";
     }
 
+    // This method is used to show the admin page.
     @GetMapping("/admin")
     public String admin(HttpSession session)
     {
@@ -85,48 +222,10 @@ public class MainController
         return "admin";
     }
 
-    @GetMapping("/allDepartments")
-    public String allDepartments(HttpSession session, Model model)
-    {
-        if(session.getAttribute("user") == null )
-        {
-            return "redirect:/";
-        }
-        model.addAttribute("department", departmentRepository.getAllDepartments());
+    /*--------------------------------------------------------------------
+                            // Task methods
+    --------------------------------------------------------------------*/
 
-        return "allDepartments";
-    }
-
-    @GetMapping("/addDepartment")
-    public String addDepartment(HttpSession session, Model model)
-    {
-        if ( session.getAttribute("user") == null )
-        {
-            return "redirect:/";
-        }
-        // Create a new Task object and add it to the model
-
-        return "addDepartment";
-    }
-
-    @GetMapping("/showDepartment/{id}")
-    public String showDepartment(@PathVariable("id") int id, HttpSession session, Model model)
-    {
-        if ( session.getAttribute("user") == null)
-        {
-            return "redirect:/";
-        }
-
-        List<Task> taskList = taskRepository.getAllTasksByDepartmentID(id);
-        model.addAttribute("task", taskList);
-
-        return "showDepartment";
-    }
-
-    //
-    //
-
-    // Viser add tasks siden
     @GetMapping("/addTask")
     public String showAddTask(HttpSession session, Model model)
     {
@@ -177,111 +276,6 @@ public class MainController
 
         // Går tilbage til alle tasks
         return "redirect:/allTasks";
-    }
-
-
-    // Viser "opret bruger" siden
-    @GetMapping("/addUser")
-    public String showAddUser(HttpSession session, Model model)
-    {
-        if ( session.getAttribute("user") == null )
-        {
-            return "redirect:/";
-        }
-
-        return "addUser";
-    }
-
-    // Opretter den nye user til user repository (med HTML form)
-    @PostMapping("/addUser")
-    public String addUser(@RequestParam("user-firstname") String newFirstName,
-                          @RequestParam("user-lastname") String newLastName,
-                          @RequestParam("user-email") String newEmail,
-                          @RequestParam("user-password") String newPassword,
-                          HttpSession session)
-    {
-        if ( session.getAttribute("user") == null )
-        {
-            return "redirect:/";
-        }
-
-        //lave en ny User
-        User newUser = new User();
-        newUser.setFirstName(newFirstName);
-        newUser.setLastName(newLastName);
-        newUser.setEmail(newEmail);
-        newUser.setPassword(newPassword);
-
-        //Gem ny User
-        userRepository.addUser(newUser);
-
-        //Tilbage til start så man kan logge ind
-        return "start";
-    }
-
-
-    @GetMapping("/login")
-    public String showLogin()
-    {
-        return "login";
-        //Ingen HttpSession her da man her logger ind.
-    }
-
-    @PostMapping("/login")
-    public String login(@RequestParam("email") String email,
-                        @RequestParam("password") String password,
-                        Model model,
-                        HttpSession session)
-    {
-        //Check if user with mail already exists
-        if ( !userRepository.verifyUser(email, password) )
-        {
-            model.addAttribute("errorMessage", "Email or password invalid");
-            return "login";
-        }
-        else
-        {
-            User user = userRepository.getUserByEmailAndPassword(email, password);
-            session.setAttribute("user", user);
-            return "redirect:/allTasks";
-        }
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session)
-    {
-        session.invalidate();
-        return "redirect:/";
-    }
-
-    @GetMapping("/register")
-    public String registerUser()
-    {
-        return "register";
-        //Ingen HTTPSession her fordi alle skal kunne lave et login.
-    }
-
-    @PostMapping("/register")
-    public String registerUser(@RequestParam("first_name") String firstname,
-                               @RequestParam("last_name") String lastname,
-                               @RequestParam("email") String email,
-                               @RequestParam("password") String password,
-                               Model model,
-                               HttpSession session)
-    {
-        //Check if user with mail already exists
-        if ( !userRepository.checkIfUserExists(email) )
-        {
-            User user = new User(firstname, lastname, email, password);
-            userRepository.addUser(user);
-            session.setAttribute("user", user);
-            return "redirect:/allTasks";
-        }
-        else
-        {
-            model.addAttribute("errorMessage", "Email already in use");
-            return "register";
-        }
     }
 
     // Viser update task siden
@@ -338,37 +332,6 @@ public class MainController
         return "redirect:/allTasks";
     }
 
-    @GetMapping("/assignUser/{id}")
-    public String showAssignUser(@PathVariable("id") int task_Id, HttpSession session, Model model)
-    {
-        if ( session.getAttribute("user") == null )
-        {
-            return "redirect:/";
-        }
-        Task task = taskRepository.getTaskByTaskId(task_Id);
-
-        // Set the task object as a model attribute
-        model.addAttribute("task", task);
-        model.addAttribute("users", userRepository.getAllUsers());
-        return "assignUser";
-    }
-
-    @PostMapping("/assignUser")
-    // Fejlen er umiddelbart at userId kun får 1, selvom kan man se på htmlen at den henter forskellige userid'er
-    // muligvis er det RequestParam??
-    public String assignUser(@RequestParam("task_id") int task_id, @RequestParam("userId") int userId, HttpSession session)
-    {
-        if ( session.getAttribute("user") == null )
-        {
-            return "redirect:/";
-        }
-        Task updateTask = taskRepository.getTaskByTaskId(task_id);
-
-        taskRepository.assignTo(updateTask, userId);
-
-        return "redirect:/allTasks";
-    }
-
 
     // Sletter en task
     @PostMapping("/deleteTask/{id}")
@@ -402,6 +365,63 @@ public class MainController
         return "userTasks";
     }
 
+    // Viser alle tasks
+    @GetMapping("/allTasks")
+    public String showAllTasks(HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        model.addAttribute("task", taskRepository.getAllTasks());
+        return "allTasks";
+    }
+
+         /*--------------------------------------------------------
+                            Department methods
+         ----------------------------------------------------------*/
+
+    @GetMapping("/allDepartments")
+    public String allDepartments(HttpSession session, Model model)
+    {
+        if(session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        model.addAttribute("department", departmentRepository.getAllDepartments());
+
+        return "allDepartments";
+    }
+
+    @GetMapping("/addDepartment")
+    public String addDepartment(HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        // Create a new Task object and add it to the model
+
+        return "addDepartment";
+    }
+
+    @GetMapping("/showDepartment/{id}")
+    public String showDepartment(@PathVariable("id") int id, HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null)
+        {
+            return "redirect:/";
+        }
+
+        List<Task> taskList = taskRepository.getAllTasksByDepartmentID(id);
+        model.addAttribute("task", taskList);
+
+        return "showDepartment";
+    }
+
+         /*--------------------------------------------------------
+                            Project methods
+         ----------------------------------------------------------*/
 
     @GetMapping("/allProjects")
     public String showAllProjects(HttpSession session, Model model)
