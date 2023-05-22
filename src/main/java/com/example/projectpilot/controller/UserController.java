@@ -196,7 +196,7 @@ public class UserController
             return "redirect:/";
         }
 
-        return "admin";
+        return "adminStart";
     }
 
     @GetMapping("/deleteUser/{id}")
