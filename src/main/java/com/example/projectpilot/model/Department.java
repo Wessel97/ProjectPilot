@@ -3,7 +3,6 @@ package com.example.projectpilot.model;
 public class Department {
     private int id;
     private int project_id;
-
     private String departmentName;
 
     public Department(){}
@@ -11,6 +10,11 @@ public class Department {
     public Department(int id, int project_id, String departmentName) {
         this.id = id;
         this.project_id = project_id;
+        this.departmentName = departmentName;
+    }
+
+    public Department(int id, String departmentName) {
+        this.id = id;
         this.departmentName = departmentName;
     }
 

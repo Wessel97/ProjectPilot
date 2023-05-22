@@ -91,17 +91,17 @@ public class DepartmentController
         return "showDepartment";
     }
 
-    @GetMapping("/allDepartments")
-    public String showDepartmentsByProject(HttpSession session, Model model)
+    @GetMapping("/showAllDepartments/{id}")
+    public String showDepartmentsByProject(@PathVariable("id") int id,  HttpSession session, Model model)
     {
         if (session.getAttribute("user") == null)
         {
             return "redirect:/";
         }
         User user = (User) session.getAttribute("user");
-        List<Task> taskList = taskRepository.getAllTasksByUserID(user.getId());
-        model.addAttribute("task", taskList);
-        return "userTasks";
+        List<Department> departmentList = departmentRepository.getAllDepartmentsByProject(id);
+        model.addAttribute("department", departmentList);
+        return "showAllDepartments";
     }
 
     @GetMapping("/updateDepartment/{id}")
@@ -128,8 +128,8 @@ public class DepartmentController
         {
             return "redirect:/";
         }
-        Department updateDepartment = new Department(departmentName, departmentId);
-        DepartmentRepository.updateDepartment(updateDepartment);
+        Department department = new Department(departmentId, departmentName);
+        departmentRepository.updateDepartment(department);
         return "redirect:/allDepartments";
     }
 
