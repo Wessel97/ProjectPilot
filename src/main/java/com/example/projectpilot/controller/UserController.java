@@ -76,8 +76,7 @@ public class UserController
 
     // This method is used to register the user.
     @PostMapping("/register")
-    public String registerUser(@RequestParam("admin") boolean admin,
-                               @RequestParam("first_name") String firstname,
+    public String registerUser(@RequestParam("first_name") String firstname,
                                @RequestParam("last_name") String lastname,
                                @RequestParam("email") String email,
                                @RequestParam("password") String password,
@@ -87,7 +86,7 @@ public class UserController
         //Check if user with mail already exists
         if ( !userRepository.checkIfUserExists(email) )
         {
-            User user = new User(admin, firstname, lastname, email, password);
+            User user = new User(firstname, lastname, email, password);
             userRepository.addUser(user);
             session.setAttribute("user", user);
             return "redirect:/allTasks";
@@ -186,7 +185,7 @@ public class UserController
     }
 
     // This method is used to show the admin page.
-    @GetMapping("/admin")
+    /*@GetMapping("/admin")
     public String admin(HttpSession session)
     {
         User user = (User) session.getAttribute("user");
@@ -202,7 +201,7 @@ public class UserController
         {
             return "adminStart";
         }
-    }
+    }*/
 
     @PostMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") int id, HttpSession session)
@@ -234,7 +233,6 @@ public class UserController
 
     @PostMapping("/editUser")
     public String editUser(@RequestParam("user-id") int id,
-                           @RequestParam("admin") boolean admin,
                            @RequestParam("user-firstname") String firstname,
                            @RequestParam("user-lastname") String lastname,
                            @RequestParam("user-email") String email,
@@ -246,7 +244,7 @@ public class UserController
             return "redirect:/";
         }
 
-        User user = new User(id, admin, firstname, lastname, email, password);
+        User user = new User(id, firstname, lastname, email, password);
 
         userRepository.updateUser(user);
 

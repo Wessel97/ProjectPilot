@@ -2,7 +2,6 @@ package com.example.projectpilot.model;
 
 public class User {
     private int id;
-    private boolean admin;
     private String first_name;
     private String last_name;
     private String email;
@@ -14,19 +13,17 @@ public class User {
     }
 
     //constructor
-    public User(boolean admin, String first_name, String last_name, String email, String password)
+    public User(String first_name, String last_name, String email, String password)
     {
-        this.admin = admin;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
         this.password = password;
     }
 
-    public User(int id, boolean admin, String first_name, String last_name, String email, String password)
+    public User(int id, String first_name, String last_name, String email, String password)
     {
         this.id = id;
-        this.admin = admin;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
@@ -81,15 +78,5 @@ public class User {
     public void setPassword(String password)
     {
         this.password = password;
-    }
-
-    public boolean isAdmin()
-    {
-        return admin;
-    }
-
-    public void setAdmin(boolean admin)
-    {
-        this.admin = admin;
     }
 }
