@@ -2,27 +2,27 @@ package com.example.projectpilot.model;
 
 public class Project
 {
-    private int projectID;
+    private int id;
     private String projectName;
 
     public Project()
     {
     }
 
-    public Project(int projectID, String projectName)
+    public Project(int id, String projectName)
     {
-        this.projectID = projectID;
+        this.id = id;
         this.projectName = projectName;
     }
 
-    public int getProjectID()
+    public int getid()
     {
-        return projectID;
+        return id;
     }
 
-    public void setProjectID(int projectID)
+    public void setid(int id)
     {
-        this.projectID = projectID;
+        this.id = id;
     }
 
     public String getProjectName()
