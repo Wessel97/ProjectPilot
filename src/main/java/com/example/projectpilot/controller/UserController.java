@@ -191,7 +191,7 @@ public class UserController
     public String admin(HttpSession session)
     {
         User user = (User) session.getAttribute("user");
-        if ( user == null || user.getId() != 1 )
+        if ( user == null || user.isAdmin() != true )
         {
             return "redirect:/";
         }
