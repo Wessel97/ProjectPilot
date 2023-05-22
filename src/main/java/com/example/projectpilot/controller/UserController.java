@@ -76,7 +76,8 @@ public class UserController
 
     // This method is used to register the user.
     @PostMapping("/register")
-    public String registerUser(@RequestParam("first_name") String firstname,
+    public String registerUser(@RequestParam("admin") boolean admin,
+                               @RequestParam("first_name") String firstname,
                                @RequestParam("last_name") String lastname,
                                @RequestParam("email") String email,
                                @RequestParam("password") String password,
@@ -86,7 +87,7 @@ public class UserController
         //Check if user with mail already exists
         if ( !userRepository.checkIfUserExists(email) )
         {
-            User user = new User(firstname, lastname, email, password);
+            User user = new User(admin, firstname, lastname, email, password);
             userRepository.addUser(user);
             session.setAttribute("user", user);
             return "redirect:/allTasks";
@@ -98,6 +99,8 @@ public class UserController
         }
     }
 
+    //Gør udmiddelbart ikke noget, bare ligesom registerUser
+    /*
     // This method is used to show all users.
     @GetMapping("/addUser")
     public String showAddUser(HttpSession session)
@@ -137,6 +140,8 @@ public class UserController
         //Tilbage til start så man kan logge ind
         return "start";
     }
+    */
+
 
     // This method is used to show the assignUser page.
     @GetMapping("/assignUser/{id}")
@@ -156,8 +161,6 @@ public class UserController
 
     // This method is used to assign a user to a task.
     @PostMapping("/assignUser")
-    // Fejlen er umiddelbart at userId kun får 1, selvom kan man se på html at den henter forskellige userid
-    // muligvis er det RequestParam??
     public String assignUser(@RequestParam("task_id") int task_id, @RequestParam("userId") int userId, HttpSession session)
     {
         if ( session.getAttribute("user") == null )
@@ -195,4 +198,54 @@ public class UserController
 
         return "admin";
     }
+
+    @GetMapping("/deleteUser/{id}")
+    public String deleteUser(@PathVariable("id") int id, HttpSession session)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+
+        User user = userRepository.getUserByID(id);
+
+        userRepository.deleteUserByID(user);
+        return "redirect:/allUsers";
+    }
+
+    @GetMapping("/editUser/{id}")
+    public String showEditUser(@PathVariable("id") int id, HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+
+        User user = userRepository.getUserByID(id);
+
+        model.addAttribute("user", user);
+        return "editUser";
+    }
+
+    @PostMapping("/editUser")
+    public String editUser(@RequestParam("user-id") int id,
+                           @RequestParam("admin") boolean admin,
+                           @RequestParam("user-firstname") String firstname,
+                           @RequestParam("user-lastname") String lastname,
+                           @RequestParam("user-email") String email,
+                           @RequestParam("user-password") String password,
+                           HttpSession session)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+
+        User user = new User(id, admin, firstname, lastname, email, password);
+
+        userRepository.updateUser(user);
+
+        return "redirect:/allUsers";
+    }
+
 }
