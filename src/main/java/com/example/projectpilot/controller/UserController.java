@@ -48,7 +48,7 @@ public class UserController
         if ( !userRepository.verifyUser(email, password))
         {
             model.addAttribute("errorMessage", "Email or password invalid");
-            return "login";
+            return "/login";
         }
         else
         {
@@ -190,12 +190,18 @@ public class UserController
     public String admin(HttpSession session)
     {
         User user = (User) session.getAttribute("user");
-        if ( user == null || user.isAdmin() != true )
+        if ( user == null)
         {
             return "redirect:/";
         }
-
-        return "adminStart";
+        else if (!user.isAdmin())
+        {
+            return "redirect:/allTasks";
+        }
+        else
+        {
+            return "adminStart";
+        }
     }
 
     @PostMapping("/deleteUser/{id}")
