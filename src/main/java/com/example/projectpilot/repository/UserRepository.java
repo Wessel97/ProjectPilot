@@ -192,15 +192,13 @@ public class UserRepository
             if ( resultSet.next() )
             {
                 int id = resultSet.getInt(1);
-                boolean admin = resultSet.getBoolean(2);
-                String first_name = resultSet.getString(3);
-                String last_name = resultSet.getString(4);
+                String first_name = resultSet.getString(2);
+                String last_name = resultSet.getString(3);
                 String hashedPassword = resultSet.getString(5); // Retrieve hashed password
 
                 if ( encoder.matches(password, hashedPassword) )
                 { // Compare plain password with hashed one
                     user.setID(id);
-                    user.setAdmin(admin);
                     user.setFirstName(first_name);
                     user.setLastName(last_name);
                 }
@@ -230,7 +228,7 @@ public class UserRepository
     public void updateUser(User user)
     {
         //query to update user
-        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.user SET  admin = ?, first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
+        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.user SET first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
         try
         {
             //db connection
@@ -239,18 +237,16 @@ public class UserRepository
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             //set parameters for prepared statement
 
-            //set admin
-            preparedStatement.setBoolean(1, user.isAdmin());
             //set first_name
-            preparedStatement.setString(2, user.getFirstName());
+            preparedStatement.setString(1, user.getFirstName());
             //set last_name
-            preparedStatement.setString(3, user.getLastName());
+            preparedStatement.setString(2, user.getLastName());
             //set email
-            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(3, user.getEmail());
             //set password
-            preparedStatement.setString(5, user.getPassword());
+            preparedStatement.setString(4, user.getPassword());
             //set user_id
-            preparedStatement.setInt(6, user.getId());
+            preparedStatement.setInt(5, user.getId());
             //execute statement
 
             preparedStatement.executeUpdate();
