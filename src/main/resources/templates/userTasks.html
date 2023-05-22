@@ -27,7 +27,7 @@
         </thead>
         <tbody>
         <tr th:each="task : ${task}">
-            <td th:text="${task.task_id}">42</td>
+            <td th:text="${task.id}">42</td>
             <td th:text="${task.user_id}">meningen med alting</td>
             <td th:text="${task.title}">666</td>
             <td th:text="${task.description}">666</td>
@@ -40,10 +40,10 @@
             <td th:text="${task.status}">666</td>
             <td th:text="${task.department}">666</td>
             <td>
-                <a th:href="@{'/updateTask/' + ${task.task_id}}" href="/updateTask"><button>UPDATE</button></a>
+                <a th:href="@{'/updateTask/' + ${task.id}}" href="/updateTask"><button>UPDATE</button></a>
             </td>
             <td>
-                <form th:action="@{'/deleteTask/' + ${task.task_id}}" method="post">
+                <form th:action="@{'/deleteTask/' + ${task.id}}" method="post">
                     <button type="submit">DELETE</button>
                 </form>
             </td>
