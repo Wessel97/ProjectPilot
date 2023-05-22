@@ -27,16 +27,18 @@ public class UserRepository
     {
         //get user_id from result set
         int id = resultSet.getInt(1);
+        //get admin status from result set
+        boolean admin = resultSet.getBoolean(2);
         //get first_name from result set
-        String first_name = resultSet.getString(2);
+        String first_name = resultSet.getString(3);
         //get last_name from result set
-        String last_name = resultSet.getString(3);
+        String last_name = resultSet.getString(4);
         //get email from result set
-        String email = resultSet.getString(4);
+        String email = resultSet.getString(5);
         //get password from result set
-        String password = resultSet.getString(5);
+        String password = resultSet.getString(6);
         //create user object
-        return new User(id, first_name, last_name, email, password);
+        return new User(id, admin, first_name, last_name, email, password);
     }
 
     //Method 2 get all users. This method will return a list of all users in the database.
@@ -108,23 +110,25 @@ public class UserRepository
     public boolean addUser(User user)
     {
         // Query to insert user
-        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.user (first_name, last_name, email, password) VALUES (?,?, ?, ?)";
+        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.user (admin, first_name, last_name, email, password) VALUES (?,?,?,?,?)";
         try
         {
             // DB connection
             Connection connection = databaseService.getConnection();
             // Prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
+            // Set admin status
+            preparedStatement.setBoolean(1, user.isAdmin());
             // Set first_name
-            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getFirstName());
             // Set last_name
-            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getLastName());
             // Set email
-            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getEmail());
             // Encrypt password
             String encryptedPassword = encoder.encode(user.getPassword());
             // Set encrypted password
-            preparedStatement.setString(4, encryptedPassword);
+            preparedStatement.setString(5, encryptedPassword);
             // Execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
             int rowsAffected = preparedStatement.executeUpdate();
             // Return true if rowsAffected is 1
@@ -181,7 +185,6 @@ public class UserRepository
         try
         {
             Connection connection = databaseService.getConnection();
-
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -189,13 +192,15 @@ public class UserRepository
             if ( resultSet.next() )
             {
                 int id = resultSet.getInt(1);
-                String first_name = resultSet.getString(2);
-                String last_name = resultSet.getString(3);
-                String hashedPassword = resultSet.getString(5); // Retrieve hashed password
+                boolean admin = resultSet.getBoolean(2);
+                String first_name = resultSet.getString(3);
+                String last_name = resultSet.getString(4);
+                String hashedPassword = resultSet.getString(6);
 
                 if ( encoder.matches(password, hashedPassword) )
                 { // Compare plain password with hashed one
                     user.setID(id);
+                    user.setAdmin(admin);
                     user.setFirstName(first_name);
                     user.setLastName(last_name);
                 }
@@ -225,7 +230,7 @@ public class UserRepository
     public void updateUser(User user)
     {
         //query to update user
-        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.user SET first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
+        final String UPDATE_QUERY = "UPDATE ProjectPilotDB.user SET admin = ?, first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
         try
         {
             //db connection
@@ -234,16 +239,18 @@ public class UserRepository
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             //set parameters for prepared statement
 
+            //set admin status
+            preparedStatement.setBoolean(1, user.isAdmin());
             //set first_name
-            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getFirstName());
             //set last_name
-            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getLastName());
             //set email
-            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getEmail());
             //set password
-            preparedStatement.setString(4, user.getPassword());
+            preparedStatement.setString(5, user.getPassword());
             //set user_id
-            preparedStatement.setInt(5, user.getId());
+            preparedStatement.setInt(6, user.getId());
             //execute statement
 
             preparedStatement.executeUpdate();

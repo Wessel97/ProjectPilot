@@ -54,9 +54,17 @@ public class UserController
         {
             User user = userRepository.getUserByEmailAndPassword(email, password);
             session.setAttribute("user", user);
-            return "redirect:/allTasks";
+            if (user.isAdmin())
+            {
+                return "redirect:/allUsers";
+            }
+            else
+            {
+                return "redirect:/allTasks";
+            }
         }
     }
+
 
     // This method is used to log out the user and invalidate the session.
     @GetMapping("/logout")
@@ -76,7 +84,8 @@ public class UserController
 
     // This method is used to register the user.
     @PostMapping("/register")
-    public String registerUser(@RequestParam("first_name") String firstname,
+    public String registerUser(@RequestParam("admin") boolean admin,
+                               @RequestParam("first_name") String firstname,
                                @RequestParam("last_name") String lastname,
                                @RequestParam("email") String email,
                                @RequestParam("password") String password,
@@ -86,7 +95,7 @@ public class UserController
         //Check if user with mail already exists
         if ( !userRepository.checkIfUserExists(email) )
         {
-            User user = new User(firstname, lastname, email, password);
+            User user = new User(admin, firstname, lastname, email, password);
             userRepository.addUser(user);
             session.setAttribute("user", user);
             return "redirect:/allTasks";
@@ -114,7 +123,8 @@ public class UserController
 
     // This method is used to add a user.
     @PostMapping("/addUser")
-    public String addUser(@RequestParam("user-firstname") String newFirstName,
+    public String addUser(@RequestParam("user-admin") boolean newUserAdmin,
+                          @RequestParam("user-firstname") String newFirstName,
                           @RequestParam("user-lastname") String newLastName,
                           @RequestParam("user-email") String newEmail,
                           @RequestParam("user-password") String newPassword,
@@ -126,11 +136,7 @@ public class UserController
         }
 
         //lave en ny User
-        User newUser = new User();
-        newUser.setFirstName(newFirstName);
-        newUser.setLastName(newLastName);
-        newUser.setEmail(newEmail);
-        newUser.setPassword(newPassword);
+        User newUser = new User(newUserAdmin, newFirstName, newLastName, newEmail, newPassword);
 
         //Gem ny User
         userRepository.addUser(newUser);
@@ -184,8 +190,11 @@ public class UserController
         return "allUsers";
     }
 
-    // This method is used to show the admin page.
-    /*@GetMapping("/admin")
+    /* This method is used to show the admin page.
+    Can be used for home button.
+    When clicked, it will redirect to /adminStart if the user is an admin,
+    otherwise it will redirect to /allTasks. */
+    @GetMapping("/admin")
     public String admin(HttpSession session)
     {
         User user = (User) session.getAttribute("user");
@@ -201,7 +210,7 @@ public class UserController
         {
             return "adminStart";
         }
-    }*/
+    }
 
     @PostMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") int id, HttpSession session)
@@ -233,6 +242,7 @@ public class UserController
 
     @PostMapping("/editUser")
     public String editUser(@RequestParam("user-id") int id,
+                           @RequestParam("user-admin") boolean admin,
                            @RequestParam("user-firstname") String firstname,
                            @RequestParam("user-lastname") String lastname,
                            @RequestParam("user-email") String email,
@@ -244,7 +254,7 @@ public class UserController
             return "redirect:/";
         }
 
-        User user = new User(id, firstname, lastname, email, password);
+        User user = new User(id, admin, firstname, lastname, email, password);
 
         userRepository.updateUser(user);
 

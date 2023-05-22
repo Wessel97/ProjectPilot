@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS project;
 -- Create user table
 CREATE TABLE user (
                       id INT NOT NULL AUTO_INCREMENT,
-                      admin TINYINT(1) NOT NULL DEFAULT 0,
+                      admin BOOLEAN NOT NULL,
                       first_name VARCHAR(45) NOT NULL,
                       last_name VARCHAR(45) NOT NULL,
                       email VARCHAR(320) NOT NULL,
@@ -61,8 +61,8 @@ CREATE TABLE task (
 );
 
 -- Insert a dummy user
-INSERT INTO user (first_name, last_name, email, password)
-VALUES ('Dummy', 'Dummy', 'test@user.com', '$2a$10$il68RiDz8kf2O2Dr47csfe4o9IUMlcM19R5E09DZjM3U9bTCP3ymi');
+INSERT INTO user (admin, first_name, last_name, email, password)
+VALUES (TRUE, 'Dummy', 'Dummy', 'test@user.com', '$2a$10$il68RiDz8kf2O2Dr47csfe4o9IUMlcM19R5E09DZjM3U9bTCP3ymi');
 
 -- Insert departments
 INSERT INTO department (name)
