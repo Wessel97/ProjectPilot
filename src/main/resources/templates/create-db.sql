@@ -62,7 +62,7 @@ CREATE TABLE task (
 
 -- Insert a dummy user
 INSERT INTO user (first_name, last_name, email, password)
-VALUES ('Dummy', 'Dummy', 'test@user.com', '$2a$10$pHeHE88pqpu8Ji4Zyu6freyfMiGSygIAR0tZT4bO003otqXhFngJS');
+VALUES ('Dummy', 'Dummy', 'test@user.com', '$2a$10$il68RiDz8kf2O2Dr47csfe4o9IUMlcM19R5E09DZjM3U9bTCP3ymi');
 
 -- Insert departments
 INSERT INTO department (name)
