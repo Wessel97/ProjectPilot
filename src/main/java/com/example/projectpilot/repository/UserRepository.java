@@ -110,23 +110,24 @@ public class UserRepository
     public boolean addUser(User user)
     {
         // Query to insert user
-        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.user (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
+        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.user (admin, first_name, last_name, email, password) VALUES (?,?, ?, ?, ?)";
         try
         {
             // DB connection
             Connection connection = databaseService.getConnection();
             // Prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
+            preparedStatement.setBoolean(1, user.isAdmin());
             // Set first_name
-            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getFirstName());
             // Set last_name
-            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getLastName());
             // Set email
-            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getEmail());
             // Encrypt password
             String encryptedPassword = encoder.encode(user.getPassword());
             // Set encrypted password
-            preparedStatement.setString(4, encryptedPassword);
+            preparedStatement.setString(5, encryptedPassword);
             // Execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
             int rowsAffected = preparedStatement.executeUpdate();
             // Return true if rowsAffected is 1
@@ -191,13 +192,15 @@ public class UserRepository
             if ( resultSet.next() )
             {
                 int id = resultSet.getInt(1);
-                String first_name = resultSet.getString(2);
-                String last_name = resultSet.getString(3);
+                boolean admin = resultSet.getBoolean(2);
+                String first_name = resultSet.getString(3);
+                String last_name = resultSet.getString(4);
                 String hashedPassword = resultSet.getString(5); // Retrieve hashed password
 
                 if ( encoder.matches(password, hashedPassword) )
                 { // Compare plain password with hashed one
                     user.setID(id);
+                    user.setAdmin(admin);
                     user.setFirstName(first_name);
                     user.setLastName(last_name);
                 }

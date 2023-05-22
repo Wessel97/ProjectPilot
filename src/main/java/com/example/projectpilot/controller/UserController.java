@@ -45,7 +45,7 @@ public class UserController
                         HttpSession session)
     {
         //Check if user with mail already exists
-        if ( !userRepository.verifyUser(email, password) )
+        if ( !userRepository.verifyUser(email, password))
         {
             model.addAttribute("errorMessage", "Email or password invalid");
             return "login";
@@ -99,8 +99,7 @@ public class UserController
         }
     }
 
-    //Gør udmiddelbart ikke noget, bare ligesom registerUser
-    /*
+
     // This method is used to show all users.
     @GetMapping("/addUser")
     public String showAddUser(HttpSession session)
@@ -140,7 +139,7 @@ public class UserController
         //Tilbage til start så man kan logge ind
         return "start";
     }
-    */
+
 
 
     // This method is used to show the assignUser page.
