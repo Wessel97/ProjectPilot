@@ -1,12 +1,10 @@
-
-/* New code  */
-
 USE projectpilotdb;
 
 -- Drop foreign key constraint before dropping the tables
 -- Note: You might need to adjust these commands according to the actual foreign key names in your database.
 ALTER TABLE task DROP FOREIGN KEY task_ibfk_1;
 ALTER TABLE task DROP FOREIGN KEY task_ibfk_2;
+ALTER TABLE department DROP FOREIGN KEY department_ibfk_1;
 
 -- Drop tables if they exist
 DROP TABLE IF EXISTS user;
@@ -17,6 +15,7 @@ DROP TABLE IF EXISTS project;
 -- Create user table
 CREATE TABLE user (
                       id INT NOT NULL AUTO_INCREMENT,
+                      admin TINYINT(1) NOT NULL DEFAULT 0,
                       first_name VARCHAR(45) NOT NULL,
                       last_name VARCHAR(45) NOT NULL,
                       email VARCHAR(320) NOT NULL,

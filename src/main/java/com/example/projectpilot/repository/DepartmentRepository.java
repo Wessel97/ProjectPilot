@@ -172,33 +172,31 @@ public class DepartmentRepository
             e.printStackTrace();
         }}
 
-    public boolean deleteDepartmentById(Department department){
+    public boolean deleteDepartmentById(int departmentId){
         //query to delete user
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.department WHERE id = ?";
-        try
-        {
+        try{
             //db connection
             Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(user_id)
-            preparedStatement.setInt(1, department.getId());
+            preparedStatement.setInt(1, departmentId);
             //execute statement
             int foundDepartment = preparedStatement.executeUpdate();
             //return true if user was found and deleted (foundUser should be 1).
-            if ( foundDepartment == 1 )
-            {
+            if ( foundDepartment == 1 ){
                 return true;
             }
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e){
             System.out.println("Could not query database");
             e.printStackTrace();
         }
         //return false if department was not found and deleted
         return false;
     }
+
 
     public List<Department> getAllDepartmentsByProject(int projectId)
     {

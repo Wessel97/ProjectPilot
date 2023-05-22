@@ -81,7 +81,11 @@ public class ProjectController
     }
 
     @PostMapping("/updateProject")
-    public String updateProject(@RequestParam("projectID") int projectId, @RequestParam("projectName") String projectName, HttpSession session)
+    public String updateProject(
+            @RequestParam("projectID") int projectId,
+            @RequestParam("projectName") String projectName,
+            HttpSession session)
+
     {
         if ( session.getAttribute("user") == null )
         {
@@ -90,5 +94,26 @@ public class ProjectController
         Project updateProject = new Project(projectId, projectName);
         projectRepository.updateProject(updateProject);
         return "redirect:/allProjects";
+    }
+
+    @PostMapping("/deleteProject")
+    public String deleteProject(
+            @RequestParam("projectId") int projectId,
+            HttpSession session,
+            Model model)
+    {
+        if (session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        if(projectRepository.deleteProjectById(projectId))
+        {
+            return "redirect:/allProjects";
+        }
+        else
+        {
+            model.addAttribute("error", "An error occurred while deleting the project. Please try again.");
+            return "allProjects";
+        }
     }
 }

@@ -173,32 +173,29 @@ public class ProjectRepository
         }
     }
 
-    public boolean deleteProjectById(Project project)
-    {
-        //query to delete user
+    public boolean deleteProjectById(int projectId){
+        //query to delete project
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.project WHERE id = ?";
-        try
-        {
+        try{
             //db connection
             Connection connection = databaseService.getConnection();
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
-            //set parameters for prepared statement(user_id)
-            preparedStatement.setInt(1, project.getid());
+            //set parameters for prepared statement (project_id)
+            preparedStatement.setInt(1, projectId);
             //execute statement
-            int foundUser = preparedStatement.executeUpdate();
-            //return true if user was found and deleted (foundUser should be 1).
-            if ( foundUser == 1 )
-            {
+            int foundProject = preparedStatement.executeUpdate();
+            //return true if project was found and deleted (foundProject should be 1).
+            if ( foundProject == 1 ){
                 return true;
             }
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e){
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        //return false if user was not found and deleted
+        //return false if project was not found and deleted
         return false;
     }
+
 }

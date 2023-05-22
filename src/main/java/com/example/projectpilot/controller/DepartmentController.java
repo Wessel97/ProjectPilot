@@ -1,6 +1,7 @@
 package com.example.projectpilot.controller;
 
 import com.example.projectpilot.model.Department;
+import com.example.projectpilot.model.Project;
 import com.example.projectpilot.model.Task;
 import com.example.projectpilot.model.User;
 import com.example.projectpilot.repository.DepartmentRepository;
@@ -26,7 +27,7 @@ public class DepartmentController
 
 
     @GetMapping("/allDepartments")
-    public String allDepartments(HttpSession session, Model model)
+    public String showAllDepartments(HttpSession session, Model model)
     {
         if(session.getAttribute("user") == null )
         {
@@ -38,7 +39,7 @@ public class DepartmentController
     }
 
     @GetMapping("/addDepartment")
-    public String addDepartment(HttpSession session, Model model)
+    public String ShowAddDepartment(HttpSession session, Model model)
     {
         if ( session.getAttribute("user") == null )
         {
@@ -52,7 +53,7 @@ public class DepartmentController
     }
 
     @PostMapping("/addDepartment")
-    public String saveDepartment(@RequestParam("departmentName") String departmentName, Model model)
+    public String addDepartment(@RequestParam("departmentName") String departmentName, Model model)
     {
         // check if department exists
         if (departmentRepository.checkIfDepartmentExists(departmentName))
@@ -90,8 +91,8 @@ public class DepartmentController
         return "showDepartment";
     }
 
-    @GetMapping("/userTasks")
-    public String showDepartemntsByProject(HttpSession session, Model model)
+    @GetMapping("/allDepartments")
+    public String showDepartmentsByProject(HttpSession session, Model model)
     {
         if (session.getAttribute("user") == null)
         {
@@ -102,4 +103,48 @@ public class DepartmentController
         model.addAttribute("task", taskList);
         return "userTasks";
     }
+
+    @GetMapping("/updateDepartment/{id}")
+    public String showEditDepartment(@PathVariable("id") int departmentId, HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null)
+        {
+            return "redirect:/";
+        }
+
+        Department department = departmentRepository.getDepartmentById(departmentId);
+        model.addAttribute("department", department);
+
+        return "updateDepartment";
+    }
+
+    @PostMapping("/updateDepartment")
+    public String updateDepartment(
+            @RequestParam("departmentId") String departmentName,
+            @RequestParam("departmentName") int departmentId,
+            HttpSession session)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        Department updateDepartment = new Department(departmentName, departmentId);
+        DepartmentRepository.updateDepartment(updateDepartment);
+        return "redirect:/allDepartments";
+    }
+
+    @PostMapping("/deleteDepartment")
+    public String deleteDepartment(@RequestParam("departmentId") int departmentId, Model model)
+    {
+        if(departmentRepository.deleteDepartmentById(departmentId))
+        {
+            return "redirect:/allDepartments";
+        }
+        else
+        {
+            model.addAttribute("error", "An error occurred while deleting the department. Please try again.");
+            return "allDepartments";
+        }
+    }
+
 }

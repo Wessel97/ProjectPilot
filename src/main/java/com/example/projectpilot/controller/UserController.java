@@ -199,7 +199,7 @@ public class UserController
         return "admin";
     }
 
-    @GetMapping("/deleteUser/{id}")
+    @PostMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") int id, HttpSession session)
     {
         if ( session.getAttribute("user") == null )
