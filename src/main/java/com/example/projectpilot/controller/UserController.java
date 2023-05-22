@@ -56,13 +56,33 @@ public class UserController
             session.setAttribute("user", user);
             if (user.isAdmin())
             {
-                return "redirect:/allUsers";
+                return "redirect:/adminStart";
             }
             else
             {
-                return "redirect:/allTasks";
+                return "redirect:/userStart";
             }
         }
+    }
+
+    @GetMapping("/adminStart")
+    public String showAdminStart(HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        return "adminStart";
+    }
+
+    @GetMapping("/userStart")
+    public String showUserStart(HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        return "userStart";
     }
 
 
@@ -260,5 +280,7 @@ public class UserController
 
         return "redirect:/allUsers";
     }
+
+
 
 }
