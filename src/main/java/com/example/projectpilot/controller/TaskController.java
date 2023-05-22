@@ -155,13 +155,9 @@ public class TaskController
         {
             return "redirect:/";
         }
-
         User user = (User) session.getAttribute("user");
         List<Task> taskList = taskRepository.getAllTasksByUserID(user.getId());
-        // Den her gør ikke noget, så den skal nok bare slettes tilsidsts
-        //session.setAttribute("taskList", taskList);
         model.addAttribute("task", taskList);
-
         return "userTasks";
     }
 

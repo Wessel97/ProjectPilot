@@ -162,7 +162,7 @@ public class ProjectRepository
             //set parameters for prepared statement
             preparedStatement.setString(1, project.getProjectName());
             //set user_id
-            preparedStatement.setInt(2, project.getProjectID());
+            preparedStatement.setInt(2, project.getid());
             //execute statement
             preparedStatement.executeUpdate();
         }
@@ -184,7 +184,7 @@ public class ProjectRepository
             //prepared statement
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(user_id)
-            preparedStatement.setInt(1, project.getProjectID());
+            preparedStatement.setInt(1, project.getid());
             //execute statement
             int foundUser = preparedStatement.executeUpdate();
             //return true if user was found and deleted (foundUser should be 1).

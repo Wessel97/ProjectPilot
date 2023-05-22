@@ -200,6 +200,43 @@ public class DepartmentRepository
         return false;
     }
 
+    public List<Department> getAllDepartmentsByProject(int projectId)
+    {
+        // Initialize an empty list to store tasks with the given userID
+        List<Department> departmentsByProjectList = new ArrayList<>();
+        // Define the SQL query to find all tasks with the given userID
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.department WHERE project_id = ?";
+        try
+        {
+            // Establish a connection to the database
+            Connection connection = databaseService.getConnection();
+            // Prepare a statement with the given FIND_QUERY
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
+            // Set the userId parameter for the prepared statement
+            preparedStatement.setInt(1, projectId);
+            // Execute the query and get the result set
+            ResultSet resultSet = preparedStatement.executeQuery();
 
+            // Loop through the result set
+            while (resultSet.next())
+            {
+                // Extract the task from the result set
+                Department department = getDepartment(resultSet);
+                // Add the extracted task to the tasksByUserId list
+                departmentsByProjectList.add(department);
+                //print user. Debugging purposes to see list in terminal.
+                System.out.println(department);
+            }
+        }
+        catch (SQLException e)
+        {
+            //Handle any errors while querying the database.
+            System.out.println("Error trying to query database: " + e);
+            //This method will print the error, what line it is on and what method it is in.
+            e.printStackTrace();
+        }
+        // Return the list of tasks with the given userID
+        return departmentsByProjectList;
+    }
 
 }
