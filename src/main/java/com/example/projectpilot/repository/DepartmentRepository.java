@@ -23,11 +23,13 @@ public class DepartmentRepository
     {
         //get department_id from result set
         int department_id = resultSet.getInt(1);
+        //get department_project_id from result set
+        int department_project_id = resultSet.getInt(2);
         //get first_name from result set
-        String departmentName = resultSet.getString(2);
+        String departmentName = resultSet.getString(3);
 
         //create user object
-        return new Department(department_id, departmentName);
+        return new Department(department_id, department_project_id, departmentName);
     }
 
     public List<Department> getAllDepartments(){
