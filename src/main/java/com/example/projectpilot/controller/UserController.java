@@ -84,7 +84,7 @@ public class UserController
 
     // This method is used to register the user.
     @PostMapping("/register")
-    public String registerUser(@RequestParam("admin") boolean admin,
+    public String registerUser(@RequestParam(value = "admin", defaultValue = "false") boolean admin,
                                @RequestParam("first_name") String firstname,
                                @RequestParam("last_name") String lastname,
                                @RequestParam("email") String email,
