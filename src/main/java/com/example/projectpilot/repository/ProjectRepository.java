@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Repository
 public class ProjectRepository
 {
@@ -36,12 +37,10 @@ public class ProjectRepository
         //execute statement, here there is no exceptions that need to be caught. It does need to be in try/catch.
         // Limit the scope of a try block to only the code that might throw an exception.
         final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.project";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             Statement statement = connection.createStatement())
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //create statement
-            Statement statement = connection.createStatement();
             //get result set
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
             //loop through result set
@@ -66,12 +65,10 @@ public class ProjectRepository
     public boolean checkIfProjectExists(String checkName)
     {
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.project WHERE name = ?";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters
             preparedStatement.setString(1, checkName);
             //execute statement
@@ -95,12 +92,10 @@ public class ProjectRepository
     {
         // Query to insert user
         final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.project (name) VALUES (?)";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY))
         {
-            // DB connection
-            Connection connection = databaseService.getConnection();
-            // Prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
             // Set first_name
             preparedStatement.setString(1, project.getProjectName());
             // Execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
@@ -124,13 +119,11 @@ public class ProjectRepository
     {
         //query to find user
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.project WHERE id = ?";
+
         Project selectedProject = null;
-        try
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters for prepared statement (user_id)
             preparedStatement.setInt(1, projectID);
             //execute statement
@@ -153,12 +146,10 @@ public class ProjectRepository
     public void updateProject(Project project)
     { //query to update user
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.project SET name = ? WHERE id = ?";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY))
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             //set parameters for prepared statement
             preparedStatement.setString(1, project.getProjectName());
             //set user_id
@@ -173,24 +164,26 @@ public class ProjectRepository
         }
     }
 
-    public boolean deleteProjectById(int projectId){
+    public boolean deleteProjectById(int projectId)
+    {
         //query to delete project
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.project WHERE id = ?";
-        try{
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY))
+        {
             //set parameters for prepared statement (project_id)
             preparedStatement.setInt(1, projectId);
             //execute statement
             int foundProject = preparedStatement.executeUpdate();
             //return true if project was found and deleted (foundProject should be 1).
-            if ( foundProject == 1 ){
+            if ( foundProject == 1 )
+            {
                 return true;
             }
         }
-        catch (SQLException e){
+        catch (SQLException e)
+        {
             System.out.println("Could not query database");
             e.printStackTrace();
         }

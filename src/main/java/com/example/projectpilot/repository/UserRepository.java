@@ -16,7 +16,8 @@ public class UserRepository
     private final DatabaseService databaseService;
 
     @Autowired
-    public UserRepository(DatabaseService databaseService) {
+    public UserRepository(DatabaseService databaseService)
+    {
         this.databaseService = databaseService;
     }
 
@@ -49,12 +50,9 @@ public class UserRepository
         //execute statement, here there is no exceptions that need to be caught. It does need to be in try/catch.
         // Limit the scope of a try block to only the code that might throw an exception.
         final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.user";
-        try
+        try(Connection connection = databaseService.getConnection();
+            Statement statement = connection.createStatement())
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //create statement
-            Statement statement = connection.createStatement();
             //get result set
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
             //loop through result set
@@ -80,12 +78,10 @@ public class UserRepository
     public boolean checkIfUserExists(String checkEmail)
     {
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters
             preparedStatement.setString(1, checkEmail);
             //execute statement
@@ -111,12 +107,10 @@ public class UserRepository
     {
         // Query to insert user
         final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.user (admin, first_name, last_name, email, password) VALUES (?,?,?,?,?)";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY))
         {
-            // DB connection
-            Connection connection = databaseService.getConnection();
-            // Prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
             // Set admin status
             preparedStatement.setBoolean(1, user.isAdmin());
             // Set first_name
@@ -151,12 +145,10 @@ public class UserRepository
     {
         //query to find user
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE id = ?";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters for prepared statement (user_id)
             preparedStatement.setInt(1, id);
             //execute statement
@@ -178,14 +170,14 @@ public class UserRepository
 
     public User getUserByEmailAndPassword(String email, String password)
     {
-        // SQL QUERY
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
         User user = new User();
         user.setEmail(email);
-        try
+        // SQL QUERY
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            Connection connection = databaseService.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -231,14 +223,11 @@ public class UserRepository
     {
         //query to update user
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.user SET admin = ?, first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
-        try
-        {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
-            //set parameters for prepared statement
 
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY))
+
+        {
             //set admin status
             preparedStatement.setBoolean(1, user.isAdmin());
             //set first_name
@@ -270,13 +259,11 @@ public class UserRepository
 
         // Query to find user
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
+
         // Try to query the database
-        try
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            // Establish a database connection
-            Connection connection = databaseService.getConnection();
-            // Prepare the SQL query
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             // Set the parameters for the query (email)
             preparedStatement.setString(1, email);
             // Execute the query and retrieve the result
@@ -319,12 +306,10 @@ public class UserRepository
     {
         //query to delete user
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.user WHERE id = ?";
-        try
+        
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY))
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(user_id)
             preparedStatement.setInt(1, user.getId());
             //execute statement

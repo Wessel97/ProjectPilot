@@ -15,7 +15,8 @@ public class DepartmentRepository
     private final DatabaseService databaseService;
 
     @Autowired
-    public DepartmentRepository(DatabaseService databaseService) {
+    public DepartmentRepository(DatabaseService databaseService)
+    {
         this.databaseService = databaseService;
     }
 
@@ -32,18 +33,17 @@ public class DepartmentRepository
         return new Department(department_id, department_project_id, departmentName);
     }
 
-    public List<Department> getAllDepartments(){
+    public List<Department> getAllDepartments()
+    {
         //create list of departments
         List<Department> departmentList = new ArrayList<>();
         //execute statement, here there is no exceptions that need to be caught. It does need to be in try/catch.
         // Limit the scope of a try block to only the code that might throw an exception.
         final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.department";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             Statement statement = connection.createStatement())
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //create statement
-            Statement statement = connection.createStatement();
             //get result set
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
             //loop through result set
@@ -69,12 +69,10 @@ public class DepartmentRepository
     public boolean checkIfDepartmentExists(String checkName)
     {
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.department WHERE name = ?";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters
             preparedStatement.setString(1, checkName);
             //execute statement
@@ -91,17 +89,17 @@ public class DepartmentRepository
             e.printStackTrace();
         }
         //return false if user does not exist
-        return false;}
+        return false;
+    }
 
-    public boolean addDepartment(Department department){
+    public boolean addDepartment(Department department)
+    {
         // Query to insert user
         final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.department (name) VALUES (?)";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY))
         {
-            // DB connection
-            Connection connection = databaseService.getConnection();
-            // Prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
             // Set first_name
             preparedStatement.setString(1, department.getDepartmentName());
             // Execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
@@ -122,16 +120,15 @@ public class DepartmentRepository
 
     }
 
-    public Department getDepartmentById(int departmentId){
+    public Department getDepartmentById(int departmentId)
+    {
+        Department selectDepartment = null;
         //query to find user
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.department WHERE id = ?";
-        Department selectDepartment = null;
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             //set parameters for prepared statement (user_id)
             preparedStatement.setInt(1, departmentId);
             //execute statement
@@ -151,14 +148,13 @@ public class DepartmentRepository
         return selectDepartment;
     }
 
-    public void updateDepartment(Department department){ //query to update user
+    public void updateDepartment(Department department)
+    { //query to update user
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.department SET name = ? WHERE id = ?";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY))
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             //set parameters for prepared statement
             preparedStatement.setString(1, department.getDepartmentName());
             //set user_id
@@ -170,26 +166,29 @@ public class DepartmentRepository
         {
             System.out.println("Could not query database");
             e.printStackTrace();
-        }}
+        }
+    }
 
-    public boolean deleteDepartmentById(int departmentId){
+    public boolean deleteDepartmentById(int departmentId)
+    {
         //query to delete user
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.department WHERE id = ?";
-        try{
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY))
+        {
             //set parameters for prepared statement(user_id)
             preparedStatement.setInt(1, departmentId);
             //execute statement
             int foundDepartment = preparedStatement.executeUpdate();
             //return true if user was found and deleted (foundUser should be 1).
-            if ( foundDepartment == 1 ){
+            if ( foundDepartment == 1 )
+            {
                 return true;
             }
         }
-        catch (SQLException e){
+        catch (SQLException e)
+        {
             System.out.println("Could not query database");
             e.printStackTrace();
         }
@@ -204,19 +203,17 @@ public class DepartmentRepository
         List<Department> departmentsByProjectList = new ArrayList<>();
         // Define the SQL query to find all tasks with the given userID
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.department WHERE project_id = ?";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            // Establish a connection to the database
-            Connection connection = databaseService.getConnection();
-            // Prepare a statement with the given FIND_QUERY
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             // Set the userId parameter for the prepared statement
             preparedStatement.setInt(1, projectId);
             // Execute the query and get the result set
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // Loop through the result set
-            while (resultSet.next())
+            while ( resultSet.next() )
             {
                 // Extract the task from the result set
                 Department department = getDepartment(resultSet);

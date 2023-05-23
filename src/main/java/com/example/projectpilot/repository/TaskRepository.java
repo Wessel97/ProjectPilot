@@ -1,4 +1,5 @@
 package com.example.projectpilot.repository;
+
 import com.example.projectpilot.model.Task;
 import com.example.projectpilot.service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class TaskRepository {
+public class TaskRepository
+{
 
     private final DatabaseService databaseService;
 
     @Autowired
-    public TaskRepository(DatabaseService databaseService) {
+    public TaskRepository(DatabaseService databaseService)
+    {
         this.databaseService = databaseService;
     }
 
@@ -50,18 +53,15 @@ public class TaskRepository {
     {
         //create list of tasks
         List<Task> allTasksList = new ArrayList<>();
-        try
+        try (Connection connection = databaseService.getConnection();
+             Statement statement = connection.createStatement())
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //create statement
-            Statement statement = connection.createStatement();
             //execute statement
             final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task";
             //get result set
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
             //loop through result set
-            while (resultSet.next())
+            while ( resultSet.next() )
             {
                 //extract user from result set
                 Task task = getTask(resultSet);
@@ -88,19 +88,17 @@ public class TaskRepository {
         List<Task> userIdTasksList = new ArrayList<>();
         // Define the SQL query to find all tasks with the given userID
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            // Establish a connection to the database
-            Connection connection = databaseService.getConnection();
-            // Prepare a statement with the given FIND_QUERY
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             // Set the userId parameter for the prepared statement
             preparedStatement.setInt(1, userId);
             // Execute the query and get the result set
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // Loop through the result set
-            while (resultSet.next())
+            while ( resultSet.next() )
             {
                 // Extract the task from the result set
                 Task task = getTask(resultSet);
@@ -127,19 +125,17 @@ public class TaskRepository {
         List<Task> userIdTasksList = new ArrayList<>();
         // Define the SQL query to find all tasks with the given userID
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE department_id = ?";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            // Establish a connection to the database
-            Connection connection = databaseService.getConnection();
-            // Prepare a statement with the given FIND_QUERY
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             // Set the userId parameter for the prepared statement
             preparedStatement.setInt(1, departmentId);
             // Execute the query and get the result set
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // Loop through the result set
-            while (resultSet.next())
+            while ( resultSet.next() )
             {
                 // Extract the task from the result set
                 Task task = getTask(resultSet);
@@ -164,16 +160,16 @@ public class TaskRepository {
     // Method 4 get task by task ID. This method will find the task with the given ID.
     public Task getTaskByTaskId(int taskId)
     {
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE id = ?";
         Task selectTask = null;
-        try
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE id = ?";
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            Connection connection = databaseService.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             preparedStatement.setInt(1, taskId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next())
+            if ( resultSet.next() )
             {
                 selectTask = getTask(resultSet);
             }
@@ -195,19 +191,17 @@ public class TaskRepository {
         List<Task> departmentTasksList = new ArrayList<>();
         // Define the SQL query to find all tasks with the given userID
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE department = ?";
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            // Establish a connection to the database
-            Connection connection = databaseService.getConnection();
-            // Prepare a statement with the given FIND_QUERY
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
             // Set the userId parameter for the prepared statement
             preparedStatement.setString(1, department);
             // Execute the query and get the result set
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // Loop through the result set
-            while (resultSet.next())
+            while ( resultSet.next() )
             {
                 // Extract the task from the result set
                 Task task = getTask(resultSet);
@@ -235,12 +229,11 @@ public class TaskRepository {
     //Method 6 add task. This method will add a task to the database.
     public void addTask(Task task)
     {
-        try {
-            Connection connection = databaseService.getConnection();
-            final String CREATE_QUERY = "INSERT INTO task(title, description, note, hours, start_date, end_date, status, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            // Make a boolean to check if the task was added (sentinel). Makes the code more readable.
+        final String CREATE_QUERY = "INSERT INTO task(title, description, note, hours, start_date, end_date, status, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY);
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY))
+        {
             preparedStatement.setString(1, task.getTitle());
             preparedStatement.setString(2, task.getDescription());
             preparedStatement.setString(3, task.getNote());
@@ -251,14 +244,14 @@ public class TaskRepository {
             preparedStatement.setString(8, task.getDepartment());
 
             preparedStatement.executeUpdate();
-            }
-            catch (SQLException e)
-            {
-                //Handle any errors while querying the database.
-                System.out.println("Error trying to query database: " + e);
-                //This method will print the error, what line it is on and what method it is in.
-                e.printStackTrace();
-            }
+        }
+        catch (SQLException e)
+        {
+            //Handle any errors while querying the database.
+            System.out.println("Error trying to query database: " + e);
+            //This method will print the error, what line it is on and what method it is in.
+            e.printStackTrace();
+        }
     }
 
     // Method 7 update task. This method will update the selected task in the database. Without returning anything.
@@ -266,13 +259,9 @@ public class TaskRepository {
     {
         final String UPDATE_QUERY = "UPDATE task SET title = ?, description = ?, note = ?, hours = ?, pay_rate = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE id = ?";
 
-        try
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY))
         {
-            // db connection
-            Connection connection = databaseService.getConnection();
-            // prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
-
             String title = task.getTitle();
             String description = task.getDescription();
             String note = task.getNote();
@@ -321,22 +310,20 @@ public class TaskRepository {
     //Method 8 delete task by ID. This method will return true if the task was successfully deleted from the database.
     public boolean deleteTaskByID(int taskId)
     {
-        //query to delete user
-        final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.task WHERE id = ?";
         // Make a boolean to check if the task was deleted (sentinel). Makes the code more readable.
         boolean taskDeleted = false;
-        try
+        //query to delete user
+        final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.task WHERE id = ?";
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY))
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            //prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             //set parameters for prepared statement(task_id)
             preparedStatement.setInt(1, taskId);
             //execute statement
             int foundTask = preparedStatement.executeUpdate();
             //return true if task was found and deleted (foundTask should be 1).
-            if(foundTask == 1)
+            if ( foundTask == 1 )
             {
                 taskDeleted = true;
             }
@@ -352,22 +339,22 @@ public class TaskRepository {
         return taskDeleted;
     }
 
-    public void assignTo(Task task, int userID) {
+    public void assignTo(Task task, int userID)
+    {
         final String UPDATE_QUERY = "UPDATE task SET user_id = ? WHERE id = ?";
 
-        try
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY))
         {
-            Connection connection = databaseService.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
-
-
             int task_id = task.getId();
 
             preparedStatement.setInt(1, userID);
             preparedStatement.setInt(2, task_id);
 
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Error trying to query the database: " + e);
             e.printStackTrace();
         }
@@ -383,16 +370,14 @@ public class TaskRepository {
         List<Task> sortedTasksList = new ArrayList<>();
         //query to get all tasks
         final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task ORDER BY " + sortingParameter;
-        try
+
+        try (Connection connection = databaseService.getConnection();
+             Statement statement = connection.createStatement())
         {
-            //db connection
-            Connection connection = databaseService.getConnection();
-            // create statement. This will be used to execute the query.
-            Statement statement = connection.createStatement();
             // execute query and store result in resultSet.
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
             // loop through resultSet and add each task to sortedTasksList.
-            while (resultSet.next())
+            while ( resultSet.next() )
             {
                 //create task object and add to sortedTasksList.
                 Task task = getTask(resultSet);
@@ -450,106 +435,136 @@ public class TaskRepository {
     --------------------------------------------------------------------*/
 
     // Method 16 calculates the total number of hours for all tasks.
-    public int totalHours() {
+    public int totalHours()
+    {
         int sumHours = 0;
-        try {
-            String query = "SELECT SUM(hours) FROM ProjectPilotDB.task";
-            Connection connection = databaseService.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
+        String CALCULATE_QUERY = "SELECT SUM(hours) FROM ProjectPilotDB.task";
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
+        {
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            if ( resultSet.next() )
+            {
                 sumHours = resultSet.getInt(1);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return sumHours;
     }
 
     // Method 17 calculates the total number of hours for a given department.
-    public int totalHoursByDepartment(String department) {
+    public int totalHoursByDepartment(String department)
+    {
         int sumHoursByDept = 0;
-        try {
-            String query = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE department = ?";
-            Connection connection = databaseService.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
+        String CALCULATE_QUERY = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE department = ?";
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
+        {
             statement.setString(1, department);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            if ( resultSet.next() )
+            {
                 sumHoursByDept = resultSet.getInt(1);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return sumHoursByDept;
     }
 
     // Method 18 calculates the total number of hours for a given user.
-    public int totalHoursByID(int userID) {
+    public int totalHoursByID(int userID)
+    {
         int sumHoursByID = 0;
-        try {
-            String query = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE user_id = ?";
-            Connection connection = databaseService.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
+        String CALCULATE_QUERY = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE user_id = ?";
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
+        {
             statement.setInt(1, userID);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            if ( resultSet.next() )
+            {
                 sumHoursByID = resultSet.getInt(1);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return sumHoursByID;
     }
 
     // Method 19 calculates the total price for all tasks.
-    public int totalPrice() {
+    public int totalPrice()
+    {
         int sumPrice = 0;
-        try {
-            String query = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task";
-            Connection connection = databaseService.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
+        String CALCULATE_QUERY = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task";
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
+        {
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            if ( resultSet.next() )
+            {
                 sumPrice = resultSet.getInt(1);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return sumPrice;
     }
 
     // Method 20 calculates the total price for the tasks in a given department.
-    public int totalPriceByDepartment(String department) {
+    public int totalPriceByDepartment(String department)
+    {
         int sumPriceByDept = 0;
-        try {
-            String query = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE department = ?";
-            Connection connection = databaseService.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
+        String CALCULATE_QUERY = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE department = ?";
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
+        {
             statement.setString(1, department);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            if ( resultSet.next() )
+            {
                 sumPriceByDept = resultSet.getInt(1);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return sumPriceByDept;
     }
 
     // Method 21 calculates the total price for the tasks in a given user.
-    public int totalPriceByID(int userID) {
+    public int totalPriceByID(int userID)
+    {
         int sumPriceByID = 0;
-        try {
-            String query = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE user_id=?";
-            Connection connection = databaseService.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
+        String CALCULATE_QUERY = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE user_id=?";
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
+        {
             statement.setInt(1, userID);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            if ( resultSet.next() )
+            {
                 sumPriceByID = resultSet.getInt(1);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return sumPriceByID;
