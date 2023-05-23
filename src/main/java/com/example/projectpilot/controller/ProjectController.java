@@ -112,12 +112,12 @@ public class ProjectController
         }
         if(projectRepository.deleteProjectById(projectId))
         {
-            return "redirect:/allProjects";
+            return "redirect:/adminStart";
         }
         else
         {
             model.addAttribute("error", "An error occurred while deleting the project. Please try again.");
-            return "allProjects";
+            return "adminStart";
         }
     }
 }
