@@ -33,8 +33,8 @@ CREATE TABLE project(
 -- Create department table
 CREATE TABLE department (
                             id INT NOT NULL AUTO_INCREMENT,
-                            name VARCHAR(45) NOT NULL,
                             project_id INT NULL,
+                            name VARCHAR(45) NOT NULL,
                             PRIMARY KEY (id),
                             FOREIGN KEY (project_id) REFERENCES project(id)
 );
@@ -64,12 +64,12 @@ CREATE TABLE task (
 INSERT INTO user (admin, first_name, last_name, email, password)
 VALUES (TRUE, 'Dummy', 'Dummy', 'test@user.com', '$2a$10$il68RiDz8kf2O2Dr47csfe4o9IUMlcM19R5E09DZjM3U9bTCP3ymi');
 
--- Insert departments
-INSERT INTO department (name)
-VALUES ('HTML/CSS dep.'), ('User Interface dep.'), ('UX dep.'), ('Cleaning');
-
 INSERT INTO project (name)
 VALUES ('Talking AI'), ('Webpage for Jens'), ('Drone software'), ('Christmas party');
+
+-- Insert departments
+INSERT INTO department (project_id, name)
+VALUES (1, 'HTML/CSS dep.'), (2, 'User Interface dep.'), (3, 'UX dep.'), (4, 'Cleaning');
 
 -- Insert some sample tasks
 -- Insert some sample tasks

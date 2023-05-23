@@ -424,11 +424,13 @@ public class TaskRepository
         return getTasksSorted("status");
     }
 
+    /*
     //Method 15 sort by flag. This method will sort the tasks by flag (true or false).
     public List<Task> getAllTasksSortedByFlag()
     {
         return getTasksSorted("flag");
     }
+    */
 
     /*--------------------------------------------------------------------
                  // Projekt kalkulering Metoder (Metode 16-21)
