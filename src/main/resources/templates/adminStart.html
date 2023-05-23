@@ -10,5 +10,29 @@
   <h1>Project Pilot</h1>
 </header>
     <h2>Admin Dashboard</h2>
+
+    <table>
+        <thead>
+        <th>ID</th>
+        <th>Name</th>
+        </thead>
+        <tbody>
+        <tr th:each="project : ${project}">
+            <td th:text="${project.getId()}">id</td>
+            <td th:text="${project.getProjectName()}">42</td>
+            <td>
+                <a th:href="@{'/showProject/' + ${project.getId()}}" href="/showProject"><button>ENTER</button></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/addUser"><button>Create User</button></a>
+    <a href="/userList"><button>See All Users</button></a>
+    <a href="/allTasks"><button>All Task</button></a>
+
+
+
+
 </body>
 </html>

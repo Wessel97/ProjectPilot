@@ -162,7 +162,7 @@ public class ProjectRepository
             //set parameters for prepared statement
             preparedStatement.setString(1, project.getProjectName());
             //set user_id
-            preparedStatement.setInt(2, project.getid());
+            preparedStatement.setInt(2, project.getId());
             //execute statement
             preparedStatement.executeUpdate();
         }

@@ -1,7 +1,9 @@
 package com.example.projectpilot.controller;
 
+import com.example.projectpilot.model.Project;
 import com.example.projectpilot.model.Task;
 import com.example.projectpilot.model.User;
+import com.example.projectpilot.repository.ProjectRepository;
 import com.example.projectpilot.repository.TaskRepository;
 import com.example.projectpilot.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
@@ -16,11 +18,18 @@ public class UserController
 
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
+    private final ProjectRepository projectRepository;
+
+    Project newProject = new Project();
+
+
+
     @Autowired
-    public UserController(UserRepository userRepository, TaskRepository taskRepository)
+    public UserController(UserRepository userRepository, TaskRepository taskRepository, ProjectRepository projectRepository)
     {
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
+        this.projectRepository = projectRepository;
     }
 
     @GetMapping("/")
@@ -72,6 +81,9 @@ public class UserController
         {
             return "redirect:/";
         }
+
+        model.addAttribute("project", projectRepository.getAllProjects());
+
         return "adminStart";
     }
 
@@ -82,6 +94,9 @@ public class UserController
         {
             return "redirect:/";
         }
+
+        model.addAttribute("project", projectRepository.getAllProjects());
+
         return "userStart";
     }
 

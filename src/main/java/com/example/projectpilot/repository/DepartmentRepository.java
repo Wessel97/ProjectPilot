@@ -198,7 +198,7 @@ public class DepartmentRepository
     }
 
 
-    public List<Department> getAllDepartmentsByProject(int projectId)
+    public List<Department> getAllDepartmentsByProjectId(int projectId)
     {
         // Initialize an empty list to store tasks with the given userID
         List<Department> departmentsByProjectList = new ArrayList<>();
