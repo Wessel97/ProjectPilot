@@ -8,10 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,8 +18,6 @@ public class ProjectController
     private final ProjectRepository projectRepository;
     private final DepartmentRepository departmentRepository;
 
-    Department newDepartment = new Department();
-
     @Autowired
     public ProjectController(ProjectRepository projectRepository, DepartmentRepository departmentRepository)
     {
@@ -31,7 +26,7 @@ public class ProjectController
     }
 
 
-    @GetMapping("/allProjects")
+    /*@GetMapping("/adminStart")
     public String showAllProjects(HttpSession session, Model model)
     {
         if ( session.getAttribute("user") == null )
@@ -39,8 +34,8 @@ public class ProjectController
             return "redirect:/";
         }
         model.addAttribute("project", projectRepository.getAllProjects());
-        return "allProjects";
-    }
+        return "adminStart";
+    }*/
 
     @GetMapping("/showProject/{id}")
     public String showProject(@PathVariable("id") int projectId, HttpSession session, Model model)
@@ -93,18 +88,16 @@ public class ProjectController
 
     @PostMapping("/updateProject")
     public String updateProject(
-            @RequestParam("projectID") int projectId,
+            @RequestParam("id") Integer projectId,
             @RequestParam("projectName") String projectName,
-            HttpSession session)
-
-    {
-        if ( session.getAttribute("user") == null )
-        {
+            HttpSession session) {
+        if (session.getAttribute("user") == null) {
             return "redirect:/";
         }
+
         Project updateProject = new Project(projectId, projectName);
         projectRepository.updateProject(updateProject);
-        return "redirect:/allProjects";
+        return "redirect:/adminStart";
     }
 
     @PostMapping("/deleteProject")

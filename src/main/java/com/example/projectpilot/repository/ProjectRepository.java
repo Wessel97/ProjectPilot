@@ -144,17 +144,14 @@ public class ProjectRepository
     }
 
     public void updateProject(Project project)
-    { //query to update user
+    {
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.project SET name = ? WHERE id = ?";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY))
         {
-            //set parameters for prepared statement
             preparedStatement.setString(1, project.getProjectName());
-            //set user_id
             preparedStatement.setInt(2, project.getId());
-            //execute statement
             preparedStatement.executeUpdate();
         }
         catch (SQLException e)

@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Update project</title>
 </head>
 <body>
+<div class="container">
+    <h1>Update project</h1>
+    <form action="/updateProject" method="post" th:object="${project}">
+        <label for="projectId-field">Project ID:</label>
+        <input id="projectId-field" name="id" type="number" th:field="*{id}" th:readonly="true">
 
+        <label for="projectName-field">Project name:</label>
+        <input id="projectName-field" name="projectName" type="text" th:field="*{projectName}">
+
+        <input type="submit" value="UPDATE PROJECT">
+    </form>
+
+</div>
 </body>
 </html>
