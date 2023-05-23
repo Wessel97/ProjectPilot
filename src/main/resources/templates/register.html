@@ -10,40 +10,31 @@
 
 <div th:insert="/fragments/topBar"></div>
 
-<div th:text="${session.user}"></div>
-<form action="/register" method="post">
-    <div class="container">
-        <div class="box">
-            <h1>REGISTER</h1>
-            <table>
-                <tr>
-                    <td>Admin:</td>
-                    <td><input type="checkbox" id="admin" name="admin"></td>
-                </tr>
-                <tr>
-                    <td>First name:</td>
-                    <td><input type="text" id="first_name" placeholder="First name" name="first_name" required></td>
-                </tr>
-                <tr>
-                    <td>Last name:</td>
-                    <td><input type="text" id="last_name" placeholder="Last name" name="last_name" required></td>
-                </tr>
-                <tr>
-                    <td>Email:</td>
-                    <td><input type="email" id="email" placeholder="Email" name="email" required></td>
-                    <span th:if="${errorMessage != null}" th:text="${errorMessage}"></span>
-                </tr>
-                <tr>
-                    <td>Password:</td>
-                    <td><input type="password" id="password" placeholder="Password" name="password" required></td>
-                </tr>
-            </table>
-            <a href="/static">Already have an account?</a>
-            <div class="create-account">
-                <input type="submit" id="submitButton" class="button-30" value="Create account">
-            </div>
-        </div>
-    </div>
-</form>
+<div class="container">
+    <h2>Register new User</h2>
+    <form action="/register" method="post">
+
+        <label for="admin">Check for Admin:</label>
+        <input type="checkbox" id="admin" name="admin">
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" placeholder="First Name" name="first_name" required>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" placeholder="Last Name" name="last_name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Email" name="email" required>
+<!--        <span th:if="${errorMessage != null}" th:text="${errorMessage}"></span>-->
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Password" name="password" required>
+
+        <input type="submit" value="Create Account">
+    </form>
+
+    <a href="/login"><button>Already have an account?</button></a>
+
+</div>
 </body>
 </html>

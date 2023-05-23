@@ -133,7 +133,7 @@ public class UserController
             User user = new User(admin, firstname, lastname, email, password);
             userRepository.addUser(user);
             session.setAttribute("user", user);
-            return "redirect:/allTasks";
+            return "redirect:/adminStart";
         }
         else
         {
