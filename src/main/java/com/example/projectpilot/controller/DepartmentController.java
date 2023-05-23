@@ -52,8 +52,8 @@ public class DepartmentController
         return "addDepartment";
     }
 
-    @PostMapping("/addDepartment")
-    public String addDepartment(@RequestParam("departmentName") String departmentName, Model model)
+    @PostMapping("/addDepartment/{id}")
+    public String addDepartment(@PathVariable("id") int projectId, @RequestParam("department-name") String departmentName, Model model)
     {
         // check if department exists
         if (departmentRepository.checkIfDepartmentExists(departmentName))
@@ -65,6 +65,7 @@ public class DepartmentController
         {
             Department newDepartment = new Department();
             newDepartment.setDepartmentName(departmentName);
+            newDepartment.setProjectId(projectId);
             if(departmentRepository.addDepartment(newDepartment))
             {
                 return "redirect:/departmentList"; // or whatever your success page is
@@ -78,15 +79,28 @@ public class DepartmentController
     }
 
     @GetMapping("/showDepartment/{id}")
-    public String showDepartment(@PathVariable("id") int id, HttpSession session, Model model)
+    public String showDepartment(@PathVariable("id") int departmentId, HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null)
+        if (session.getAttribute("user") == null)
         {
             return "redirect:/";
         }
 
-        List<Task> taskList = taskRepository.getAllTasksByDepartmentID(id);
+        Department department = departmentRepository.getDepartmentById(departmentId);
+        if (department == null) {
+            // Department not found
+            return "redirect:/allDepartments";
+        }
+
+        List<Task> taskList = taskRepository.getAllTasksByDepartmentID(department.getDepartmentName());
         model.addAttribute("task", taskList);
+        model.addAttribute("department", department);
+
+        int totalHours = taskRepository.totalHoursByDepartment(department.getDepartmentName());
+        model.addAttribute("totalHours", totalHours);
+
+        int totalPrice = taskRepository.totalPriceByDepartment(department.getDepartmentName());
+        model.addAttribute("totalPrice", totalPrice);
 
         return "showDepartment";
     }

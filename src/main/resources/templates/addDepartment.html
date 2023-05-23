@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add Department</title>
+    <title>Opret nyt Projekt</title>
+    <link rel="stylesheet" th:href="@{/css/addDepartment.css}">
 </head>
 <body>
+<div class="container">
+    <h1>Create new Department</h1>
+    <form action="addDepartment" method="post">
 
+        <!--        Vi bruger task-title i stedet for title, da flere objekter kan have de samme parameter navne-->
+        <label for="name-field">Department Name:</label>
+        <input id="name-field" name="department-name" type="text">
+
+        <input type="submit" value="ADD DEPARTMENT">
+    </form>
+</div>
 </body>
 </html>
