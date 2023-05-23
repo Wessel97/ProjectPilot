@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Opret nyt Projekt</title>
+    <link rel="stylesheet" th:href="@{/css/topBar.css}">
     <link rel="stylesheet" th:href="@{/css/addProject.css}">
 </head>
 <body>
+
+<div th:insert="/fragments/topBar"></div>
+
 <div class="container">
-    <h1>Create new Project</h1>
+    <h2>Create new Project</h2>
     <form action="addProject" method="post">
 
         <!--        Vi bruger task-title i stedet for title, da flere objekter kan have de samme parameter navne-->

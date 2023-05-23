@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/topBar.css}">
     <link rel="stylesheet" th:href="@{/css/adminStart.css}">
 </head>
 <body>
 
-    <header>
-      <h1>Project Pilot</h1>
-    </header>
+    <div th:insert="/fragments/topBar"></div>
 
     <h2>Admin Dashboard</h2>
 

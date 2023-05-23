@@ -2,13 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" th:href="@{/css/topBar.css}">
+    <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
+
+<div th:insert="/fragments/topBar"></div>
+
 <div th:text="${session.user}"></div>
 <form action="/register" method="post">
     <div class="container">
         <div class="box">
-            <h1 id="registerHead">REGISTER</h1>
+            <h1>REGISTER</h1>
             <table>
                 <tr>
                     <td>Admin:</td>

@@ -2,12 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Tasks</title>
+    <title>Departments</title>
+    <link rel="stylesheet" th:href="@{/css/topBar.css}">
     <link rel="stylesheet" th:href="@{/css/allTasks.css}">
 </head>
 <body>
+
+<div th:insert="/fragments/topBar"></div>
+
 <div class="container">
-    <h1>Task List</h1>
+    <h1>Department List</h1>
     <table>
         <thead>
         <th>Department ID</th>

@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Project Pilot</title>
+    <link rel="stylesheet" th:href="@{/css/topBar.css}">
     <link rel="stylesheet" th:href="@{/css/start.css}">
 </head>
 <body>
-<header>
-    <h1>Project Pilot</h1>
-</header>
+
+<div th:insert="/fragments/topBar"></div>
+
 <main>
     <p>Efficient project management for your team</p>
     <a href="/login"><button>Login</button></a>
