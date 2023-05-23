@@ -2,12 +2,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Users</title>
+    <title>All Users</title>
+    <link rel="stylesheet" th:href="@{/css/topBar.css}">
     <link rel="stylesheet" th:href="@{/css/allUsers.css}">
 </head>
 <body>
+
+<!--Top Bar CSS-->
+<div th:insert="/fragments/topBar"></div>
+
 <div class="container">
-    <h1>Users</h1>
+    <h1>All Users</h1>
     <table>
         <thead>
         <th>ID</th>

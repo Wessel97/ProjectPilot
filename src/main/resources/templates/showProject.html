@@ -2,13 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Tasks</title>
+    <title>Project</title>
+    <link rel="stylesheet" th:href="@{/css/topBar.css}">
     <link rel="stylesheet" th:href="@{/css/showProject.css}">
 </head>
 <body>
-    <header>
-        <h1>Project Pilot</h1>
-    </header>
+
+<div th:insert="/fragments/topBar"></div>
 
     <h2>Admin Dashboard</h2>
 

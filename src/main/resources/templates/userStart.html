@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>User Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/topBar.css}">
     <link rel="stylesheet" th:href="@{/css/userStart.css}">
 </head>
 <body>
-<header>
-    <h1>Project Pilot</h1>
-</header>
+
+<div th:insert="/fragments/topBar"></div>
+
 <h2>User Dashboard</h2>
 
 <table>

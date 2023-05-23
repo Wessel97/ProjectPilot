@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/topBar.css}">
     <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
+
+<div th:insert="/fragments/topBar"></div>
+
 <div class="container">
     <form action="/login" method="post">
-        <h1>Login</h1>
+        <h2>Login</h2>
         <label for="email">Email:</label>
         <input type="text" id="email" name="email" required>
         <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
