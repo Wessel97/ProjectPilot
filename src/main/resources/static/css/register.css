@@ -1,6 +1,6 @@
 .container {
     max-width: 400px;
-    margin: 0 auto;
+    margin: 50px auto; /* Adjust the margin value as per your desired gap */
     padding: 20px;
     background-color: #f5f5f5;
     border: 1px solid #ddd;
@@ -10,7 +10,7 @@
 
 h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 form {
@@ -26,14 +26,14 @@ label {
 input[type="checkbox"] {
     width: 20px;
     height: 20px;
-    margin-bottom: 10px;
+    margin-bottom:25px;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="password"] {
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     border: 1px solid #ddd;
     border-radius: 3px;
 }
@@ -48,6 +48,7 @@ a button {
     cursor: pointer;
     display: block;
     width: 100%;
+    margin-bottom: 15px;
 }
 
 input[type="submit"]:hover,
@@ -62,4 +63,12 @@ a button {
 
 a button:hover {
     background-color: #3367D6;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    text-align: center;
 }
