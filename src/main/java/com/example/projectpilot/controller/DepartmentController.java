@@ -92,18 +92,22 @@ public class DepartmentController
             return "redirect:/allDepartments";
         }
 
-        List<Task> taskList = taskRepository.getAllTasksByDepartmentID(department.getDepartmentName());
+        List<Task> taskList = taskRepository.getAllTasksByDepartmentID(departmentId);
         model.addAttribute("task", taskList);
         model.addAttribute("department", department);
 
-        int totalHours = taskRepository.totalHoursByDepartment(department.getDepartmentName());
+        String departmentName = String.valueOf(departmentId);
+
+        int totalHours = taskRepository.totalHoursByDepartment(departmentName);
         model.addAttribute("totalHours", totalHours);
 
-        int totalPrice = taskRepository.totalPriceByDepartment(department.getDepartmentName());
+        int totalPrice = taskRepository.totalPriceByDepartment(departmentName);
         model.addAttribute("totalPrice", totalPrice);
 
         return "showDepartment";
     }
+
+
 
     @GetMapping("/showAllDepartments/{id}")
     public String showDepartmentsByProject(@PathVariable("id") int id,  HttpSession session, Model model)

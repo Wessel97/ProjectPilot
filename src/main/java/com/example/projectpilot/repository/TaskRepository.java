@@ -446,7 +446,7 @@ public class TaskRepository
             ResultSet resultSet = statement.executeQuery();
             if ( resultSet.next() )
             {
-                sumHours = resultSet.getInt(1);
+                sumHours = resultSet.getInt(7);
             }
         }
         catch (SQLException e)
@@ -460,7 +460,7 @@ public class TaskRepository
     public int totalHoursByDepartment(String department)
     {
         int sumHoursByDept = 0;
-        String CALCULATE_QUERY = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE department = ?";
+        String CALCULATE_QUERY = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE department_id = ?";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
@@ -528,7 +528,7 @@ public class TaskRepository
     public int totalPriceByDepartment(String department)
     {
         int sumPriceByDept = 0;
-        String CALCULATE_QUERY = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE department = ?";
+        String CALCULATE_QUERY = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE department_id = ?";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
