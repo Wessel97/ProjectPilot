@@ -19,7 +19,6 @@ button:hover {
     background-color: #3367D6;
 }
 
-
 .button-container {
     display: flex;
     justify-content: center;
@@ -32,9 +31,6 @@ button:hover {
 .button-container a {
     margin: 10px; /* Adjust the margin as needed */
 }
-
-
-
 
 .container {
     max-width: 800px;
@@ -87,14 +83,6 @@ h2 {
 
 .table tbody td button:hover {
     background-color: #3367D6;
-}
-
-.error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    text-align: center;
 }
 
 .hidden {
