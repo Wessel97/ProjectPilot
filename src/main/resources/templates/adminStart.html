@@ -6,46 +6,52 @@
     <link rel="stylesheet" th:href="@{/css/topBar.css}">
     <link rel="stylesheet" th:href="@{/css/adminStart.css}">
 </head>
+
 <body>
 
 <div th:insert="~{/fragments/topBar}"></div>
 
     <h2>Admin Dashboard</h2>
 
-    <a href="/addProject"><button>Create Project</button></a>
-    <a href="/register"><button>Create User</button></a>
-    <a href="/allUsers"><button>See All Users</button></a>
-    <a href="/allTasks"><button>All Task</button></a>
+    <div class="button-container">
+        <a href="/addProject"><button>Create Project</button></a>
+        <a href="/register"><button>Create User</button></a>
+        <a href="/allUsers"><button>All Users</button></a>
+        <a href="/allTasks"><button>All Tasks</button></a>
+    </div>
 
-    <table>
+<div class="container">
+    <h2>Projects</h2>
+    <table class="table">
         <thead>
-        <th>ID</th>
-        <th>Name</th>
+        <tr>
+            <th>Name</th>
+            <th></th>
+            <th>Actions</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
         <tr th:each="project : ${project}">
-            <td th:text="${project.getId()}">id</td>
+            <td class="hidden" th:text="${project.getId()}">id</td>
             <td th:text="${project.getProjectName()}">42</td>
             <td>
-                <a th:href="@{'/showProject/' + ${project.getId()}}" href="/showProject"><button>ENTER</button></a>
+                <a th:href="@{'/showProject/' + ${project.getId()}}" href="/showProject"><button>Select</button></a>
             </td>
             <td>
-                <a th:href="@{'/updateProject/' + ${project.getId()}}" href="/updateProject/"><button>UPDATE</button></a>
+                <a th:href="@{'/updateProject/' + ${project.getId()}}" href="/updateProject/"><button>Update</button></a>
             </td>
             <td>
                 <form th:action="@{/deleteProject}" method="post">
                     <input type="hidden" name="projectId" th:value="${project.getId()}"/>
                     <button type="submit">DELETE</button>
                 </form>
+<!--                <form th:action="@{'/deleteProject/' + ${project.getId()}}" method="post"> <button type="submit">Delete</button></form>-->
             </td>
         </tr>
         </tbody>
     </table>
-
-
-
-
-
-
+</div>
 </body>
+
 </html>
