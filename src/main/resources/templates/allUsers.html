@@ -17,20 +17,18 @@
         </thead>
         <tbody>
         <tr th:each="user : ${user}">
-            <td th:text="${user.id}">ID</td>
-            <td th:text="${user.firstName}">FORNAVN</td>
-            <td th:text="${user.lastName}">EFTERNAVN</td>
-            <td th:text="${user.email}">EMAIL</td>
-            <td>
-                <form action="/logout" method="get">
-                    <button type="submit">Logout</button>
-                </form>
-            </td>
+            <td th:text="${user.getId()}">ID</td>
+            <td th:text="${user.getFirstName()}">FORNAVN</td>
+            <td th:text="${user.getLastName()}">EFTERNAVN</td>
+            <td th:text="${user.getEmail()}">EMAIL</td>
         </tr>
         </tbody>
     </table>
     <a href="/addTask"><button>Add Task</button></a>
     <a href="/userTasks/"><button>User Tasks</button></a>
+    <form action="/logout" method="get">
+        <button type="submit">Logout</button>
+    </form>
 
 </div>
 </body>

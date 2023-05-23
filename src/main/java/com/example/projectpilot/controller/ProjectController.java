@@ -76,7 +76,7 @@ public class ProjectController
         Project newProject = new Project();
         newProject.setProjectName(newName);
         projectRepository.addProject(newProject);
-        return "redirect:/allProjects";
+        return "redirect:/adminStart";
     }
 
     @GetMapping("/updateProject/{id}")

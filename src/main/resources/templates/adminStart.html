@@ -23,11 +23,18 @@
             <td>
                 <a th:href="@{'/showProject/' + ${project.getId()}}" href="/showProject"><button>ENTER</button></a>
             </td>
+            <td>
+                <a th:href="@{'/updateProject/' + ${project.getId()} + ${project.getProjectName()}}" href="/updateProject/"><button>UPDATE</button></a>
+            </td>
+            <td>
+                <form th:action="@{'/deleteProject/' + ${project.getId()}}" method="post"> <button type="submit">DELETE</button></form>
+            </td>
         </tr>
         </tbody>
     </table>
 
-    <a href="/addUser"><button>Create User</button></a>
+    <a href="/addProject"><button>Create Project</button></a>
+    <a href="/register"><button>Create User</button></a>
     <a href="/allUsers"><button>See All Users</button></a>
     <a href="/allTasks"><button>All Task</button></a>
 

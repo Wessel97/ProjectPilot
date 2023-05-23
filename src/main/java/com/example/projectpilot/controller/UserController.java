@@ -225,27 +225,6 @@ public class UserController
         return "allUsers";
     }
 
-    /* This method is used to show the admin page.
-    Can be used for home button.
-    When clicked, it will redirect to /adminStart if the user is an admin,
-    otherwise it will redirect to /allTasks. */
-    @GetMapping("/admin")
-    public String admin(HttpSession session)
-    {
-        User user = (User) session.getAttribute("user");
-        if ( user == null)
-        {
-            return "redirect:/";
-        }
-        else if (!user.isAdmin())
-        {
-            return "redirect:/allTasks";
-        }
-        else
-        {
-            return "adminStart";
-        }
-    }
 
     @PostMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") int id, HttpSession session)
