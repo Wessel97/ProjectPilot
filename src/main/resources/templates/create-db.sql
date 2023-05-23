@@ -2,15 +2,15 @@ USE projectpilotdb;
 
 -- Drop foreign key constraint before dropping the tables
 -- Note: You might need to adjust these commands according to the actual foreign key names in your database.
-ALTER TABLE task DROP FOREIGN KEY task_ibfk_1;
+/*ALTER TABLE task DROP FOREIGN KEY task_ibfk_1;
 ALTER TABLE task DROP FOREIGN KEY task_ibfk_2;
-ALTER TABLE department DROP FOREIGN KEY department_ibfk_1;
+ALTER TABLE department DROP FOREIGN KEY department_ibfk_1;*/
 
 -- Drop tables if they exist
-DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS task;
 DROP TABLE IF EXISTS department;
 DROP TABLE IF EXISTS project;
+DROP TABLE IF EXISTS user;
 
 -- Create user table
 CREATE TABLE user (
@@ -36,7 +36,7 @@ CREATE TABLE department (
                             project_id INT NULL,
                             name VARCHAR(45) NOT NULL,
                             PRIMARY KEY (id),
-                            FOREIGN KEY (project_id) REFERENCES project(id)
+                            FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE
 );
 
 -- Create task table
@@ -57,7 +57,7 @@ CREATE TABLE task (
                       project VARCHAR(45) NULL,
                       PRIMARY KEY (id),
                       FOREIGN KEY (user_id) REFERENCES user(id),
-                      FOREIGN KEY (department_id) REFERENCES department(id)
+                      FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE CASCADE
 );
 
 -- Insert a dummy user

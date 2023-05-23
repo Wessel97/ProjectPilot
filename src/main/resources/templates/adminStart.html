@@ -27,7 +27,10 @@
                 <a th:href="@{'/updateProject/' + ${project.getId()}}" href="/updateProject/"><button>UPDATE</button></a>
             </td>
             <td>
-                <form th:action="@{'/deleteProject/' + ${project.getId()}}" method="post"> <button type="submit">DELETE</button></form>
+                <form th:action="@{/deleteProject}" method="post">
+                    <input type="hidden" name="projectId" th:value="${project.getId()}"/>
+                    <button type="submit">DELETE</button>
+                </form>
             </td>
         </tr>
         </tbody>
