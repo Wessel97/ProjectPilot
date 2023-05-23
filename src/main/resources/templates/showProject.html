@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Tasks</title>
+    <link rel="stylesheet" th:href="@{/css/allTasks.css}">
 </head>
 <body>
+<div class="container">
+    <h1>Department List</h1>
+    <table>
+        <thead>
+        <th>Department ID</th>
+        <th>Name</th>
+        </thead>
+        <tbody>
+        <tr th:each="department : ${department}">
+            <td th:text="${department.getId()}">42</td>
+            <td th:text="${department.getDepartmentName()}">42</td>
+            <td>
+                <a th:href="@{'/showDepartment/' + ${department.getId()}}" href="/showDepartment"><button>ENTER</button></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
+
+</div>
 </body>
 </html>

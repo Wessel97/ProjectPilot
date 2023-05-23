@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Task List</h1>
+    <h1>My Tasks</h1>
     <table>
         <thead>
         <th>Task ID</th>
@@ -48,15 +48,14 @@
                 </form>
             </td>
             <td>
-                <form action="/logout" method="get">
-                    <button type="submit">Logout</button>
-                </form>
             </td>
         </tr>
         </tbody>
     </table>
+    <form action="/logout" method="get">
+        <button type="submit">Logout</button>
+    </form>
     <a href="/addTask"><button>Add Task</button></a>
-    <a href="/userTasks/"><button>User Tasks</button></a>
 
 </div>
 </body>
