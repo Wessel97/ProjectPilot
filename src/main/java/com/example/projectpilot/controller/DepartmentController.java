@@ -99,7 +99,7 @@ public class DepartmentController
             return "redirect:/";
         }
         User user = (User) session.getAttribute("user");
-        List<Department> departmentList = departmentRepository.getAllDepartmentsByProject(id);
+        List<Department> departmentList = departmentRepository.getAllDepartmentsByProjectId(id);
         model.addAttribute("department", departmentList);
         return "showAllDepartments";
     }
