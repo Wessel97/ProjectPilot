@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<div th:insert="/fragments/topBar"></div>
+<div th:insert="~{/fragments/topBar}"></div>
 
 <div class="container">
     <h2>Register new User</h2>
@@ -33,7 +33,7 @@
         <input type="submit" value="Create Account">
     </form>
 
-    <a href="/login"><button>Already have an account?</button></a>
+    <a href="/login"><button class="no-underline">Already have an account?</button></a>
 
 </div>
 </body>
