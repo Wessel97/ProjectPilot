@@ -48,7 +48,6 @@ public class TaskController
                           @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate newStartDate,
                           @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate newEndDate,
                           @RequestParam("task-status") String newStatus,
-                          @RequestParam("task-department") String newDepartment,
                           HttpSession session)
     {
         if ( session.getAttribute("user") == null )
@@ -56,12 +55,17 @@ public class TaskController
             return "redirect:/";
         }
 
+        int departmentId = (int) session.getAttribute("departmentId"); // Retrieve Department ID from the session
+        String departmentName = (String) session.getAttribute("departmentName"); // Retrieve project ID from the session
+
+
         // Convert LocalDate to java.sql.Date
         Date sqlStartDate = Date.valueOf(newStartDate);
         Date sqlEndDate = Date.valueOf(newEndDate);
 
         // Laver en ny Task
         Task newTask = new Task();
+        newTask.setDepartment_id(departmentId);
         newTask.setTitle(newTitle);
         newTask.setDescription(newDescription);
         newTask.setNote(newNote);
@@ -69,7 +73,7 @@ public class TaskController
         newTask.setStart_Date(sqlStartDate);
         newTask.setEnd_Date(sqlEndDate);
         newTask.setStatus(newStatus);
-        newTask.setDepartment(newDepartment);
+        newTask.setDepartment(departmentName);
 
         // Gemmer i taskRepository
         taskRepository.addTask(newTask);

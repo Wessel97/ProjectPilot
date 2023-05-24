@@ -236,4 +236,32 @@ public class DepartmentRepository
         return departmentsByProjectList;
     }
 
+    public String getDepartmentNameById(int id)
+    {
+        String departmentName = null;
+        //query to find user
+        final String FIND_QUERY = "SELECT name FROM ProjectPilotDB.department WHERE id = ?";
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
+        {
+            //set parameters for prepared statement (user_id)
+            preparedStatement.setInt(1, id);
+            //execute statement
+            ResultSet resultSet = preparedStatement.executeQuery();
+            //return user if user exists
+            if (resultSet.next())
+            {
+                departmentName = resultSet.getString("name");
+            }
+        } catch (SQLException e)
+        {
+            System.out.println("Could not query database");
+            e.printStackTrace();
+        }
+        //return null if user does not exist
+        return departmentName;
+    }
+
+
 }

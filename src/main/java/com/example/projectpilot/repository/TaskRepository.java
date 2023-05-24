@@ -229,19 +229,20 @@ public class TaskRepository
     //Method 6 add task. This method will add a task to the database.
     public void addTask(Task task)
     {
-        final String CREATE_QUERY = "INSERT INTO task(title, description, note, hours, start_date, end_date, status, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        final String CREATE_QUERY = "INSERT INTO task(department_id, title, description, note, hours, start_date, end_date, status, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY))
         {
-            preparedStatement.setString(1, task.getTitle());
-            preparedStatement.setString(2, task.getDescription());
-            preparedStatement.setString(3, task.getNote());
-            preparedStatement.setInt(4, task.getHours());
-            preparedStatement.setDate(5, task.getStart_Date());
-            preparedStatement.setDate(6, task.getEnd_Date());
-            preparedStatement.setString(7, task.getStatus());
-            preparedStatement.setString(8, task.getDepartment());
+            preparedStatement.setInt(1, task.getDepartment_id());
+            preparedStatement.setString(2, task.getTitle());
+            preparedStatement.setString(3, task.getDescription());
+            preparedStatement.setString(4, task.getNote());
+            preparedStatement.setInt(5, task.getHours());
+            preparedStatement.setDate(6, task.getStart_Date());
+            preparedStatement.setDate(7, task.getEnd_Date());
+            preparedStatement.setString(8, task.getStatus());
+            preparedStatement.setString(9, task.getDepartment());
 
             preparedStatement.executeUpdate();
         }
@@ -459,7 +460,7 @@ public class TaskRepository
     }
 
     // Method 17 calculates the total number of hours for a given department.
-    public int totalHoursByDepartment(String department)
+    public int totalHoursByDepartment(int id)
     {
         int sumHoursByDept = 0;
         String CALCULATE_QUERY = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE department_id = ?";
@@ -467,7 +468,7 @@ public class TaskRepository
         try (Connection connection = databaseService.getConnection();
              PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
         {
-            statement.setString(1, department);
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if ( resultSet.next() )
             {
@@ -527,7 +528,7 @@ public class TaskRepository
     }
 
     // Method 20 calculates the total price for the tasks in a given department.
-    public int totalPriceByDepartment(String department)
+    public int totalPriceByDepartment(int id)
     {
         int sumPriceByDept = 0;
         String CALCULATE_QUERY = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE department_id = ?";
@@ -535,7 +536,7 @@ public class TaskRepository
         try (Connection connection = databaseService.getConnection();
              PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
         {
-            statement.setString(1, department);
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if ( resultSet.next() )
             {

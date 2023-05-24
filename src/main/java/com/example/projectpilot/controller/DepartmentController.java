@@ -104,13 +104,16 @@ public class DepartmentController
         model.addAttribute("task", taskList);
         model.addAttribute("department", department);
 
-        String departmentName = String.valueOf(departmentId);
+        String departmentName = departmentRepository.getDepartmentNameById(departmentId);
 
-        int totalHours = taskRepository.totalHoursByDepartment(departmentName);
+        int totalHours = taskRepository.totalHoursByDepartment(departmentId);
         model.addAttribute("totalHours", totalHours);
 
-        int totalPrice = taskRepository.totalPriceByDepartment(departmentName);
+        int totalPrice = taskRepository.totalPriceByDepartment(departmentId);
         model.addAttribute("totalPrice", totalPrice);
+
+        session.setAttribute("departmentId", departmentId); // Store department ID in the session
+        session.setAttribute("departmentName", departmentName); // Store department ID in the session
 
         return "showDepartment";
     }
