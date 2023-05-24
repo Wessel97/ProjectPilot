@@ -2,36 +2,42 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User Dashboard</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" th:href="@{/css/topBar.css}">
-    <link rel="stylesheet" th:href="@{/css/userStart.css}">
+    <link rel="stylesheet" th:href="@{/css/adminStart.css}">
 </head>
+
 <body>
 
 <div th:insert="~{/fragments/topBar}"></div>
 
 <h2>User Dashboard</h2>
 
-<table>
-    <thead>
-    <th>ID</th>
-    <th>Name</th>
-    </thead>
-    <tbody>
-    <tr th:each="project : ${project}">
-        <td th:text="${project.getId()}">id</td>
-        <td th:text="${project.getProjectName()}">42</td>
-        <td>
-            <a th:href="@{'/showProject/' + ${project.getId()}}" href="/showProject"><button>ENTER</button></a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="button-container">
+    <a href="/userTasks"><button>My Tasks</button></a>
+    <form action="/logout" method="get"><button type="submit" class="logout">Logout</button></form>
+</div>
 
-<a href="/userTasks"><button>See My Tasks</button></a>
-
-
-
-
+<div class="container">
+    <h2>Projects</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="project : ${project}">
+            <td class="hidden" th:text="${project.getId()}">id</td>
+            <td th:text="${project.getProjectName()}">42</td>
+            <td>
+                <a th:href="@{'/showProject/' + ${project.getId()}}" href="/showProject"><button>Select</button></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
+
 </html>

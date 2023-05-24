@@ -32,6 +32,11 @@ button:hover {
     margin: 10px; /* Adjust the margin as needed */
 }
 
+.logout {
+    margin-left: 10px; /* Adjust the margin as needed */
+    margin-bottom: 0px; /* Adjust the margin as needed */
+}
+
 .container {
     max-width: 800px;
     margin: 50px auto;
