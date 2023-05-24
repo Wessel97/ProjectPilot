@@ -38,14 +38,13 @@ public class ProjectController
     }*/
 
     @GetMapping("/showProject/{id}")
-    public String showProject(@PathVariable("id") int projectId, HttpSession session, Model model)
-    {
-        if ( session.getAttribute("user") == null )
-        {
+    public String showProject(@PathVariable("id") int projectId, HttpSession session, Model model) {
+        if (session.getAttribute("user") == null) {
             return "redirect:/";
         }
 
         List<Department> departmentList = departmentRepository.getAllDepartmentsByProjectId(projectId);
+        session.setAttribute("projectId", projectId); // Store project ID in the session
         model.addAttribute("department", departmentList);
         return "showProject";
     }

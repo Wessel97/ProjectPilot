@@ -5,6 +5,7 @@ import com.example.projectpilot.model.Project;
 import com.example.projectpilot.model.Task;
 import com.example.projectpilot.model.User;
 import com.example.projectpilot.repository.DepartmentRepository;
+import com.example.projectpilot.repository.ProjectRepository;
 import com.example.projectpilot.repository.TaskRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -18,11 +19,14 @@ public class DepartmentController
 {
     private final DepartmentRepository departmentRepository;
     private final TaskRepository taskRepository;
+    private final ProjectRepository projectRepository;
 
-    public DepartmentController(DepartmentRepository departmentRepository, TaskRepository taskRepository)
+
+    public DepartmentController(DepartmentRepository departmentRepository, TaskRepository taskRepository, ProjectRepository projectRepository)
     {
         this.departmentRepository = departmentRepository;
         this.taskRepository = taskRepository;
+        this.projectRepository = projectRepository;
     }
 
 
@@ -39,21 +43,24 @@ public class DepartmentController
     }
 
     @GetMapping("/addDepartment")
-    public String ShowAddDepartment(HttpSession session, Model model)
-    {
-        if ( session.getAttribute("user") == null )
-        {
+    public String showAddDepartment(HttpSession session, Model model) {
+        if (session.getAttribute("user") == null) {
             return "redirect:/";
         }
 
-        Department newDepartment = new Department(); // assuming Department is a class that has a property departmentName
-        model.addAttribute("department", newDepartment); // this will be used to bind form data
+        int projectId = (int) session.getAttribute("projectId"); // Retrieve project ID from the session
+        List<Department> departmentList = departmentRepository.getAllDepartmentsByProjectId(projectId);
+        Project project = new Project();
+
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("department", departmentList);
+        model.addAttribute("newDepartment", new Department()); // this will be used to bind form data
 
         return "addDepartment";
     }
 
-    @PostMapping("/addDepartment/{id}")
-    public String addDepartment(@PathVariable("id") int projectId, @RequestParam("department-name") String departmentName, Model model)
+    @PostMapping("/addDepartment")
+    public String addDepartment( @RequestParam("department-name") String departmentName, Model model, HttpSession session)
     {
         // check if department exists
         if (departmentRepository.checkIfDepartmentExists(departmentName))
@@ -63,12 +70,13 @@ public class DepartmentController
         }
         else
         {
+            int projectId = (int) session.getAttribute("projectId"); // Retrieve project ID from the session
             Department newDepartment = new Department();
             newDepartment.setDepartmentName(departmentName);
             newDepartment.setProjectId(projectId);
             if(departmentRepository.addDepartment(newDepartment))
             {
-                return "redirect:/departmentList"; // or whatever your success page is
+                return "redirect:/adminStart"; // or whatever your success page is
             }
             else
             {
