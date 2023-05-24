@@ -25,18 +25,6 @@ public class ProjectController
         this.departmentRepository = departmentRepository;
     }
 
-
-    /*@GetMapping("/adminStart")
-    public String showAllProjects(HttpSession session, Model model)
-    {
-        if ( session.getAttribute("user") == null )
-        {
-            return "redirect:/";
-        }
-        model.addAttribute("project", projectRepository.getAllProjects());
-        return "adminStart";
-    }*/
-
     @GetMapping("/showProject/{id}")
     public String showProject(@PathVariable("id") int projectId, HttpSession session, Model model) {
         if (session.getAttribute("user") == null) {

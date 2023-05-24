@@ -111,7 +111,7 @@ public class UserController
 
     // This method is used to show the register page.
     @GetMapping("/register")
-    public String registerUser()
+    public String showRegisterUser()
     {
         return "register";
         //Ingen HTTPSession her fordi alle skal kunne lave et login.
