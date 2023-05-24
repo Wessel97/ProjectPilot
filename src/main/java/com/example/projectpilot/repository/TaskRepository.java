@@ -48,18 +48,22 @@ public class TaskRepository
         return new Task(id, user_id, department_id, title, description, note, hours, pay_rate, flag, start_date, end_date, status, department, project);
     }
 
+
+
     //Method 2 get all tasks. This method will return a list of all tasks in the database.
-    public List<Task> getAllTasks()
+    public List<Task> getAllTasksByProjectId(int projectId)
     {
         //create list of tasks
         List<Task> allTasksList = new ArrayList<>();
+        final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task JOIN " +
+                "ProjectPilotDB.department ON task.department_id = department.id WHERE " +
+                "department.project_id = ?";
+
         try (Connection connection = databaseService.getConnection();
-             Statement statement = connection.createStatement())
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_QUERY))
         {
-            //execute statement
-            final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task";
-            //get result set
-            ResultSet resultSet = statement.executeQuery(SQL_QUERY);
+            preparedStatement.setInt(1, projectId);
+            ResultSet resultSet = preparedStatement.executeQuery();
             //loop through result set
             while ( resultSet.next() )
             {
@@ -258,7 +262,7 @@ public class TaskRepository
     // Method 7 update task. This method will update the selected task in the database. Without returning anything.
     public void updateTask(Task task)
     {
-        final String UPDATE_QUERY = "UPDATE task SET title = ?, description = ?, note = ?, hours = ?, pay_rate = ?, flag = ?, start_date = ?, end_date = ?, status = ?, department = ? WHERE id = ?";
+        final String UPDATE_QUERY = "UPDATE task SET title = ?, description = ?, note = ?, hours = ?, pay_rate = ?, flag = ?, start_date = ?, end_date = ?, status = ? WHERE id = ?";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY))
@@ -272,7 +276,6 @@ public class TaskRepository
             Date start_date = task.getStart_Date();
             Date end_date = task.getEnd_Date();
             String status = task.getStatus();
-            String department = task.getDepartment();
             int task_id = task.getId();
 
             preparedStatement.setString(1, title);
@@ -292,11 +295,8 @@ public class TaskRepository
             preparedStatement.setDate(8, end_date);
             // set status parameter
             preparedStatement.setString(9, status);
-            // set department parameter
-            preparedStatement.setString(10, department);
             // set task_id parameter
-            preparedStatement.setInt(11, task_id);
-
+            preparedStatement.setInt(10, task_id);
             preparedStatement.executeUpdate();
         }
         catch (SQLException e)

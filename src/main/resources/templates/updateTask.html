@@ -44,11 +44,11 @@
                     <option value="Pending" th:selected="${task.status == 'Pending'}">Pending</option>
                     <option value="Assigned" th:selected="${task.status == 'Assigned'}">Assigned</option>
                     <option value="In progress" th:selected="${task.status == 'In progress'}">In progress</option>
+                    <option value="Needs review" th:selected="${task.status == 'Needs review'}">On hold</option>
                     <option value="Finished" th:selected="${task.status == 'Finished'}">Finished</option>
             </select>
 
-        <label for="department-field">Task department:</label>
-        <input id="department-field" name="task-department" type="text" th:value="${task.department}">
+        <input id="department-field" name="task-department" type="hidden" th:value="${task.department}">
 
         <input type="submit" value="UPDATE TASK">
     </form>

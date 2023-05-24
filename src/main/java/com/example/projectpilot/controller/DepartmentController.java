@@ -118,8 +118,6 @@ public class DepartmentController
         return "showDepartment";
     }
 
-
-
     @GetMapping("/showAllDepartments/{id}")
     public String showDepartmentsByProject(@PathVariable("id") int id,  HttpSession session, Model model)
     {
