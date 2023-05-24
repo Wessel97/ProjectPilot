@@ -9,7 +9,7 @@
     <h1>Update project</h1>
     <form action="/updateProject" method="post" th:object="${project}">
         <label for="projectId-field">Project ID:</label>
-        <input id="projectId-field" name="id" type="number" th:field="*{id}" th:readonly="true">
+        <input id="projectId-field" name="id" type="hidden" th:field="*{id}">
 
         <label for="projectName-field">Project name:</label>
         <input id="projectName-field" name="projectName" type="text" th:field="*{projectName}">
