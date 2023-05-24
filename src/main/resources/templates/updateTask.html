@@ -10,36 +10,36 @@
 
 <div th:insert="~{/fragments/topBar}"></div>
 
+
 <div class="container">
-    <h1>Update task</h1>
+    <h2>Update Task</h2>
     <form action="/updateTask" method="post">
 
-<!--        Man skal ikke kunne ændre "task_id" men skal man kunne ændre user_id ?-->
         <input id="task_id-field" name="task-task_id" type="hidden" th:value="${task.id}">
         <input id="user_id-field" name="task-user_id" type="hidden" th:value="${task.user_id}">
 
-        <label for="title-field">Task titel:</label>
+        <label for="title-field">Task Title:</label>
         <input id="title-field" name="task-title" type="text" th:value="${task.title}">
 
-        <label for="description-field">Task description:</label>
+        <label for="description-field">Task Description:</label>
         <input id="description-field" name="task-description" type="text" th:value="${task.description}">
 
-        <label for="note-field">Task note:</label>
+        <label for="note-field">Task Note:</label>
         <input id="note-field" name="task-note" type="text" th:value="${task.note}">
 
-        <label for="hours-field">Task hours:</label>
+        <label for="hours-field">Task Hours:</label>
         <input id="hours-field" name="task-hours" type="number" th:value="${task.hours}">
 
-        <label for="pay_rate-field">Task payrate:</label>
+        <label for="pay_rate-field">Task Pay Rate:</label>
         <input id="pay_rate-field" name="task-pay_rate" type="number" th:value="${task.payRate}">
 
-        <label for="start_date-field">Task start date:</label>
+        <label for="start_date-field">Task Start Date:</label>
         <input id="start_date-field" placeholder="23-05-2019" name="task-start_date" type="date" th:value="${task.start_Date}">
 
-        <label for="end_date-field">Task end date:</label>
+        <label for="end_date-field">Task End Date:</label>
         <input id="end_date-field" placeholder="24-06-2020" name="task-end_date" type="date" th:value="${task.end_Date}">
 
-        <label for="status-field">Task status:</label>
+        <label for="status-field">Task Status:</label>
             <select id="status-field" name="task-status">
                     <option value="Pending" th:selected="${task.status == 'Pending'}">Pending</option>
                     <option value="Assigned" th:selected="${task.status == 'Assigned'}">Assigned</option>
@@ -50,7 +50,7 @@
 
         <input id="department-field" name="task-department" type="hidden" th:value="${task.department}">
 
-        <input type="submit" value="UPDATE TASK">
+        <input type="submit" value="Update Task">
     </form>
 </div>
 </body>
