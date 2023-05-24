@@ -95,13 +95,15 @@ public class DepartmentRepository
     public boolean addDepartment(Department department)
     {
         // Query to insert user
-        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.department (name) VALUES (?)";
+        final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.department (project_id, name) VALUES (?,?)";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY))
         {
+            // Set project_id
+            preparedStatement.setInt(1, department.getProjectId());
             // Set first_name
-            preparedStatement.setString(1, department.getDepartmentName());
+            preparedStatement.setString(2, department.getDepartmentName());
             // Execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
             int rowsAffected = preparedStatement.executeUpdate();
             // Return true if rowsAffected is 1
