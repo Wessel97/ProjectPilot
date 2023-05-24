@@ -15,4 +15,24 @@ h1 {
     margin: 0;
     font-size: 40px
 }
+
+a:link {
+    color: white;
+    text-decoration: none;
+}
+
+a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+a:active {
+    color: white;x  
+    text-decoration: none;
+}
 /*Top Bar CSS*/
