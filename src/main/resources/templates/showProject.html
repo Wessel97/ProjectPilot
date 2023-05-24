@@ -10,26 +10,30 @@
 
 <div th:insert="~{/fragments/topBar}"></div>
 
-    <h2>Admin Dashboard</h2>
+    <h2>Departments</h2>
 
-    <table>
+    <div class="button-container">
+        <a href="/addDepartment"><button>Create Department</button></a>
+    </div>
+
+<div class="container">
+    <table class="table">
         <thead>
-        <th>Department ID</th>
-        <th>Name</th>
+        <tr>
+            <th>Department ID</th>
+            <th>Name</th>
+        </tr>
         </thead>
         <tbody>
         <tr th:each="department : ${department}">
             <td th:text="${department.getId()}">42</td>
             <td th:text="${department.getDepartmentName()}">42</td>
             <td>
-                <a th:href="@{'/showDepartment/' + ${department.getId()}}" href="/showDepartment"><button>ENTER</button></a>
+                <a th:href="@{'/showDepartment/' + ${department.getId()}}" href="/showDepartment"><button>Enter</button></a>
             </td>
         </tr>
-        <a href="/addDepartment"><button>Create Department</button></a>
         </tbody>
     </table>
-
-
-
+</div>
 </body>
 </html>
