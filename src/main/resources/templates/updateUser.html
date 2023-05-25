@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update</title>
+    <link rel="stylesheet" th:href="@{/css/topBar.css}">
+    <link rel="stylesheet" th:href="@{/css/updateTask.css}">
+</head>
+<body>
+
+<div th:insert="~{/fragments/topBar}"></div>
+
+<div class="container">
+    <h2>Update User</h2>
+    <form action="/updateUser" method="post">
+        <input id="user_id-field" name="user-id" type="hidden" th:value="${user.id}">
+
+        <label for="admin">Check for Admin:</label>
+        <input type="checkbox" id="admin" name="user-admin" th:checked="${user.admin}">
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" placeholder="First Name" name="user-firstname" required th:value="${user.firstName}">
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" placeholder="Last Name" name="user-lastname" required th:value="${user.lastName}">
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Email" name="user-email" required th:value="${user.email}">
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter a new password if you want to change it" name="user-password">
+        <span th:if="${errorMessage != null}" th:text="${errorMessage}"></span>
+
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" placeholder="Confirm new password" name="user-confirm_password">
+
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+</body>
+</html>

@@ -240,20 +240,18 @@ public class UserController
 
 
     @PostMapping("/deleteUser/{id}")
-    public String deleteUser(@PathVariable("id") int id, HttpSession session)
+    public String deleteUser(@PathVariable("id") int userId, HttpSession session)
     {
         if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
 
-        User user = userRepository.getUserByID(id);
-
-        userRepository.deleteUserByID(user);
+        userRepository.deleteUserByID(userId);
         return "redirect:/allUsers";
     }
 
-    @GetMapping("/editUser/{id}")
+    @GetMapping("/updateUser/{id}")
     public String showEditUser(@PathVariable("id") int id, HttpSession session, Model model)
     {
         if ( session.getAttribute("id") == null )
@@ -264,26 +262,46 @@ public class UserController
         User user = userRepository.getUserByID(id);
 
         model.addAttribute("user", user);
-        return "editUser";
+        return "updateUser";
     }
 
-    @PostMapping("/editUser")
+    @PostMapping("/updateUser")
     public String editUser(@RequestParam("user-id") int id,
                            @RequestParam("user-admin") boolean admin,
                            @RequestParam("user-firstname") String firstname,
                            @RequestParam("user-lastname") String lastname,
                            @RequestParam("user-email") String email,
                            @RequestParam("user-password") String password,
-                           HttpSession session)
+                            @RequestParam("user-confirm_password") String confirmPassword,
+                           HttpSession session, Model model)
     {
         if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
 
-        User user = new User(id, admin, firstname, lastname, email, password);
+        User user = userRepository.getUserByID(id);
+        boolean passwordChanged = false;
 
-        userRepository.updateUser(user);
+        if (!password.isEmpty())
+        {
+
+            if (!password.equals(confirmPassword)) {
+                model.addAttribute("errorMessage", "Passwords do not match");
+                model.addAttribute("user", user);
+                return "updateUser";
+            }
+
+            user.setPassword(password);
+            passwordChanged = true;
+        }
+
+        user.setAdmin(admin);
+        user.setFirstName(firstname);
+        user.setLastName(lastname);
+        user.setEmail(email);
+
+        userRepository.updateUser(user, passwordChanged);
 
         return "redirect:/allUsers";
     }

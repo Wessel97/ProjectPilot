@@ -59,8 +59,7 @@
         <a th:href="@{'/updateTask/' + ${task.id}}" href="/updateTask"><button>Update</button></a>
       </td>
       <td>
-        <form th:action="@{'/deleteTask/' + ${task.id}}" method="post">
-          <button type="submit">Delete</button>
+        <form th:action="@{'/deleteTask/' + ${task.id}}" method="post"><button type="submit">Delete</button>
         </form>
       </td>
       <td>

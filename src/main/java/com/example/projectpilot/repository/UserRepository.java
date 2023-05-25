@@ -219,7 +219,7 @@ public class UserRepository
 
 
     // Method 6 update user. This method will update the selected user in the database. Without returning anything.
-    public void updateUser(User user)
+    public void updateUser(User user, boolean passwordChanged)
     {
         //query to update user
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.user SET admin = ?, first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
@@ -236,8 +236,19 @@ public class UserRepository
             preparedStatement.setString(3, user.getLastName());
             //set email
             preparedStatement.setString(4, user.getEmail());
-            //set password
-            preparedStatement.setString(5, user.getPassword());
+
+            if(passwordChanged)
+            {
+                // Encrypt password
+                String encryptedPassword = encoder.encode(user.getPassword());
+                // Set encrypted password
+                preparedStatement.setString(5, encryptedPassword);
+            }
+            else
+            {
+                preparedStatement.setString(5, user.getPassword());
+            }
+
             //set user_id
             preparedStatement.setInt(6, user.getId());
             //execute statement
@@ -302,18 +313,25 @@ public class UserRepository
 
 
     //Method 8 delete user by ID. This method will return true if the user was successfully deleted from the database.
-    public boolean deleteUserByID(User user)
+    public boolean deleteUserByID(int userId)
     {
+
+        //query to unassign tasks from user
+        final String UNASSIGN_QUERY = "UPDATE ProjectPilotDB.task SET user_id = NULL WHERE user_id = ?";
         //query to delete user
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.user WHERE id = ?";
         
         try (Connection connection = databaseService.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY))
+             PreparedStatement unassignPreparedStatement = connection.prepareStatement(UNASSIGN_QUERY);
+             PreparedStatement deletePreparedStatement = connection.prepareStatement(DELETE_QUERY))
         {
             //set parameters for prepared statement(user_id)
-            preparedStatement.setInt(1, user.getId());
+            unassignPreparedStatement.setInt(1, userId);
+            deletePreparedStatement.setInt(1, userId);
+
+            unassignPreparedStatement.executeUpdate();
             //execute statement
-            int foundUser = preparedStatement.executeUpdate();
+            int foundUser = deletePreparedStatement.executeUpdate();
             //return true if user was found and deleted (foundUser should be 1).
             if ( foundUser == 1 )
             {

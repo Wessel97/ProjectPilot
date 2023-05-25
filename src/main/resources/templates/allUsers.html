@@ -26,6 +26,7 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -34,6 +35,11 @@
             <td th:text="${user.getFirstName()}">FORNAVN</td>
             <td th:text="${user.getLastName()}">EFTERNAVN</td>
             <td th:text="${user.getEmail()}">EMAIL</td>
+            <td>
+                <form th:action="@{'/deleteUser/' + ${user.id}}" method="post"><button type="submit">Delete</button></form>
+            </td>
+            <td>
+                <a th:href="@{'/updateUser/' + ${user.id}}" href="/updateUser/"><button>Update</button></a>            </td>
         </tr>
         </tbody>
     </table>
