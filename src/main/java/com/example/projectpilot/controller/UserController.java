@@ -23,7 +23,6 @@ public class UserController
     Project newProject = new Project();
 
 
-
     @Autowired
     public UserController(UserRepository userRepository, TaskRepository taskRepository, ProjectRepository projectRepository)
     {
@@ -54,7 +53,7 @@ public class UserController
                         HttpSession session)
     {
         //Check if user with mail already exists
-        if ( !userRepository.verifyUser(email, password))
+        if ( !userRepository.verifyUser(email, password) )
         {
             model.addAttribute("errorMessage", "Email or password invalid");
             return "/login";
@@ -62,8 +61,8 @@ public class UserController
         else
         {
             User user = userRepository.getUserByEmailAndPassword(email, password);
-            session.setAttribute("user", user);
-            if (user.isAdmin())
+            session.setAttribute("id", user.getId());
+            if ( user.isAdmin() )
             {
                 return "redirect:/adminStart";
             }
@@ -77,8 +76,9 @@ public class UserController
     @GetMapping("/home")
     public String home(HttpSession session)
     {
-        User user = (User) session.getAttribute("user");
-        if (user.isAdmin())
+        int userId = (int) session.getAttribute("id");
+        User user = userRepository.getUserByID(userId);
+        if ( user.isAdmin() )
         {
             return "redirect:/adminStart";
         }
@@ -89,8 +89,10 @@ public class UserController
     }
 
     @GetMapping("/adminStart")
-    public String showAdminStart(HttpSession session, Model model) {
-        if (session.getAttribute("user") == null) {
+    public String showAdminStart(HttpSession session, Model model)
+    {
+        if ( session.getAttribute("id") == null )
+        {
             return "redirect:/";
         }
 
@@ -102,7 +104,7 @@ public class UserController
     @GetMapping("/userStart")
     public String showUserStart(HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -144,7 +146,7 @@ public class UserController
         {
             User user = new User(admin, firstname, lastname, email, password);
             userRepository.addUser(user);
-            session.setAttribute("user", user);
+            session.setAttribute("id", user.getId());
             return "redirect:/adminStart";
         }
         else
@@ -159,7 +161,7 @@ public class UserController
     @GetMapping("/addUser")
     public String showAddUser(HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -177,7 +179,7 @@ public class UserController
                           @RequestParam("user-password") String newPassword,
                           HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -193,12 +195,11 @@ public class UserController
     }
 
 
-
     // This method is used to show the assignUser page.
     @GetMapping("/assignUser/{id}")
     public String showAssignUser(@PathVariable("id") int task_Id, HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -214,7 +215,7 @@ public class UserController
     @PostMapping("/assignUser")
     public String assignUser(@RequestParam("task_id") int task_id, @RequestParam("userId") int userId, HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -229,7 +230,7 @@ public class UserController
     @GetMapping("/allUsers")
     public String showAllUsers(HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -241,7 +242,7 @@ public class UserController
     @PostMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") int id, HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -255,7 +256,7 @@ public class UserController
     @GetMapping("/editUser/{id}")
     public String showEditUser(@PathVariable("id") int id, HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -275,7 +276,7 @@ public class UserController
                            @RequestParam("user-password") String password,
                            HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -286,7 +287,6 @@ public class UserController
 
         return "redirect:/allUsers";
     }
-
 
 
 }

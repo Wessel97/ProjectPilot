@@ -53,15 +53,15 @@ public class TaskRepository
     public List<Task> getAllTasksByProjectId(int projectId, String sortingParameter)
     {
         List<Task> allTasksList = new ArrayList<>();
-        String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task JOIN ProjectPilotDB.department ON task.department_id = department.id WHERE department.project_id = ?";
+        String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task JOIN ProjectPilotDB.department ON task.department_id = department.id WHERE department.project_id = ?";
 
         if ( sortingParameter != null)
         {
-            SQL_QUERY += " ORDER BY  task." + sortingParameter;
+            FIND_QUERY += " ORDER BY  task." + sortingParameter;
         }
 
         try (Connection connection = databaseService.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SQL_QUERY))
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
             preparedStatement.setInt(1, projectId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -82,12 +82,17 @@ public class TaskRepository
     }
 
     // Method 3 get task by user ID. This method will return the tasks with the given ID in a list.
-    public List<Task> getAllTasksByUserID(int userId)
+    public List<Task> getAllTasksByUserID(int userId, String sortingParameter)
     {
         // Initialize an empty list to store tasks with the given userID
         List<Task> userIdTasksList = new ArrayList<>();
         // Define the SQL query to find all tasks with the given userID
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
+        String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
+
+        if ( sortingParameter != null)
+        {
+            FIND_QUERY += " ORDER BY  task." + sortingParameter;
+        }
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))

@@ -1,7 +1,6 @@
 package com.example.projectpilot.controller;
 
 import com.example.projectpilot.model.Task;
-import com.example.projectpilot.model.User;
 import com.example.projectpilot.repository.TaskRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,7 +29,7 @@ public class TaskController
     @GetMapping("/addTask")
     public String showAddTask(HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -50,7 +49,7 @@ public class TaskController
                           @RequestParam("task-status") String newStatus,
                           HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -86,7 +85,7 @@ public class TaskController
     @GetMapping("/updateTask/{id}")
     public String showUpdateTask(@PathVariable("id") int updateId, HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -117,7 +116,7 @@ public class TaskController
                              @RequestParam("task-department") String updateDepartment,
                              HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -142,7 +141,7 @@ public class TaskController
     @PostMapping("/deleteTask/{id}")
     public String deleteTask(@PathVariable("id") int taskId, HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -154,30 +153,45 @@ public class TaskController
     }
 
     @GetMapping("/userTasks")
-    public String showUserTasks(HttpSession session, Model model)
+    public String showUserTasks(HttpSession session, Model model, @RequestParam(required = false) String sortingParameter)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
-        User user = (User) session.getAttribute("user");
-        List<Task> taskList = taskRepository.getAllTasksByUserID(user.getId());
-        model.addAttribute("task", taskList);
+        int userId = (int) session.getAttribute("id");
+        List<Task> taskList;
+
+        if ( sortingParameter != null )
+        {
+            taskList = taskRepository.getAllTasksByUserID(userId, sortingParameter);
+        }
+        else
+        {
+            taskList = taskRepository.getAllTasksByUserID(userId, null);
+        }
+
+        model.addAttribute("tasks", taskList);
         return "userTasks";
     }
 
     // Viser alle tasks
     @GetMapping("/allTasks")
-    public String showAllTasks(HttpSession session, Model model, @RequestParam(required = false) String sortingParameter) {
-        if (session.getAttribute("user") == null) {
+    public String showAllTasks(HttpSession session, Model model, @RequestParam(required = false) String sortingParameter)
+    {
+        if ( session.getAttribute("id") == null )
+        {
             return "redirect:/";
         }
         int projectId = (int) session.getAttribute("projectId");
         List<Task> taskList;
 
-        if (sortingParameter != null) {
+        if ( sortingParameter != null )
+        {
             taskList = taskRepository.getAllTasksByProjectId(projectId, sortingParameter);
-        } else {
+        }
+        else
+        {
             taskList = taskRepository.getAllTasksByProjectId(projectId, null);
         }
 
@@ -187,7 +201,7 @@ public class TaskController
 
     /*@GetMapping("/tasks/filter")
     public String filterTasks(Model model, @RequestParam String param, @RequestParam String value){
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }

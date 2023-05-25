@@ -33,7 +33,7 @@ public class DepartmentController
     @GetMapping("/allDepartments")
     public String showAllDepartments(HttpSession session, Model model)
     {
-        if(session.getAttribute("user") == null )
+        if(session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -44,7 +44,7 @@ public class DepartmentController
 
     @GetMapping("/addDepartment")
     public String showAddDepartment(HttpSession session, Model model) {
-        if (session.getAttribute("user") == null) {
+        if (session.getAttribute("id") == null) {
             return "redirect:/";
         }
 
@@ -89,7 +89,7 @@ public class DepartmentController
     @GetMapping("/showDepartment/{id}")
     public String showDepartment(@PathVariable("id") int departmentId, HttpSession session, Model model)
     {
-        if (session.getAttribute("user") == null)
+        if (session.getAttribute("id") == null)
         {
             return "redirect:/";
         }
@@ -121,11 +121,11 @@ public class DepartmentController
     @GetMapping("/showAllDepartments/{id}")
     public String showDepartmentsByProject(@PathVariable("id") int id,  HttpSession session, Model model)
     {
-        if (session.getAttribute("user") == null)
+        if (session.getAttribute("id") == null)
         {
             return "redirect:/";
         }
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("id");
         List<Department> departmentList = departmentRepository.getAllDepartmentsByProjectId(id);
         model.addAttribute("department", departmentList);
         return "showAllDepartments";
@@ -134,7 +134,7 @@ public class DepartmentController
     @GetMapping("/updateDepartment/{id}")
     public String showEditDepartment(@PathVariable("id") int departmentId, HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null)
+        if ( session.getAttribute("id") == null)
         {
             return "redirect:/";
         }
@@ -151,7 +151,7 @@ public class DepartmentController
             @RequestParam("departmentName") int departmentId,
             HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }

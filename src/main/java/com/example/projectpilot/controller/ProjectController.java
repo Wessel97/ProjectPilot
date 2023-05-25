@@ -28,7 +28,7 @@ public class ProjectController
     @GetMapping("/showProject/{id}")
     public String showProject(@PathVariable("id") int projectId, HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -56,7 +56,7 @@ public class ProjectController
     @GetMapping("/addProject")
     public String showAddProject(HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -67,7 +67,7 @@ public class ProjectController
     @PostMapping("/addProject")
     public String addProject(@RequestParam("project-name") String newName, HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -80,7 +80,7 @@ public class ProjectController
     @GetMapping("/updateProject/{id}")
     public String showUpdateProject(@PathVariable("id") int projectId, HttpSession session, Model model)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -95,7 +95,7 @@ public class ProjectController
             @RequestParam("projectName") String projectName,
             HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
@@ -111,7 +111,7 @@ public class ProjectController
             HttpSession session,
             Model model)
     {
-        if ( session.getAttribute("user") == null )
+        if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
