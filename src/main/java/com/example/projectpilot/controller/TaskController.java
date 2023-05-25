@@ -133,7 +133,7 @@ public class TaskController
         taskRepository.updateTask(updateTask);
 
         //rediger til oversigtssiden
-        return "redirect:/allTasks?projectId=" + session.getAttribute("projectId");
+        return "redirect:/allTasks";
     }
 
 
@@ -167,17 +167,18 @@ public class TaskController
 
     // Viser alle tasks
     @GetMapping("/allTasks")
-    public String showAllTasks(@RequestParam("projectId") int projectId, HttpSession session, Model model)
+    public String showAllTasks(HttpSession session, Model model)
     {
         if ( session.getAttribute("user") == null )
         {
             return "redirect:/";
         }
+        int projectId = (int) session.getAttribute("projectId"); // Fetch projectId from the session
         List<Task> taskList = taskRepository.getAllTasksByProjectId(projectId);
         model.addAttribute("task", taskList);
-        session.setAttribute("projectId", projectId); // Store projectId in the session
         return "allTasks";
     }
+
 
     /*@GetMapping("/tasks/filter")
     public String filterTasks(Model model, @RequestParam String param, @RequestParam String value){

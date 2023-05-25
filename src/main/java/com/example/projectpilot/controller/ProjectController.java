@@ -26,8 +26,10 @@ public class ProjectController
     }
 
     @GetMapping("/showProject/{id}")
-    public String showProject(@PathVariable("id") int projectId, HttpSession session, Model model) {
-        if (session.getAttribute("user") == null) {
+    public String showProject(@PathVariable("id") int projectId, HttpSession session, Model model)
+    {
+        if ( session.getAttribute("user") == null )
+        {
             return "redirect:/";
         }
 
@@ -35,6 +37,20 @@ public class ProjectController
         session.setAttribute("projectId", projectId); // Store project ID in the session
         model.addAttribute("department", departmentList);
         return "showProject";
+    }
+
+    @GetMapping("/showProjectFromSession")
+    public String showProjectFromSession(HttpSession session)
+    {
+        try
+        {
+            int projectId = (int) session.getAttribute("projectId");
+            return "redirect:/showProject/" + projectId;
+        }
+        catch(NullPointerException e)
+        {
+            return "redirect:/adminStart";
+        }
     }
 
     @GetMapping("/addProject")
@@ -77,8 +93,10 @@ public class ProjectController
     public String updateProject(
             @RequestParam("id") Integer projectId,
             @RequestParam("projectName") String projectName,
-            HttpSession session) {
-        if (session.getAttribute("user") == null) {
+            HttpSession session)
+    {
+        if ( session.getAttribute("user") == null )
+        {
             return "redirect:/";
         }
 
@@ -93,11 +111,11 @@ public class ProjectController
             HttpSession session,
             Model model)
     {
-        if (session.getAttribute("user") == null )
+        if ( session.getAttribute("user") == null )
         {
             return "redirect:/";
         }
-        if(projectRepository.deleteProjectById(projectId))
+        if ( projectRepository.deleteProjectById(projectId) )
         {
             return "redirect:/adminStart";
         }
