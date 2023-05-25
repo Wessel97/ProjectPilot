@@ -35,14 +35,14 @@
 
 
         <label for="status-field">Task status:</label>
-        <select id="status-field" name="task-status">
+        <select id="status-field" name="task-status" class="dropdown">
             <option value="Pending" th:selected="${task.status == 'Pending'}">Pending</option>
             <option value="Assigned" th:selected="${task.status == 'Assigned'}">Assigned</option>
             <option value="In progress" th:selected="${task.status == 'In progress'}">In progress</option>
             <option value="Finished" th:selected="${task.status == 'Finished'}">Finished</option>
         </select>
 
-        <input type="submit" value="ADD TASK">
+        <input type="submit" value="Create Task">
     </form>
 </div>
 </body>
