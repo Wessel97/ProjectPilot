@@ -74,12 +74,18 @@ input[type="checkbox"] {
 }
 
 input[type="text"],
+input[type="select"],
 input[type="number"],
 input[type="date"] {
     padding: 10px;
     margin-bottom: 25px;
     border: 1px solid #ddd;
     border-radius: 3px;
+}
+
+.dropdown {
+    margin-bottom: 25px;
+    padding: 10px;
 }
 
 input[type="submit"],
