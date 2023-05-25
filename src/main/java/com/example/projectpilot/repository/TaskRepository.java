@@ -49,37 +49,27 @@ public class TaskRepository
     }
 
 
-
     //Method 2 get all tasks. This method will return a list of all tasks in the database.
-    public List<Task> getAllTasksByProjectId(int projectId)
-    {
-        //create list of tasks
+    public List<Task> getAllTasksByProjectId(int projectId, String sortingParameter) {
         List<Task> allTasksList = new ArrayList<>();
-        final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task JOIN " +
-                "ProjectPilotDB.department ON task.department_id = department.id WHERE " +
-                "department.project_id = ?";
+        String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task JOIN ProjectPilotDB.department ON task.department_id = department.id WHERE department.project_id = ?";
+
+        if(sortingParameter != null && !sortingParameter.isEmpty()) {
+            SQL_QUERY += " ORDER BY " + sortingParameter;
+        }
 
         try (Connection connection = databaseService.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SQL_QUERY))
-        {
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_QUERY)) {
             preparedStatement.setInt(1, projectId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            //loop through result set
-            while ( resultSet.next() )
-            {
-                //extract user from result set
+
+            while (resultSet.next()) {
                 Task task = getTask(resultSet);
-                //add user to list
                 allTasksList.add(task);
-                //print user. Debugging purposes to see list.
                 System.out.println(task);
             }
-        }
-        catch (SQLException e)
-        {
-            //Handle any errors while querying the database.
+        } catch (SQLException e) {
             System.out.println("Error trying to query database: " + e);
-            //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
         return allTasksList;
@@ -394,6 +384,21 @@ public class TaskRepository
         }
         return sortedTasksList;
     }
+    /*
+    public List<Task> getAllTasksSortedById()
+    {
+        return getTasksSorted("id");
+    }
+
+    public List<Task> getAllTasksSortedByUserId()
+    {
+        return getTasksSorted("user_id");
+    }
+
+    public List<Task> getAllTasksSortedByNote()
+    {
+        return getTasksSorted("note");
+    }
 
     //Method 10 sort by hours. This method will sort the tasks by hours.
     public List<Task> getAllTasksSortedByHours()
@@ -401,13 +406,16 @@ public class TaskRepository
         return getTasksSorted("hours");
     }
 
-    //Method 11 sort by department. This method will sort the tasks by department.
-    public List<Task> getAllTasksSortedByDepartment()
+    public List<Task> getAllTasksSortedByPayRate()
     {
-        return getTasksSorted("department");
+        return getTasksSorted("pay_rate");
     }
 
-    //Method 12 sort by start date. This method will sort the tasks by start date.
+    public List<Task> getAllTasksSortedByFlag()
+    {
+        return getTasksSorted("flag");
+    }
+
     public List<Task> getAllTasksSortedByStartDate()
     {
         return getTasksSorted("start_date");
@@ -419,19 +427,22 @@ public class TaskRepository
         return getTasksSorted("end_date");
     }
 
-    //Method 14 sort by status. This method will sort the tasks by status (unassigned, assigned, in progress, done).
     public List<Task> getAllTasksSortedByStatus()
     {
         return getTasksSorted("status");
     }
 
-    /*
-    //Method 15 sort by flag. This method will sort the tasks by flag (true or false).
-    public List<Task> getAllTasksSortedByFlag()
+    //Method 11 sort by department. This method will sort the tasks by department.
+    public List<Task> getAllTasksSortedByDepartment()
     {
-        return getTasksSorted("flag");
+        return getTasksSorted("department");
     }
-    */
+
+    //Method 14 sort by status. This method will sort the tasks by status (unassigned, assigned, in progress, done).
+
+    //Method 15 sort by flag. This method will sort the tasks by flag (true or false).
+
+     */
 
     /*--------------------------------------------------------------------
                  // Projekt kalkulering Metoder (Metode 16-21)

@@ -174,10 +174,23 @@ public class TaskController
             return "redirect:/";
         }
         int projectId = (int) session.getAttribute("projectId"); // Fetch projectId from the session
-        List<Task> taskList = taskRepository.getAllTasksByProjectId(projectId);
+        List<Task> taskList = taskRepository.getAllTasksByProjectId(projectId, null);
         model.addAttribute("task", taskList);
         return "allTasks";
     }
+
+    @GetMapping("/allTasks/sorted/{sortingParameter}")
+    public String showAllTasksSorted(HttpSession session, Model model, @PathVariable String sortingParameter)
+    {
+        if ( session.getAttribute("user") == null )
+        {
+            return "redirect:/";
+        }
+        List<Task> taskList = taskRepository.getTasksSorted(sortingParameter); // call the generic sorting method
+        model.addAttribute("task", taskList);
+        return "allTasks";
+    }
+
 
 
     /*@GetMapping("/tasks/filter")
