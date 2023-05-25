@@ -13,8 +13,9 @@
     <h2>My Tasks</h2>
 
     <div class="button-container">
+        <a href="/home"><button>Dashboard</button></a>
         <form action="/logout" method="get">
-            <button type="submit">Logout</button>
+            <button type="submit" class="logout">Logout</button>
         </form>
     </div>
 
@@ -53,11 +54,11 @@
             <td th:text="${task.status}">666</td>
             <td th:text="${task.department}">666</td>
             <td>
-                <a th:href="@{'/updateTask/' + ${task.id}}" href="/updateTask"><button>UPDATE</button></a>
+                <a th:href="@{'/updateTask/' + ${task.id}}" href="/updateTask"><button>Update</button></a>
             </td>
             <td>
                 <form th:action="@{'/deleteTask/' + ${task.id}}" method="post">
-                    <button type="submit">DELETE</button>
+                    <button type="submit">Delete</button>
                 </form>
             </td>
 
