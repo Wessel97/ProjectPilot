@@ -40,7 +40,7 @@ public class Task {
         this.project = project;
     }
 
-    public Task(int id, int user_id, String title, String description, String note, int hours, int pay_rate, Date start_date, Date end_date, String status, String department)
+    public Task(int id, int user_id, String title, String description, String note, int hours, int pay_rate, boolean flag, Date start_date, Date end_date, String status, String department)
     {
         this.id = id;
         this.user_id = user_id;
@@ -48,6 +48,7 @@ public class Task {
         this.description = description;
         this.note = note;
         this.hours = hours;
+        this.flag = flag;
         this.pay_rate = pay_rate;
         this.start_date = start_date;
         this.end_date = end_date;

@@ -110,6 +110,7 @@ public class TaskController
                              @RequestParam("task-note") String updateNote,
                              @RequestParam("task-hours") int updateHours,
                              @RequestParam("task-pay_rate") int updatePayRate,
+                             @RequestParam(value = "task-flag", defaultValue = "false") boolean updateFlag,
                              @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate updateStartDate,
                              @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate updateEndDate,
                              @RequestParam("task-status") String updateStatus,
@@ -127,7 +128,7 @@ public class TaskController
 
 
         //lav produkt ud fra parametre
-        Task updateTask = new Task(updateTaskId, updateUserId, updateTitle, updateDescription, updateNote, updateHours, updatePayRate, sqlStartDate, sqlEndDate, updateStatus, updateDepartment);
+        Task updateTask = new Task(updateTaskId, updateUserId, updateTitle, updateDescription, updateNote, updateHours, updatePayRate, updateFlag, sqlStartDate, sqlEndDate, updateStatus, updateDepartment);
 
         //kald opdater i repository
         taskRepository.updateTask(updateTask);

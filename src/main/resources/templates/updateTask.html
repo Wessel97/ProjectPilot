@@ -33,6 +33,9 @@
         <label for="pay_rate-field">Task Pay Rate:</label>
         <input id="pay_rate-field" name="task-pay_rate" type="number" th:value="${task.payRate}">
 
+        <label for="flag-field">Task Flag:</label>
+        <input id="flag-field" name="task-flag" type="checkbox" th:checked="${task.flag}">
+
         <label for="start_date-field">Task Start Date:</label>
         <input id="start_date-field" placeholder="23-05-2019" name="task-start_date" type="date" th:value="${task.start_Date}">
 
