@@ -50,25 +50,31 @@ public class TaskRepository
 
 
     //Method 2 get all tasks. This method will return a list of all tasks in the database.
-    public List<Task> getAllTasksByProjectId(int projectId, String sortingParameter) {
+    public List<Task> getAllTasksByProjectId(int projectId, String sortingParameter)
+    {
         List<Task> allTasksList = new ArrayList<>();
         String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task JOIN ProjectPilotDB.department ON task.department_id = department.id WHERE department.project_id = ?";
 
-        if(sortingParameter != null && !sortingParameter.isEmpty()) {
-            SQL_QUERY += " ORDER BY " + sortingParameter;
+        if ( sortingParameter != null)
+        {
+            SQL_QUERY += " ORDER BY  task." + sortingParameter;
         }
 
         try (Connection connection = databaseService.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SQL_QUERY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_QUERY))
+        {
             preparedStatement.setInt(1, projectId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) {
+            while ( resultSet.next() )
+            {
                 Task task = getTask(resultSet);
                 allTasksList.add(task);
                 System.out.println(task);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Error trying to query database: " + e);
             e.printStackTrace();
         }

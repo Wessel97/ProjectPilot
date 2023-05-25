@@ -49,7 +49,7 @@ CREATE TABLE task (
                       note VARCHAR(320) NULL,
                       hours INT NOT NULL,
                       pay_rate INT NOT NULL DEFAULT 500,
-                      flag TINYINT(1) NULL DEFAULT 0,
+                      flag BOOLEAN NOT NULL DEFAULT FALSE,
                       start_date DATE NOT NULL,
                       end_date DATE NOT NULL,
                       status VARCHAR(45) NOT NULL,

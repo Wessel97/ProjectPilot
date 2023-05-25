@@ -24,25 +24,25 @@
   <table class="table">
     <thead>
     <tr>
-      <th><a href="/allTasks/sorted/id">Task ID</a></th>
-      <th><a href="/allTasks/sorted/user_id">User ID</a></th>
+      <th><a href="/allTasks?sortingParameter=id">Task ID</a></th>
+      <th><a href="/allTasks?sortingParameter=user_id">User ID</a></th>
       <th>Title</th>
       <th>Description</th>
-      <th><a href="/allTasks/sorted/note">Note</a></th>
-      <th><a href="/allTasks/sorted/hours">Hours</a></th>
-      <th><a href="/allTasks/sorted/pay_rate">Pay Rate</a></th>
-      <th><a href="/allTasks/sorted/flag">Flag</a></th>
-      <th><a href="/allTasks/sorted/start_date">Start Date</a></th>
-      <th><a href="/allTasks/sorted/end_date">End Date</a></th>
-      <th><a href="/allTasks/sorted/status">Status</a></th>
-      <th><a href="/allTasks/sorted/department">Department</a></th>
+      <th><a href="/allTasks?sortingParameter=note">Note</a></th>
+      <th><a href="/allTasks?sortingParameter=hours">Hours</a></th>
+      <th><a href="/allTasks?sortingParameter=pay_rate">Pay Rate</a></th>
+      <th><a href="/allTasks?sortingParameter=flag">Flag</a></th>
+      <th><a href="/allTasks?sortingParameter=start_date">Start Date</a></th>
+      <th><a href="/allTasks?sortingParameter=end_date">End Date</a></th>
+      <th><a href="/allTasks?sortingParameter=status">Status</a></th>
+      <th><a href="/allTasks?sortingParameter=department">Department</a></th>
       <th>Update</th>
       <th>Delete</th>
       <th>Assign User</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="task : ${task}">
+    <tr th:each="task : ${tasks}">
       <td th:text="${task.id}">42</td>
       <td th:text="${task.user_id}">meningen med alting</td>
       <td th:text="${task.title}">666</td>

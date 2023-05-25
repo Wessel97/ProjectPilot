@@ -167,31 +167,22 @@ public class TaskController
 
     // Viser alle tasks
     @GetMapping("/allTasks")
-    public String showAllTasks(HttpSession session, Model model)
-    {
-        if ( session.getAttribute("user") == null )
-        {
+    public String showAllTasks(HttpSession session, Model model, @RequestParam(required = false) String sortingParameter) {
+        if (session.getAttribute("user") == null) {
             return "redirect:/";
         }
-        int projectId = (int) session.getAttribute("projectId"); // Fetch projectId from the session
-        List<Task> taskList = taskRepository.getAllTasksByProjectId(projectId, null);
-        model.addAttribute("task", taskList);
-        return "allTasks";
-    }
+        int projectId = (int) session.getAttribute("projectId");
+        List<Task> taskList;
 
-    @GetMapping("/allTasks/sorted/{sortingParameter}")
-    public String showAllTasksSorted(HttpSession session, Model model, @PathVariable String sortingParameter)
-    {
-        if ( session.getAttribute("user") == null )
-        {
-            return "redirect:/";
+        if (sortingParameter != null) {
+            taskList = taskRepository.getAllTasksByProjectId(projectId, sortingParameter);
+        } else {
+            taskList = taskRepository.getAllTasksByProjectId(projectId, null);
         }
-        List<Task> taskList = taskRepository.getTasksSorted(sortingParameter); // call the generic sorting method
-        model.addAttribute("task", taskList);
+
+        model.addAttribute("tasks", taskList);
         return "allTasks";
     }
-
-
 
     /*@GetMapping("/tasks/filter")
     public String filterTasks(Model model, @RequestParam String param, @RequestParam String value){
