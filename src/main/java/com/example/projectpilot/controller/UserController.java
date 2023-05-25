@@ -74,11 +74,23 @@ public class UserController
         }
     }
 
-    @GetMapping("/adminStart")
-    public String showAdminStart(HttpSession session, Model model)
+    @GetMapping("/home")
+    public String home(HttpSession session)
     {
-        if ( session.getAttribute("user") == null )
+        User user = (User) session.getAttribute("user");
+        if (user.isAdmin())
         {
+            return "redirect:/adminStart";
+        }
+        else
+        {
+            return "redirect:/userStart";
+        }
+    }
+
+    @GetMapping("/adminStart")
+    public String showAdminStart(HttpSession session, Model model) {
+        if (session.getAttribute("user") == null) {
             return "redirect:/";
         }
 
