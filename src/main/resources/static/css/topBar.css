@@ -16,22 +16,22 @@ h1 {
     font-size: 40px
 }
 
-a:link {
+.home-link:link {
     color: white;
     text-decoration: none;
 }
 
-a:visited {
+.home-link:visited {
     color: white;
     text-decoration: none;
 }
 
-a:hover {
+.home-link:hover {
     color: white;
     text-decoration: none;
 }
 
-a:active {
+.home-link:active {
     color: white;
     text-decoration: none;
 }
