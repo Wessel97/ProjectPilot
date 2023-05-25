@@ -40,7 +40,7 @@
         <input id="end_date-field" placeholder="24-06-2020" name="task-end_date" type="date" th:value="${task.end_Date}">
 
         <label for="status-field">Task Status:</label>
-            <select id="status-field" name="task-status">
+            <select id="status-field" name="task-status" class="dropdown">
                     <option value="Pending" th:selected="${task.status == 'Pending'}">Pending</option>
                     <option value="Assigned" th:selected="${task.status == 'Assigned'}">Assigned</option>
                     <option value="In progress" th:selected="${task.status == 'In progress'}">In progress</option>

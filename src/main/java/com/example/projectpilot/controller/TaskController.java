@@ -133,7 +133,7 @@ public class TaskController
         taskRepository.updateTask(updateTask);
 
         //rediger til oversigtssiden
-        return "redirect:/allTasks";
+        return "redirect:/userTasks";
     }
 
 

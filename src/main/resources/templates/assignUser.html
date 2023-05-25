@@ -10,32 +10,35 @@
 
 <div th:insert="~{/fragments/topBar}"></div>
 
-<div class="container">
-    <h1>ASSIGN USER</h1>
-    <table>
-        <thead>
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th></th>
-        </thead>
-        <tbody>
-        <tr th:each="user : ${users}">
-            <td th:text="${user.id}">ID</td>
-            <td th:text="${user.firstName}">FORNAVN</td>
-            <td th:text="${user.lastName}">EFTERNAVN</td>
-            <td th:text="${user.email}">EMAIL</td>
-            <td>
-                <form action="/assignUser" method="post">
-                    <input type="hidden" name="task_id" th:value="${task.id}" />
-                    <input type="hidden" name="userId" th:value="${user.id}" />
-                    <button type="submit">Assign</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    <h2>Assign User to Task (Title ???)</h2>
+
+    <div class="container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Assign</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}">ID</td>
+                <td th:text="${user.firstName}">FORNAVN</td>
+                <td th:text="${user.lastName}">EFTERNAVN</td>
+                <td th:text="${user.email}">EMAIL</td>
+                <td>
+                    <form action="/assignUser" method="post">
+                        <input type="hidden" name="task_id" th:value="${task.id}" />
+                        <input type="hidden" name="userId" th:value="${user.id}" />
+                        <button type="submit">Assign</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
