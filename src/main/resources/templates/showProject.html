@@ -27,7 +27,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="department : ${departments}">
+        <tr th:each="department : ${department}">
             <td class="hidden" th:text="${department.getId()}">42</td>
             <td th:text="${department.getDepartmentName()}">42</td>
             <td>
