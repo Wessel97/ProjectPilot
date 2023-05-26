@@ -33,7 +33,7 @@
             <td>
                 <a th:href="@{'/showDepartment/' + ${department.getId()}}" href="/showDepartment"><button>Enter</button></a>
             </td>
-            <td>
+            <!--<td>
                 <a th:href="@{'/updateDepartment/' + ${department.getId()}}" href="/updateDepartment/"><button>Update</button></a>
             </td>
             <td>
@@ -42,7 +42,7 @@
                     <button type="submit">Delete</button>
                     <span th:if="${errorMessage != null}" th:text="${errorMessage}"></span>
                 </form>
-            </td>
+            </td>-->
         </tr>
         </tbody>
     </table>

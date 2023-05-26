@@ -117,7 +117,7 @@ public class DepartmentController
         return "updateDepartment";
     }
 
-    @PostMapping("/updateDepartment")
+    /*@PostMapping("/updateDepartment")
     public String updateDepartment(
             @RequestParam("id") int departmentId,
             @RequestParam("departmentName") String departmentName,
@@ -151,6 +151,6 @@ public class DepartmentController
             model.addAttribute("errorMessage", "An error occurred while deleting the department. Please try again.");
             return "showProject";
         }
-    }
+    }*/
 
 }
