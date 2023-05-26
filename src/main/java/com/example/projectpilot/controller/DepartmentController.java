@@ -1,9 +1,7 @@
 package com.example.projectpilot.controller;
 
 import com.example.projectpilot.model.Department;
-import com.example.projectpilot.model.Project;
 import com.example.projectpilot.model.Task;
-import com.example.projectpilot.model.User;
 import com.example.projectpilot.repository.DepartmentRepository;
 import com.example.projectpilot.repository.ProjectRepository;
 import com.example.projectpilot.repository.TaskRepository;

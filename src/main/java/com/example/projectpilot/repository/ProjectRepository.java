@@ -62,32 +62,6 @@ public class ProjectRepository
         return projectList;
     }
 
-    public boolean checkIfProjectExists(String checkName)
-    {
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.project WHERE name = ?";
-
-        try (Connection connection = databaseService.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
-        {
-            //set parameters
-            preparedStatement.setString(1, checkName);
-            //execute statement
-            ResultSet resultSet = preparedStatement.executeQuery();
-            // Check if there is a row in the resultSet with the specified email
-            if ( resultSet.next() )
-            {
-                return true;
-            }
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Could not query database");
-            e.printStackTrace();
-        }
-        //return false if user does not exist
-        return false;
-    }
-
     public boolean addProject(Project project)
     {
         // Query to insert user
@@ -187,4 +161,30 @@ public class ProjectRepository
         //return false if project was not found and deleted
         return false;
     }
+
+    /*public boolean checkIfProjectExists(String checkName)
+    {
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.project WHERE name = ?";
+
+        try (Connection connection = databaseService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
+        {
+            //set parameters
+            preparedStatement.setString(1, checkName);
+            //execute statement
+            ResultSet resultSet = preparedStatement.executeQuery();
+            // Check if there is a row in the resultSet with the specified email
+            if ( resultSet.next() )
+            {
+                return true;
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Could not query database");
+            e.printStackTrace();
+        }
+        //return false if user does not exist
+        return false;
+    }*/
 }

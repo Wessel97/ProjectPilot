@@ -189,44 +189,6 @@ public class TaskRepository
         return selectTask;
     }
 
-    // Method 5 get task by department. This method will return a list of all tasks in the given department.
-    public List<Task> getAllTasksByDepartment(String department)
-    {
-        // Initialize an empty list to store tasks with the given userID
-        List<Task> departmentTasksList = new ArrayList<>();
-        // Define the SQL query to find all tasks with the given userID
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE department = ?";
-
-        try (Connection connection = databaseService.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
-        {
-            // Set the userId parameter for the prepared statement
-            preparedStatement.setString(1, department);
-            // Execute the query and get the result set
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            // Loop through the result set
-            while ( resultSet.next() )
-            {
-                // Extract the task from the result set
-                Task task = getTask(resultSet);
-                // Add the extracted task to the tasksByUserId list
-                departmentTasksList.add(task);
-                //print user. Debugging purposes to see list in terminal.
-                System.out.println(task);
-            }
-        }
-        catch (SQLException e)
-        {
-            //Handle any errors while querying the database.
-            System.out.println("Error trying to query database: " + e);
-            //This method will print the error, what line it is on and what method it is in.
-            e.printStackTrace();
-        }
-        // Return the list of tasks with the given userID
-        return departmentTasksList;
-    }
-
      /*--------------------------------------------------------------------
                   //Add + update + delete metoder (metode 6-8)
     --------------------------------------------------------------------*/
@@ -366,7 +328,7 @@ public class TaskRepository
                             // Sort Metoder (Metode 9-15)
     --------------------------------------------------------------------*/
 
-    //Method 9 Generic sorting method. You can define your sorting parameter.
+    /*//Method 9 Generic sorting method. You can define your sorting parameter.
     public List<Task> getTasksSorted(String sortingParameter)
     {
         List<Task> sortedTasksList = new ArrayList<>();
@@ -394,7 +356,7 @@ public class TaskRepository
             e.printStackTrace();
         }
         return sortedTasksList;
-    }
+    }*/
     /*
     public List<Task> getAllTasksSortedById()
     {
@@ -459,7 +421,7 @@ public class TaskRepository
                  // Projekt kalkulering Metoder (Metode 16-21)
     --------------------------------------------------------------------*/
 
-    // Method 16 calculates the total number of hours for all tasks.
+    /*// Method 16 calculates the total number of hours for all tasks.
     public int totalHours()
     {
         int sumHours = 0;
@@ -479,7 +441,7 @@ public class TaskRepository
             e.printStackTrace();
         }
         return sumHours;
-    }
+    }*/
 
     // Method 17 calculates the total number of hours for a given department.
     public int totalHoursByDepartment(int id)
@@ -505,7 +467,7 @@ public class TaskRepository
     }
 
     // Method 18 calculates the total number of hours for a given user.
-    public int totalHoursByID(int userID)
+    /*public int totalHoursByID(int userID)
     {
         int sumHoursByID = 0;
         String CALCULATE_QUERY = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE user_id = ?";
@@ -547,7 +509,7 @@ public class TaskRepository
             e.printStackTrace();
         }
         return sumPrice;
-    }
+    }*/
 
     // Method 20 calculates the total price for the tasks in a given department.
     public int totalPriceByDepartment(int id)
@@ -573,7 +535,7 @@ public class TaskRepository
     }
 
     // Method 21 calculates the total price for the tasks in a given user.
-    public int totalPriceByID(int userID)
+   /* public int totalPriceByID(int userID)
     {
         int sumPriceByID = 0;
         String CALCULATE_QUERY = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE user_id=?";
@@ -593,5 +555,5 @@ public class TaskRepository
             e.printStackTrace();
         }
         return sumPriceByID;
-    }
+    }*/
 }
