@@ -10,7 +10,7 @@
 
 <div th:insert="~{/fragments/topBar}"></div>
 
-    <h2>Project Name ???</h2>
+    <h2>Project: <td th:text="${session.projectName}">666</td></h2>
 
     <div class="button-container">
         <a href="/addDepartment"><button>Create Department</button></a>

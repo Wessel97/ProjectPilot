@@ -34,6 +34,7 @@ public class ProjectController
         }
 
         List<Department> departmentList = departmentRepository.getAllDepartmentsByProjectId(projectId);
+        session.setAttribute("projectName", projectRepository.getProjectByID(projectId).getProjectName()); // Store project name in the session
         session.setAttribute("projectId", projectId); // Store project ID in the session
         model.addAttribute("department", departmentList);
         return "showProject";

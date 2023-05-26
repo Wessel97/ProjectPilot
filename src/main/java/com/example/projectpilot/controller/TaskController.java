@@ -77,8 +77,7 @@ public class TaskController
         // Gemmer i taskRepository
         taskRepository.addTask(newTask);
 
-        // Går tilbage til alle tasks
-        return "redirect:/allTasks";
+        return "redirect:/showDepartment/" + departmentId;
     }
 
     // Viser update task siden
@@ -132,8 +131,9 @@ public class TaskController
         //kald opdater i repository
         taskRepository.updateTask(updateTask);
 
-        //rediger til oversigtssiden
-        return "redirect:/userTasks";
+        int departmentId = (int) session.getAttribute("departmentId");
+
+        return "redirect:/showDepartment/" + departmentId;
     }
 
 
@@ -149,7 +149,8 @@ public class TaskController
         taskRepository.deleteTaskByID(taskId);
 
         // Går tilbage til alle tasks
-        return "redirect:/allTasks";
+        int departmentId = (int) session.getAttribute("departmentId");
+        return "redirect:/showDepartment/" + departmentId;
     }
 
     @GetMapping("/userTasks")
