@@ -126,4 +126,19 @@ public class ProjectController
             return "adminStart";
         }
     }
+
+    @GetMapping("/showProjectUser/{id}")
+    public String showProjectUser(@PathVariable("id") int projectId, HttpSession session, Model model)
+    {
+        if ( session.getAttribute("id") == null )
+        {
+            return "redirect:/";
+        }
+
+        List<Department> departmentList = departmentRepository.getAllDepartmentsByProjectId(projectId);
+        session.setAttribute("projectName", projectRepository.getProjectByID(projectId).getProjectName()); // Store project name in the session
+        session.setAttribute("projectId", projectId); // Store project ID in the session
+        model.addAttribute("department", departmentList);
+        return "showProjectUser";
+    }
 }

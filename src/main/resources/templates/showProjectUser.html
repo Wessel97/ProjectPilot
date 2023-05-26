@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Project</title>
+  <link rel="stylesheet" th:href="@{/css/topBar.css}">
+  <link rel="stylesheet" th:href="@{/css/showProject.css}">
+</head>
+<body>
+
+<div th:insert="~{/fragments/topBar}"></div>
+
+<h2>Project: <td th:text="${session.projectName}">666</td></h2>
+
+<div class="button-container">
+  <a href="/addDepartment"><button>Create Department</button></a>
+  <a href="/allTasks"><button>All project Tasks</button></a>
+</div>
+
+<div class="container">
+  <h2>Departments</h2>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="department : ${department}">
+      <td class="hidden" th:text="${department.getId()}">42</td>
+      <td th:text="${department.getDepartmentName()}">42</td>
+      <td>
+        <a th:href="@{'/showDepartmentUser/' + ${department.getId()}}" href="/showDepartmentUser/"><button>Enter</button></a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

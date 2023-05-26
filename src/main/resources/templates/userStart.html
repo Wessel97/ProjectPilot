@@ -32,7 +32,7 @@
             <td class="hidden" th:text="${project.getId()}">id</td>
             <td th:text="${project.getProjectName()}">42</td>
             <td>
-                <a th:href="@{'/showProject/' + ${project.getId()}}" href="/showProject"><button>Select</button></a>
+                <a th:href="@{'/showProjectUser/' + ${project.getId()}}" href="/showProjectUser/"><button>Select</button></a>
             </td>
         </tr>
         </tbody>

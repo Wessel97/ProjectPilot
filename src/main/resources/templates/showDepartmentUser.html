@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Department</title>
+  <link rel="stylesheet" th:href="@{/css/topBar.css}">
+  <link rel="stylesheet" th:href="@{/css/showDepartment.css}">
+</head>
+<body>
+
+<div th:insert="~{/fragments/topBar}"></div>
+
+<h2>Department: <td th:text="${session.departmentName}">Yo</td>
+</h2>
+
+<div class="button-container">
+  <a href="/home"><button>Dashboard</button></a>
+  <a href="/addTask"><button>Create Task</button></a>
+  <a href="/showProjectFromSession"><button>Project Overview</button></a>
+</div>
+
+<div class="calc-table">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Total Hours</th>
+      <th>Total Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <td th:text="${totalHours}"></td>
+    <td th:text="${totalPrice}"></td>
+    </tbody>
+  </table>
+</div>
+
+<div class="container">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Task ID</th>
+      <th>User ID</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Note</th>
+      <th>Hours</th>
+      <th>Pay Rate</th>
+      <th>Flag</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Status</th>
+      <th>Department</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="task : ${task}">
+      <td th:text="${task.id}">42</td>
+      <td th:text="${task.user_id}">meningen med alting</td>
+      <td th:text="${task.title}">666</td>
+      <td th:text="${task.description}">666</td>
+      <td th:text="${task.note}">666</td>
+      <td th:text="${task.hours}">666</td>
+      <td th:text="${task.payRate}">666</td>
+      <td th:text="${task.flag}">666</td>
+      <td th:text="${#dates.format(task.start_Date, 'dd-MM-yyyy')}"></td>
+      <td th:text="${#dates.format(task.end_Date, 'dd-MM-yyyy')}"></td>
+      <td th:text="${task.status}">666</td>
+      <td th:text="${task.department}">666</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
