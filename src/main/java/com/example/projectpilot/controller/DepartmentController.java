@@ -95,7 +95,7 @@ public class DepartmentController
         model.addAttribute("totalPrice", totalPrice);
 
         session.setAttribute("departmentId", departmentId); // Store department ID in the session
-        session.setAttribute("departmentName", departmentName); // Store department ID in the session
+        session.setAttribute("departmentName", departmentName); // Store department Name in the session
 
         return "showDepartment";
     }
