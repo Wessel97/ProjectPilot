@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Update project</title>
+  <link rel="stylesheet" th:href="@{/css/topBar.css}">
+  <link rel="stylesheet" th:href="@{/css/updateProject.css}">
+</head>
+<body>
+
+<div th:insert="~{/fragments/topBar}"></div>
+
+<div class="container">
+  <h2>Update Department</h2>
+  <form action="/updateDepartment" method="post" th:object="${department}">
+
+    <input id="departmentId-field" name="id" type="hidden" th:value="*{id}">
+
+    <label for="departmentName-field">Department name:</label>
+    <input id="departmentName-field" name="departmentName" type="text" th:value="*{departmentName}">
+
+    <input type="submit" value="Update Department">
+  </form>
+</div>
+</body>
+</html>

@@ -91,7 +91,7 @@ public class ProjectController
 
     @PostMapping("/updateProject")
     public String updateProject(
-            @RequestParam("id") Integer projectId,
+            @RequestParam("id") int projectId,
             @RequestParam("projectName") String projectName,
             HttpSession session)
     {
@@ -106,8 +106,7 @@ public class ProjectController
     }
 
     @PostMapping("/deleteProject")
-    public String deleteProject(
-            @RequestParam("projectId") int projectId,
+    public String deleteProject(@RequestParam("projectId") int projectId,
             HttpSession session,
             Model model)
     {
@@ -115,6 +114,7 @@ public class ProjectController
         {
             return "redirect:/";
         }
+
         if ( projectRepository.deleteProjectById(projectId) )
         {
             return "redirect:/adminStart";

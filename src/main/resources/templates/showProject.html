@@ -27,11 +27,21 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="department : ${department}">
+        <tr th:each="department : ${departments}">
             <td class="hidden" th:text="${department.getId()}">42</td>
             <td th:text="${department.getDepartmentName()}">42</td>
             <td>
                 <a th:href="@{'/showDepartment/' + ${department.getId()}}" href="/showDepartment"><button>Enter</button></a>
+            </td>
+            <td>
+                <a th:href="@{'/updateDepartment/' + ${department.getId()}}" href="/updateDepartment/"><button>Update</button></a>
+            </td>
+            <td>
+                <form th:action="@{/deleteDepartment}" method="post">
+                    <input type="hidden" name="id" th:value="${department.getId()}"/>
+                    <button type="submit">Delete</button>
+                    <span th:if="${errorMessage != null}" th:text="${errorMessage}"></span>
+                </form>
             </td>
         </tr>
         </tbody>

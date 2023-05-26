@@ -199,15 +199,4 @@ public class TaskController
         return "allTasks";
     }
 
-    /*@GetMapping("/tasks/filter")
-    public String filterTasks(Model model, @RequestParam String param, @RequestParam String value){
-        if ( session.getAttribute("id") == null )
-        {
-            return "redirect:/";
-        }
-        List<Task> tasks = taskRepository.filterTasks(param, value);
-        model.addAttribute("tasks", tasks);
-        return "tasks";
-    }*/
-
 }

@@ -252,7 +252,7 @@ public class UserController
     }
 
     @GetMapping("/updateUser/{id}")
-    public String showEditUser(@PathVariable("id") int id, HttpSession session, Model model)
+    public String showUpdateUser(@PathVariable("id") int id, HttpSession session, Model model)
     {
         if ( session.getAttribute("id") == null )
         {
@@ -266,7 +266,7 @@ public class UserController
     }
 
     @PostMapping("/updateUser")
-    public String editUser(@RequestParam("user-id") int id,
+    public String updateUser(@RequestParam("user-id") int id,
                            @RequestParam("user-admin") boolean admin,
                            @RequestParam("user-firstname") String firstname,
                            @RequestParam("user-lastname") String lastname,

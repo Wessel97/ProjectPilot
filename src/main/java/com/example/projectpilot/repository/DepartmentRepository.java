@@ -33,6 +33,7 @@ public class DepartmentRepository
         return new Department(department_id, department_project_id, departmentName);
     }
 
+    /*
     public List<Department> getAllDepartments()
     {
         //create list of departments
@@ -64,7 +65,7 @@ public class DepartmentRepository
         }
         return departmentList;
 
-    }
+    }*/
 
     public boolean checkIfDepartmentExists(String checkName)
     {

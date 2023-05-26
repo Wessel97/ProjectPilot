@@ -21,25 +21,11 @@ public class DepartmentController
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
 
-
     public DepartmentController(DepartmentRepository departmentRepository, TaskRepository taskRepository, ProjectRepository projectRepository)
     {
         this.departmentRepository = departmentRepository;
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
-    }
-
-
-    @GetMapping("/allDepartments")
-    public String showAllDepartments(HttpSession session, Model model)
-    {
-        if(session.getAttribute("id") == null )
-        {
-            return "redirect:/";
-        }
-        model.addAttribute("department", departmentRepository.getAllDepartments());
-
-        return "allDepartments";
     }
 
     @GetMapping("/addDepartment")
@@ -50,7 +36,6 @@ public class DepartmentController
 
         int projectId = (int) session.getAttribute("projectId"); // Retrieve project ID from the session
         List<Department> departmentList = departmentRepository.getAllDepartmentsByProjectId(projectId);
-        Project project = new Project();
 
         model.addAttribute("projectId", projectId);
         model.addAttribute("department", departmentList);
@@ -97,7 +82,7 @@ public class DepartmentController
         Department department = departmentRepository.getDepartmentById(departmentId);
         if (department == null) {
             // Department not found
-            return "redirect:/allDepartments";
+            return "redirect:/showProject";
         }
 
         List<Task> taskList = taskRepository.getAllTasksByDepartmentID(departmentId);
@@ -118,28 +103,15 @@ public class DepartmentController
         return "showDepartment";
     }
 
-    @GetMapping("/showAllDepartments/{id}")
-    public String showDepartmentsByProject(@PathVariable("id") int id,  HttpSession session, Model model)
-    {
-        if (session.getAttribute("id") == null)
-        {
-            return "redirect:/";
-        }
-        User user = (User) session.getAttribute("id");
-        List<Department> departmentList = departmentRepository.getAllDepartmentsByProjectId(id);
-        model.addAttribute("department", departmentList);
-        return "showAllDepartments";
-    }
-
     @GetMapping("/updateDepartment/{id}")
-    public String showEditDepartment(@PathVariable("id") int departmentId, HttpSession session, Model model)
+    public String showUpdateDepartment(@PathVariable("id") int id, HttpSession session, Model model)
     {
         if ( session.getAttribute("id") == null)
         {
             return "redirect:/";
         }
 
-        Department department = departmentRepository.getDepartmentById(departmentId);
+        Department department = departmentRepository.getDepartmentById(id);
         model.addAttribute("department", department);
 
         return "updateDepartment";
@@ -147,8 +119,8 @@ public class DepartmentController
 
     @PostMapping("/updateDepartment")
     public String updateDepartment(
-            @RequestParam("departmentId") String departmentName,
-            @RequestParam("departmentName") int departmentId,
+            @RequestParam("id") int departmentId,
+            @RequestParam("departmentName") String departmentName,
             HttpSession session)
     {
         if ( session.getAttribute("id") == null )
@@ -157,20 +129,27 @@ public class DepartmentController
         }
         Department department = new Department(departmentId, departmentName);
         departmentRepository.updateDepartment(department);
-        return "redirect:/allDepartments";
+        return "redirect:/showProject";
     }
 
     @PostMapping("/deleteDepartment")
-    public String deleteDepartment(@RequestParam("departmentId") int departmentId, Model model)
+    public String deleteDepartment(@RequestParam("id") int departmentId,
+                                   HttpSession session,
+                                   Model model)
     {
+        if ( session.getAttribute("id") == null )
+        {
+            return "redirect:/";
+        }
+
         if(departmentRepository.deleteDepartmentById(departmentId))
         {
-            return "redirect:/allDepartments";
+            return "redirect:/showProject";
         }
         else
         {
-            model.addAttribute("error", "An error occurred while deleting the department. Please try again.");
-            return "allDepartments";
+            model.addAttribute("errorMessage", "An error occurred while deleting the department. Please try again.");
+            return "showProject";
         }
     }
 
