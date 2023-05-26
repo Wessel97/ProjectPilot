@@ -59,8 +59,7 @@ public class DepartmentController
             newDepartment.setProjectId(projectId);
             if(departmentRepository.addDepartment(newDepartment))
             {
-                return "redirect:/adminStart"; // or whatever your success page is
-            }
+                return "redirect:/showProject/" + projectId;            }
             else
             {
                 model.addAttribute("error", "An error occurred while creating the department. Please try again.");
@@ -115,7 +114,7 @@ public class DepartmentController
         return "updateDepartment";
     }
 
-    /*@PostMapping("/updateDepartment")
+    @PostMapping("/updateDepartment")
     public String updateDepartment(
             @RequestParam("id") int departmentId,
             @RequestParam("departmentName") String departmentName,
@@ -127,8 +126,13 @@ public class DepartmentController
         }
         Department department = new Department(departmentId, departmentName);
         departmentRepository.updateDepartment(department);
-        return "redirect:/showProject";
+
+        int projectId = (int) session.getAttribute("projectId");
+
+
+        return "redirect:/showProject/" + projectId;
     }
+
 
     @PostMapping("/deleteDepartment")
     public String deleteDepartment(@RequestParam("id") int departmentId,
@@ -142,13 +146,14 @@ public class DepartmentController
 
         if(departmentRepository.deleteDepartmentById(departmentId))
         {
-            return "redirect:/showProject";
+            int projectId = (int) session.getAttribute("projectId");
+            return "redirect:/showProject/" + projectId;
         }
         else
         {
             model.addAttribute("errorMessage", "An error occurred while deleting the department. Please try again.");
-            return "showProject";
-        }
-    }*/
+            int projectId = (int) session.getAttribute("projectId");
+            return "redirect:/showProject/" + projectId;        }
+    }
 
 }

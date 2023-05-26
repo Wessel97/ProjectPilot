@@ -215,7 +215,7 @@ public class DepartmentRepository
 
     }*/
 
-   /*
+
    public void updateDepartment(Department department)
     { //query to update user
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.department SET name = ? WHERE id = ?";
@@ -263,5 +263,5 @@ public class DepartmentRepository
         //return false if department was not found and deleted
         return false;
     }
-    */
+
 }
