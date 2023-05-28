@@ -3,20 +3,16 @@ package com.example.projectpilot.repository;
 import com.example.projectpilot.model.Task;
 import com.example.projectpilot.service.DatabaseService;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 public class TaskRepositoryTest {
@@ -28,6 +24,7 @@ public class TaskRepositoryTest {
     private PreparedStatement preparedStatement;
 
     private TaskRepository taskRepository;
+
 
     @BeforeEach
     public void setup() throws SQLException {
