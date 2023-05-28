@@ -12,6 +12,8 @@ public class TaskTest {
 
     private Task task;
 
+    // I denne test tester vi at getters og setters virker som forventet.
+
     // Her laves et nyt task objekt før hver test.
     @BeforeEach
     public void setUp() {
@@ -21,6 +23,7 @@ public class TaskTest {
     // Her testes getters og setters for task objektet.
     @Test
     public void testTaskSettersAndGetters() {
+        // Her angives test værdierne.
         int departmentId = 1;
         String title = "Test Title";
         String description = "Test Description";
@@ -31,7 +34,7 @@ public class TaskTest {
         String status = "Test Status";
         String department = "Test Department";
 
-        // Her sættes de forskellige værdier til task objektet.
+        // Her sættes test værdierne til task objektet.
         task.setDepartment_id(departmentId);
         task.setTitle(title);
         task.setDescription(description);
