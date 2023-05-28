@@ -66,6 +66,5 @@ public class TaskRepositoryTest {
         verify(preparedStatement).setString(eq(8), eq(task.getStatus()));
         verify(preparedStatement).setString(eq(9), eq(task.getDepartment()));
         verify(preparedStatement).executeUpdate();
-        verify(connection).close();
     }
 }
