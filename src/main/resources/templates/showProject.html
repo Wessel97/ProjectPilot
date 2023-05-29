@@ -36,14 +36,13 @@
             <td>
                 <a th:href="@{'/updateDepartment/' + ${department.getId()}}" href="/updateDepartment/"><button>Update</button></a>
             </td>
-
             <td>
                 <form th:action="@{/deleteDepartment}" method="post">
                     <input type="hidden" name="id" th:value="${department.getId()}"/>
                     <button type="submit">Delete</button>
                     <span th:if="${errorMessage != null}" th:text="${errorMessage}"></span>
                 </form>
-            </td>-->
+            </td>
         </tr>
         </tbody>
     </table>
