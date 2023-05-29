@@ -97,6 +97,9 @@ public class DepartmentController
         session.setAttribute("departmentId", departmentId); // Store department ID in the session
         session.setAttribute("departmentName", departmentName); // Store department Name in the session
 
+        int sesh = 0;
+        session.setAttribute("sesh", sesh);
+        
         return "showDepartment";
     }
 

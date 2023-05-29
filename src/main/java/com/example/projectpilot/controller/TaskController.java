@@ -131,9 +131,17 @@ public class TaskController
         //kald opdater i repository
         taskRepository.updateTask(updateTask);
 
-        int departmentId = (int) session.getAttribute("departmentId");
+        int check = (int) session.getAttribute("sesh");
 
-        return "redirect:/showDepartment/" + departmentId;
+        if(check == 0) {
+            int departmentId = (int) session.getAttribute("departmentId");
+            return "redirect:/showDepartment/" + departmentId;
+        }
+        else {
+            int sesh = 0;
+            session.setAttribute("sesh", sesh);
+            return "redirect:/userTasks";
+        }
     }
 
 
@@ -171,6 +179,10 @@ public class TaskController
         {
             taskList = taskRepository.getAllTasksByUserID(userId, null);
         }
+
+        int sesh = 1;
+
+        session.setAttribute("sesh", sesh);
 
         model.addAttribute("tasks", taskList);
         return "userTasks";
