@@ -267,11 +267,12 @@ public class UserController
 
     @PostMapping("/updateUser")
     public String updateUser(@RequestParam("user-id") int id,
-                           @RequestParam("user-admin") boolean admin,
-                           @RequestParam("user-firstname") String firstname,
-                           @RequestParam("user-lastname") String lastname,
-                           @RequestParam("user-email") String email,
-                           @RequestParam("user-password") String password,
+                             //By setting required = false, the 'user-admin' parameter will become optional, and the controller method will not raise a MissingServletRequestParameterException if the checkbox is left unchecked.
+                            @RequestParam(value = "user-admin", required = false) boolean admin,
+                            @RequestParam("user-firstname") String firstname,
+                            @RequestParam("user-lastname") String lastname,
+                            @RequestParam("user-email") String email,
+                            @RequestParam("user-password") String password,
                             @RequestParam("user-confirm_password") String confirmPassword,
                            HttpSession session, Model model)
     {
