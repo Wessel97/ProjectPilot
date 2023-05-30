@@ -13,8 +13,10 @@ import java.util.List;
 public class TaskRepository
 {
 
+    //Lav et database service objekt
     private final DatabaseService databaseService;
 
+    //Lav en constructor som tager imod database service objektet
     @Autowired
     public TaskRepository(DatabaseService databaseService)
     {
@@ -27,7 +29,7 @@ public class TaskRepository
                         //Get metoder (metode 1-5)
      ------------------------------------------------------------------*/
 
-    //Method 1 get task from SQL. This method will return a task object from the database.
+    //Metode 1 get task fra SQL. Denne metode vil returnere et task objekt fra databasen.
     private Task getTask(ResultSet resultSet) throws SQLException
     {
         int id = resultSet.getInt(1);
@@ -44,15 +46,17 @@ public class TaskRepository
         String status = resultSet.getString(12);
         String department = resultSet.getString(13);
         String project = resultSet.getString(14);
-        //create task object and return task object.
+        //Returner et task objekt med de ovenstående parametre
         return new Task(id, user_id, department_id, title, description, note, hours, pay_rate, flag, start_date, end_date, status, department, project);
     }
 
 
-    //Method 2 get all tasks. This method will return a list of all tasks in the database.
+    //Metode 2 get all tasks. Denne metode vil returnere alle tasks i en liste med projectId.
     public List<Task> getAllTasksByProjectId(int projectId, String sortingParameter)
     {
+        // Intialiser en tom liste til at gemme alle tasks i
         List<Task> allTasksList = new ArrayList<>();
+        // Definer SQL query til at finde alle tasks med det givne projectId
         String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task JOIN ProjectPilotDB.department ON task.department_id = department.id WHERE department.project_id = ?";
 
         if ( sortingParameter != null)
@@ -81,14 +85,15 @@ public class TaskRepository
         return allTasksList;
     }
 
-    // Method 3 get task by user ID. This method will return the tasks with the given ID in a list.
+    //Denne metode vil returnere alle tasks i en liste med userId og en sortingParameter.
+    //SortingParameteren defineres i html filen, så når du klikker på værdien sættes den i metoden.
     public List<Task> getAllTasksByUserID(int userId, String sortingParameter)
     {
         // Initialize an empty list to store tasks with the given userID
         List<Task> userIdTasksList = new ArrayList<>();
         // Define the SQL query to find all tasks with the given userID
         String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
-
+        //Hvis sortingParameter ikke er null, så tilføj til query
         if ( sortingParameter != null)
         {
             FIND_QUERY += " ORDER BY  task." + sortingParameter;
@@ -97,19 +102,19 @@ public class TaskRepository
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            // Set the userId parameter for the prepared statement
+            // Sæt userId parameteret for prepared statement
             preparedStatement.setInt(1, userId);
-            // Execute the query and get the result set
+            // Eksekver query og få result set
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            // Loop through the result set
+            // Loop igennem result set
             while ( resultSet.next() )
             {
-                // Extract the task from the result set
+                // Tag task ud fra result set
                 Task task = getTask(resultSet);
-                // Add the extracted task to the tasksByUserId list
+                // Tilføj task til tasksByUserId listen
                 userIdTasksList.add(task);
-                //print user. Debugging purposes to see list in terminal.
+                //Print user. Til Debugging
                 System.out.println(task);
             }
         }
@@ -124,25 +129,26 @@ public class TaskRepository
         return userIdTasksList;
     }
 
+    //Den her metode returnerer alle task i en list med departmentId
     public List<Task> getAllTasksByDepartmentID(int departmentId)
     {
-        // Initialize an empty list to store tasks with the given userID
+        // Intialiser en tom liste til at gemme alle tasks i
         List<Task> userIdTasksList = new ArrayList<>();
-        // Define the SQL query to find all tasks with the given userID
+        // Definer SQL query til at finde alle tasks med det givne departmentId
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE department_id = ?";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            // Set the userId parameter for the prepared statement
+            // Sæt departmentId parameteret for prepared statement
             preparedStatement.setInt(1, departmentId);
-            // Execute the query and get the result set
+            // Eksekver query og få result set
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            // Loop through the result set
+            // Loop igennem result set
             while ( resultSet.next() )
             {
-                // Extract the task from the result set
+                // Extract task from result set
                 Task task = getTask(resultSet);
                 // Add the extracted task to the tasksByUserId list
                 userIdTasksList.add(task);
@@ -162,7 +168,8 @@ public class TaskRepository
     }
 
 
-    // Method 4 get task by task ID. This method will find the task with the given ID.
+    //Get Task by task id. Denne metode vil returnere en task med et givent taskId.
+    //Bliver brugt når man skal update, delete eller assign
     public Task getTaskByTaskId(int taskId)
     {
         Task selectTask = null;
@@ -189,11 +196,7 @@ public class TaskRepository
         return selectTask;
     }
 
-     /*--------------------------------------------------------------------
-                  //Add + update + delete metoder (metode 6-8)
-    --------------------------------------------------------------------*/
-
-    //Method 6 add task. This method will add a task to the database.
+    //Denne metode vil tilføje en task til databasen.
     public void addTask(Task task)
     {
         final String CREATE_QUERY = "INSERT INTO task(department_id, title, description, note, hours, start_date, end_date, status, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -222,7 +225,7 @@ public class TaskRepository
         }
     }
 
-    // Method 7 update task. This method will update the selected task in the database. Without returning anything.
+    //Denne metode vil opdatere en task i databasen. Uden at returnerer noget
     public void updateTask(Task task)
     {
         final String UPDATE_QUERY = "UPDATE task SET title = ?, description = ?, note = ?, hours = ?, pay_rate = ?, flag = ?, start_date = ?, end_date = ?, status = ? WHERE id = ?";
@@ -271,7 +274,10 @@ public class TaskRepository
         }
     }
 
-    //Method 8 delete task by ID. This method will return true if the task was successfully deleted from the database.
+    /*
+    Metoden sletter en task fra databasen ud fra det ID den får, den returnere en boolean, der er
+    "true" hvis en task var slettes succesfuldt.
+    */
     public boolean deleteTaskByID(int taskId)
     {
         // Make a boolean to check if the task was deleted (sentinel). Makes the code more readable.
@@ -303,6 +309,7 @@ public class TaskRepository
         return taskDeleted;
     }
 
+    // Metoden tildeler en valgt task til en valgt User
     public void assignTo(Task task, int userID)
     {
         final String UPDATE_QUERY = "UPDATE task SET user_id = ? WHERE id = ?";
@@ -316,134 +323,15 @@ public class TaskRepository
             preparedStatement.setInt(2, task_id);
 
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             System.out.println("Error trying to query the database: " + e);
             e.printStackTrace();
         }
     }
 
-    /*--------------------------------------------------------------------
-                            // Sort Metoder (Metode 9-15)
-    --------------------------------------------------------------------*/
 
-    /*//Method 9 Generic sorting method. You can define your sorting parameter.
-    public List<Task> getTasksSorted(String sortingParameter)
-    {
-        List<Task> sortedTasksList = new ArrayList<>();
-        //query to get all tasks
-        final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.task ORDER BY " + sortingParameter;
-
-        try (Connection connection = databaseService.getConnection();
-             Statement statement = connection.createStatement())
-        {
-            // execute query and store result in resultSet.
-            ResultSet resultSet = statement.executeQuery(SQL_QUERY);
-            // loop through resultSet and add each task to sortedTasksList.
-            while ( resultSet.next() )
-            {
-                //create task object and add to sortedTasksList.
-                Task task = getTask(resultSet);
-                sortedTasksList.add(task);
-            }
-        }
-        catch (SQLException e)
-        {
-            //Handle any errors while querying the database.
-            System.out.println("Error trying to query database: " + e);
-            //This method will print the error, what line it is on and what method it is in.
-            e.printStackTrace();
-        }
-        return sortedTasksList;
-    }*/
-    /*
-    public List<Task> getAllTasksSortedById()
-    {
-        return getTasksSorted("id");
-    }
-
-    public List<Task> getAllTasksSortedByUserId()
-    {
-        return getTasksSorted("user_id");
-    }
-
-    public List<Task> getAllTasksSortedByNote()
-    {
-        return getTasksSorted("note");
-    }
-
-    //Method 10 sort by hours. This method will sort the tasks by hours.
-    public List<Task> getAllTasksSortedByHours()
-    {
-        return getTasksSorted("hours");
-    }
-
-    public List<Task> getAllTasksSortedByPayRate()
-    {
-        return getTasksSorted("pay_rate");
-    }
-
-    public List<Task> getAllTasksSortedByFlag()
-    {
-        return getTasksSorted("flag");
-    }
-
-    public List<Task> getAllTasksSortedByStartDate()
-    {
-        return getTasksSorted("start_date");
-    }
-
-    //Method 13 sort by end date. This method will sort the tasks by end date.
-    public List<Task> getAllTasksSortedByEndDate()
-    {
-        return getTasksSorted("end_date");
-    }
-
-    public List<Task> getAllTasksSortedByStatus()
-    {
-        return getTasksSorted("status");
-    }
-
-    //Method 11 sort by department. This method will sort the tasks by department.
-    public List<Task> getAllTasksSortedByDepartment()
-    {
-        return getTasksSorted("department");
-    }
-
-    //Method 14 sort by status. This method will sort the tasks by status (unassigned, assigned, in progress, done).
-
-    //Method 15 sort by flag. This method will sort the tasks by flag (true or false).
-
-     */
-
-    /*--------------------------------------------------------------------
-                 // Projekt kalkulering Metoder (Metode 16-21)
-    --------------------------------------------------------------------*/
-
-    /*// Method 16 calculates the total number of hours for all tasks.
-    public int totalHours()
-    {
-        int sumHours = 0;
-        String CALCULATE_QUERY = "SELECT SUM(hours) FROM ProjectPilotDB.task";
-
-        try (Connection connection = databaseService.getConnection();
-             PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
-        {
-            ResultSet resultSet = statement.executeQuery();
-            if ( resultSet.next() )
-            {
-                sumHours = resultSet.getInt(7);
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return sumHours;
-    }*/
-
-    // Method 17 calculates the total number of hours for a given department.
+    // Metoden kalkulerer det totale timeantal for tasks i det givne department.
     public int totalHoursByDepartment(int id)
     {
         int sumHoursByDept = 0;
@@ -466,52 +354,9 @@ public class TaskRepository
         return sumHoursByDept;
     }
 
-    // Method 18 calculates the total number of hours for a given user.
-    /*public int totalHoursByID(int userID)
-    {
-        int sumHoursByID = 0;
-        String CALCULATE_QUERY = "SELECT SUM(hours) FROM ProjectPilotDB.task WHERE user_id = ?";
 
-        try (Connection connection = databaseService.getConnection();
-             PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
-        {
-            statement.setInt(1, userID);
-            ResultSet resultSet = statement.executeQuery();
-            if ( resultSet.next() )
-            {
-                sumHoursByID = resultSet.getInt(1);
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return sumHoursByID;
-    }
 
-    // Method 19 calculates the total price for all tasks.
-    public int totalPrice()
-    {
-        int sumPrice = 0;
-        String CALCULATE_QUERY = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task";
-
-        try (Connection connection = databaseService.getConnection();
-             PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
-        {
-            ResultSet resultSet = statement.executeQuery();
-            if ( resultSet.next() )
-            {
-                sumPrice = resultSet.getInt(1);
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return sumPrice;
-    }*/
-
-    // Method 20 calculates the total price for the tasks in a given department.
+    // Metoden kalkulerer den totale pris for tasks i det givne department.
     public int totalPriceByDepartment(int id)
     {
         int sumPriceByDept = 0;
@@ -534,26 +379,4 @@ public class TaskRepository
         return sumPriceByDept;
     }
 
-    // Method 21 calculates the total price for the tasks in a given user.
-   /* public int totalPriceByID(int userID)
-    {
-        int sumPriceByID = 0;
-        String CALCULATE_QUERY = "SELECT SUM(hours * pay_rate) FROM ProjectPilotDB.task WHERE user_id=?";
-
-        try (Connection connection = databaseService.getConnection();
-             PreparedStatement statement = connection.prepareStatement(CALCULATE_QUERY))
-        {
-            statement.setInt(1, userID);
-            ResultSet resultSet = statement.executeQuery();
-            if ( resultSet.next() )
-            {
-                sumPriceByID = resultSet.getInt(1);
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return sumPriceByID;
-    }*/
 }

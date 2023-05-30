@@ -117,6 +117,7 @@ public class ProjectRepository
         return selectedProject;
     }
 
+    // Opdatere navnet på et projekt
     public void updateProject(Project project)
     {
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.project SET name = ? WHERE id = ?";

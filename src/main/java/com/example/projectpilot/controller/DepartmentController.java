@@ -26,6 +26,7 @@ public class DepartmentController
         this.projectRepository = projectRepository;
     }
 
+    // Viser add departmnets siden
     @GetMapping("/addDepartment")
     public String showAddDepartment(HttpSession session, Model model) {
         if (session.getAttribute("id") == null) {
@@ -42,6 +43,7 @@ public class DepartmentController
         return "addDepartment";
     }
 
+    // Poster ny department
     @PostMapping("/addDepartment")
     public String addDepartment( @RequestParam("department-name") String departmentName, Model model, HttpSession session)
     {
@@ -68,6 +70,7 @@ public class DepartmentController
         }
     }
 
+    // Viser et department
     @GetMapping("/showDepartment/{id}")
     public String showDepartment(@PathVariable("id") int departmentId, HttpSession session, Model model)
     {
@@ -103,6 +106,7 @@ public class DepartmentController
         return "showDepartment";
     }
 
+    // Viser update department siden
     @GetMapping("/updateDepartment/{id}")
     public String showUpdateDepartment(@PathVariable("id") int id, HttpSession session, Model model)
     {
@@ -117,6 +121,7 @@ public class DepartmentController
         return "updateDepartment";
     }
 
+    // Poster update department
     @PostMapping("/updateDepartment")
     public String updateDepartment(
             @RequestParam("id") int departmentId,
@@ -136,7 +141,7 @@ public class DepartmentController
         return "redirect:/showProject/" + projectId;
     }
 
-
+    // Sletter department
     @PostMapping("/deleteDepartment")
     public String deleteDepartment(@RequestParam("id") int departmentId,
                                    HttpSession session,
@@ -158,6 +163,7 @@ public class DepartmentController
             int projectId = (int) session.getAttribute("projectId");
             return "redirect:/showProject/" + projectId;        }
     }
+
 
     @GetMapping("/showDepartmentUser/{id}")
     public String showDepartmentUser(@PathVariable("id") int departmentId, HttpSession session, Model model)
