@@ -12,27 +12,31 @@ import java.util.List;
 @Repository
 public class DepartmentRepository
 {
+    //Lav et database service objekt
     private final DatabaseService databaseService;
 
+    //Lav en constructor der tager imod database service objektet
     @Autowired
     public DepartmentRepository(DatabaseService databaseService)
     {
         this.databaseService = databaseService;
     }
 
+    //Lav en metode der returnerer en liste af departments
     public Department getDepartment(ResultSet resultSet) throws SQLException
     {
-        //get department_id from result set
+        //få id fra result set
         int department_id = resultSet.getInt(1);
-        //get department_project_id from result set
+        //få project_id fra result set
         int department_project_id = resultSet.getInt(2);
-        //get first_name from result set
+        //få name fra result set
         String departmentName = resultSet.getString(3);
 
-        //create user object
+        //returner en ny department
         return new Department(department_id, department_project_id, departmentName);
     }
 
+    //En metode som checker at et department eksisterer
     public boolean checkIfDepartmentExists(String checkName)
     {
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.department WHERE name = ?";
@@ -44,7 +48,7 @@ public class DepartmentRepository
             preparedStatement.setString(1, checkName);
             //execute statement
             ResultSet resultSet = preparedStatement.executeQuery();
-            // Check if there is a row in the resultSet with the specified email
+            //Check om der er en række i result set med det specificerede email
             if ( resultSet.next() )
             {
                 return true;
@@ -55,10 +59,11 @@ public class DepartmentRepository
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        //return false if user does not exist
+        //returner false hvis der ikke er en række i result set med det specificerede email
         return false;
     }
 
+    //Lav en metode der kan tilføje departments til databasen
     public boolean addDepartment(Department department)
     {
         // Query to insert user
@@ -89,6 +94,7 @@ public class DepartmentRepository
 
     }
 
+    //Lav en metode der kan hente en department fra databasen med Id
     public Department getDepartmentById(int departmentId)
     {
         Department selectDepartment = null;
