@@ -158,7 +158,7 @@ public class UserController
 
 
     // This method is used to show all users.
-    @GetMapping("/addUser")
+    /*@GetMapping("/addUser")
     public String showAddUser(HttpSession session)
     {
         if ( session.getAttribute("id") == null )
@@ -192,7 +192,7 @@ public class UserController
 
         //Tilbage til start så man kan logge ind
         return "start";
-    }
+    }*/
 
 
     // This method is used to show the assignUser page.
