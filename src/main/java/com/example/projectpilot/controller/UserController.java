@@ -226,8 +226,6 @@ public class UserController
 
         taskRepository.assignTo(updateTask, userId);
 
-        session.getAttribute("titleTask");
-
         return "redirect:/allTasks";
     }
 
