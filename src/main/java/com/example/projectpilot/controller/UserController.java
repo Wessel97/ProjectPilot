@@ -208,6 +208,9 @@ public class UserController
         // Set the task object as a model attribute
         model.addAttribute("task", task);
         model.addAttribute("users", userRepository.getAllUsers());
+
+        session.getAttribute("titleTask");
+
         return "assignUser";
     }
 
@@ -222,6 +225,8 @@ public class UserController
         Task updateTask = taskRepository.getTaskByTaskId(task_id);
 
         taskRepository.assignTo(updateTask, userId);
+
+        session.getAttribute("titleTask");
 
         return "redirect:/allTasks";
     }

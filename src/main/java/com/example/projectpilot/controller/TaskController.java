@@ -190,7 +190,7 @@ public class TaskController
 
     // Viser alle tasks
     @GetMapping("/allTasks")
-    public String showAllTasks(HttpSession session, Model model, @RequestParam(required = false) String sortingParameter)
+    public String showAllTasks(HttpSession session, Model model, @RequestParam(required = false) String sortingParameter, @RequestParam("title") String title)
     {
         if ( session.getAttribute("id") == null )
         {
@@ -207,6 +207,8 @@ public class TaskController
         {
             taskList = taskRepository.getAllTasksByProjectId(projectId, null);
         }
+
+        session.setAttribute("taskTitle", title);
 
         model.addAttribute("tasks", taskList);
         return "allTasks";
