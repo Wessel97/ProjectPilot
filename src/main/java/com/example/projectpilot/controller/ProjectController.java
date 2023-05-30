@@ -25,6 +25,7 @@ public class ProjectController
         this.departmentRepository = departmentRepository;
     }
 
+    // Viser et projekt
     @GetMapping("/showProject/{id}")
     public String showProject(@PathVariable("id") int projectId, HttpSession session, Model model)
     {
@@ -40,6 +41,7 @@ public class ProjectController
         return "showProject";
     }
 
+    // Viser et projekt fra session
     @GetMapping("/showProjectFromSession")
     public String showProjectFromSession(HttpSession session)
     {
@@ -54,6 +56,7 @@ public class ProjectController
         }
     }
 
+    // Viser add project siden
     @GetMapping("/addProject")
     public String showAddProject(HttpSession session, Model model)
     {
@@ -65,6 +68,7 @@ public class ProjectController
         return "addProject";
     }
 
+    // Poster nyt project
     @PostMapping("/addProject")
     public String addProject(@RequestParam("project-name") String newName, HttpSession session)
     {
@@ -78,6 +82,7 @@ public class ProjectController
         return "redirect:/adminStart";
     }
 
+    // Viser update project siden
     @GetMapping("/updateProject/{id}")
     public String showUpdateProject(@PathVariable("id") int projectId, HttpSession session, Model model)
     {
@@ -90,6 +95,7 @@ public class ProjectController
         return "updateProject";
     }
 
+    // Poster update project
     @PostMapping("/updateProject")
     public String updateProject(
             @RequestParam("id") int projectId,
@@ -106,6 +112,7 @@ public class ProjectController
         return "redirect:/adminStart";
     }
 
+    // Sletter et project
     @PostMapping("/deleteProject")
     public String deleteProject(@RequestParam("projectId") int projectId,
             HttpSession session,
@@ -126,6 +133,7 @@ public class ProjectController
             return "adminStart";
         }
     }
+
 
     @GetMapping("/showProjectUser/{id}")
     public String showProjectUser(@PathVariable("id") int projectId, HttpSession session, Model model)

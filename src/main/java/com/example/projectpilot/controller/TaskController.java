@@ -25,7 +25,7 @@ public class TaskController
         this.taskRepository = taskRepository;
     }
 
-
+    // Viser add task siden
     @GetMapping("/addTask")
     public String showAddTask(HttpSession session, Model model)
     {
@@ -161,6 +161,7 @@ public class TaskController
         return "redirect:/showDepartment/" + departmentId;
     }
 
+    // Viser alle tasks for en User
     @GetMapping("/userTasks")
     public String showUserTasks(HttpSession session, Model model, @RequestParam(required = false) String sortingParameter)
     {
