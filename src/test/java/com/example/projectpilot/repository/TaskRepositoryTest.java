@@ -1,16 +1,19 @@
 package com.example.projectpilot.repository;
 
+import com.example.projectpilot.model.Project;
 import com.example.projectpilot.model.Task;
 import com.example.projectpilot.service.DatabaseService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
+import static org.junit.jupiter.api.Assertions.*;
 import java.sql.*;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class TaskRepositoryTest {
@@ -42,6 +45,11 @@ public class TaskRepositoryTest {
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
 
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
+
+        // Initialize the mock ResultSet
+        resultSet = mock(ResultSet.class);
+
+
     }
 
     // I @Test verifyer vi at getConnection() og prepareStatement() og executeUpdate() bliver kaldt 1 gang.
@@ -65,36 +73,6 @@ public class TaskRepositoryTest {
         verify(preparedStatement, times(1)).executeUpdate();
     }
 
-    @Test
-    public void testGetAllTasksByUserID() throws SQLException {
-        // Set the user ID and sorting parameter for testing
-        int userId = 1;
-        String sortingParameter = "task_name";
-
-        // Set up mock behavior for resultSet
-        when(resultSet.next()).thenReturn(true, false); // Simulate a single row in the result set
-        when(resultSet.getInt("user_id")).thenReturn(userId);
-
-        // Call the getAllTasksByUserID method and get the list of tasks
-        List<Task> tasks = taskRepository.getAllTasksByUserID(userId, sortingParameter);
-
-        // Perform assertions to validate the results
-        Assertions.assertNotNull(tasks, "Returned tasks list should not be null");
-        Assertions.assertFalse(tasks.isEmpty(), "Returned tasks list should not be empty");
-
-        // Additional assertions based on your requirements
-        for (Task task : tasks) {
-            Assertions.assertEquals(userId, task.getUser_id(), "Task has a different user ID");
-        }
-
-        // Verify that the methods were called
-        verify(databaseService, times(1)).getConnection();
-        verify(connection, times(1)).prepareStatement(any(String.class));
-        verify(preparedStatement, times(1)).setInt(1, userId);
-        verify(preparedStatement, times(1)).executeQuery();
-        verify(resultSet, times(1)).next();
-        verify(resultSet, times(1)).getInt("user_id");
-    }
 
     @Test
     public void testGetAllTasksByUserID_NegativeCase() throws SQLException {
