@@ -26,12 +26,8 @@ public class DepartmentRepository
     public Department getDepartment(ResultSet resultSet) throws SQLException
     {
         int department_id = resultSet.getInt(1);
-
         int department_project_id = resultSet.getInt(2);
-
         String departmentName = resultSet.getString(3);
-
-        //returner en ny department
         return new Department(department_id, department_project_id, departmentName);
     }
 
@@ -44,9 +40,7 @@ public class DepartmentRepository
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
             preparedStatement.setString(1, checkName);
-
             ResultSet resultSet = preparedStatement.executeQuery();
-
             if ( resultSet.next() )
             {
                 return true;
@@ -71,11 +65,8 @@ public class DepartmentRepository
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY))
         {
             preparedStatement.setInt(1, department.getProjectId());
-
             preparedStatement.setString(2, department.getDepartmentName());
-
             int rowsAffected = preparedStatement.executeUpdate();
-
             if ( rowsAffected == 1 )
             {
                 return true;
@@ -101,9 +92,7 @@ public class DepartmentRepository
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
             preparedStatement.setInt(1, departmentId);
-
             ResultSet resultSet = preparedStatement.executeQuery();
-
             if ( resultSet.next() )
             {
                 selectDepartment = getDepartment(resultSet);
@@ -155,9 +144,7 @@ public class DepartmentRepository
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
             preparedStatement.setInt(1, id);
-
             ResultSet resultSet = preparedStatement.executeQuery();
-
             if (resultSet.next())
             {
                 departmentName = resultSet.getString("name");
@@ -179,9 +166,7 @@ public class DepartmentRepository
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY))
         {
             preparedStatement.setString(1, department.getDepartmentName());
-
             preparedStatement.setInt(2, department.getId());
-
             preparedStatement.executeUpdate();
         }
         catch (SQLException e)
@@ -199,9 +184,7 @@ public class DepartmentRepository
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY))
         {
             preparedStatement.setInt(1, departmentId);
-
             int foundDepartment = preparedStatement.executeUpdate();
-
             if ( foundDepartment == 1 )
             {
                 return true;
