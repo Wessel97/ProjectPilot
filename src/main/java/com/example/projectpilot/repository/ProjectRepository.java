@@ -20,7 +20,6 @@ public class ProjectRepository
         this.databaseService = databaseService;
     }
 
-
     public Project getProject(ResultSet resultSet) throws SQLException
     {
         //get department_id from result set
@@ -31,7 +30,6 @@ public class ProjectRepository
         return new Project(projectID, projectName);
     }
 
-    //Metode som henter alle projects fra databasen
     public List<Project> getAllProjects()
     {
         //create list of users
@@ -91,7 +89,6 @@ public class ProjectRepository
         return false;
     }
 
-    //Metode der henter det project i databasen med det givne id
     public Project getProjectByID(int projectID)
     {
         //query to find user
@@ -139,7 +136,6 @@ public class ProjectRepository
         }
     }
 
-    //Sletter project fra databasen
     public boolean deleteProjectById(int projectId)
     {
         //query to delete project
@@ -167,7 +163,7 @@ public class ProjectRepository
         return false;
     }
 
-    public boolean checkIfProjectExists(String checkName)
+    /*public boolean checkIfProjectExists(String checkName)
     {
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.project WHERE name = ?";
 
@@ -191,5 +187,5 @@ public class ProjectRepository
         }
         //return false if user does not exist
         return false;
-    }
+    }*/
 }

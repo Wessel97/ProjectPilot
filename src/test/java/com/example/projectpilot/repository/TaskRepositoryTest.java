@@ -1,15 +1,19 @@
 package com.example.projectpilot.repository;
 
+import com.example.projectpilot.model.Project;
 import com.example.projectpilot.model.Task;
 import com.example.projectpilot.service.DatabaseService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import static org.junit.jupiter.api.Assertions.*;
 import java.sql.*;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class TaskRepositoryTest {

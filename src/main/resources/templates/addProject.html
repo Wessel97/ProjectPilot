@@ -14,8 +14,6 @@
     <h2>Create New Project</h2>
     <form action="/addProject" method="post">
 
-        <div class="error-message" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
-
         <label for="name-field">Project Name:</label>
         <input type="text" id="name-field" name="project-name">
 

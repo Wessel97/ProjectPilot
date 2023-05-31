@@ -168,7 +168,6 @@ public class UserRepository
         return null;
     }
 
-    //Denne metoder kan hente en user fra databasen ved en email og password.
     public User getUserByEmailAndPassword(String email, String password)
     {
         User user = new User();
