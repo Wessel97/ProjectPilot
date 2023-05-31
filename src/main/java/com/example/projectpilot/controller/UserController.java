@@ -164,43 +164,6 @@ public class UserController
     }
 
 
-    /*  SKAL SLETTES
-    @GetMapping("/addUser")
-    public String showAddUser(HttpSession session)
-    {
-        if ( session.getAttribute("id") == null )
-        {
-            return "redirect:/";
-        }
-
-        return "addUser";
-    }
-
-
-    // This method is used to add a user.
-    @PostMapping("/addUser")
-    public String addUser(@RequestParam("user-admin") boolean newUserAdmin,
-                          @RequestParam("user-firstname") String newFirstName,
-                          @RequestParam("user-lastname") String newLastName,
-                          @RequestParam("user-email") String newEmail,
-                          @RequestParam("user-password") String newPassword,
-                          HttpSession session)
-    {
-        if ( session.getAttribute("id") == null )
-        {
-            return "redirect:/";
-        }
-
-        //lave en ny User
-        User newUser = new User(newUserAdmin, newFirstName, newLastName, newEmail, newPassword);
-
-        //Gem ny User
-        userRepository.addUser(newUser);
-
-        //Tilbage til start så man kan logge ind
-        return "start";
-    }*/
-
 
     // Viser assignUser siden og sætter task_id i stien så vi åbner den specifikke task.
     @GetMapping("/assignUser/{id}")
