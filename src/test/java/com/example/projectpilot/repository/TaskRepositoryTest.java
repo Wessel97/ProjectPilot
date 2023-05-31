@@ -40,13 +40,13 @@ public class TaskRepositoryTest {
         MockitoAnnotations.openMocks(this);
         taskRepository = new TaskRepository(databaseService);
 
-        // Set up mock behavior for databaseService and connection
+        // Sæt op mock for databaseService and connection
         when(databaseService.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
 
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
 
-        // Initialize the mock ResultSet
+        // Initialiser the mock ResultSet
         resultSet = mock(ResultSet.class);
 
 

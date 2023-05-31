@@ -187,40 +187,6 @@ public class DepartmentRepository
         return departmentName;
     }
 
-    /*
-    public List<Department> getAllDepartments()
-    {
-        //create list of departments
-        List<Department> departmentList = new ArrayList<>();
-        //execute statement, here there is no exceptions that need to be caught. It does need to be in try/catch.
-        // Limit the scope of a try block to only the code that might throw an exception.
-        final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.department";
-
-        try (Connection connection = databaseService.getConnection();
-             Statement statement = connection.createStatement())
-        {
-            //get result set
-            ResultSet resultSet = statement.executeQuery(SQL_QUERY);
-            //loop through result set
-            while ( resultSet.next() )
-            {
-                //get user from result set
-                Department department = getDepartment(resultSet);
-                //add user to list
-                departmentList.add(department);
-                //print user
-                System.out.println(department);
-            }
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Error querying database");
-            e.printStackTrace();
-        }
-        return departmentList;
-
-    }*/
-
 
    public void updateDepartment(Department department)
     { //query to update user
