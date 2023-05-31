@@ -89,9 +89,7 @@ public class TaskRepository
     //SortingParameteren defineres i html filen, så når du klikker på værdien sættes den i metoden.
     public List<Task> getAllTasksByUserID(int userId, String sortingParameter)
     {
-        // Initialize an empty list to store tasks with the given userID
         List<Task> userIdTasksList = new ArrayList<>();
-        // Define the SQL query to find all tasks with the given userID
         String FIND_QUERY = "SELECT * FROM ProjectPilotDB.task WHERE user_id = ?";
         //Hvis sortingParameter ikke er null, så tilføj til query
         if ( sortingParameter != null)
@@ -120,12 +118,9 @@ public class TaskRepository
         }
         catch (SQLException e)
         {
-            //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
-            //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
-        // Return the list of tasks with the given userID
         return userIdTasksList;
     }
 
@@ -148,22 +143,17 @@ public class TaskRepository
             // Loop igennem result set
             while ( resultSet.next() )
             {
-                // Extract task from result set
                 Task task = getTask(resultSet);
-                // Add the extracted task to the tasksByUserId list
                 userIdTasksList.add(task);
-                //print user. Debugging purposes to see list in terminal.
                 System.out.println(task);
             }
         }
         catch (SQLException e)
         {
-            //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
-            //This method will print the error, what line it is on and what method it is in.
+            // Denne metode vil printe en stack trace, hvis der er en fejl i SQL
             e.printStackTrace();
         }
-        // Return the list of tasks with the given userID
         return userIdTasksList;
     }
 
@@ -188,9 +178,7 @@ public class TaskRepository
         }
         catch (SQLException e)
         {
-            //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
-            //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
         return selectTask;
@@ -218,9 +206,7 @@ public class TaskRepository
         }
         catch (SQLException e)
         {
-            //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
-            //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
     }
@@ -267,9 +253,7 @@ public class TaskRepository
         }
         catch (SQLException e)
         {
-            //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
-            //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
     }
@@ -292,7 +276,7 @@ public class TaskRepository
             preparedStatement.setInt(1, taskId);
             //execute statement
             int foundTask = preparedStatement.executeUpdate();
-            //return true if task was found and deleted (foundTask should be 1).
+            // Returnerer 1 hvis en task er slettet
             if ( foundTask == 1 )
             {
                 taskDeleted = true;
@@ -300,12 +284,9 @@ public class TaskRepository
         }
         catch (SQLException e)
         {
-            //Handle any errors while querying the database.
             System.out.println("Error trying to query database: " + e);
-            //This method will print the error, what line it is on and what method it is in.
             e.printStackTrace();
         }
-        //return false if task was not deleted
         return taskDeleted;
     }
 

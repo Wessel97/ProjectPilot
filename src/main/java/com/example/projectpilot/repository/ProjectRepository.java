@@ -20,6 +20,7 @@ public class ProjectRepository
         this.databaseService = databaseService;
     }
 
+    //Henter et projekt, bliver brugt i getAllProjects
     public Project getProject(ResultSet resultSet) throws SQLException
     {
         //get department_id from result set
@@ -30,27 +31,20 @@ public class ProjectRepository
         return new Project(projectID, projectName);
     }
 
+    //Hent alle projekter, med at bruge getProject metoden i et loop
     public List<Project> getAllProjects()
     {
-        //create list of users
         List<Project> projectList = new ArrayList<>();
-        //execute statement, here there is no exceptions that need to be caught. It does need to be in try/catch.
-        // Limit the scope of a try block to only the code that might throw an exception.
         final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.project";
 
         try (Connection connection = databaseService.getConnection();
              Statement statement = connection.createStatement())
         {
-            //get result set
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
-            //loop through result set
             while ( resultSet.next() )
             {
-                //get user from result set
                 Project project = getProject(resultSet);
-                //add user to list
                 projectList.add(project);
-                //print user
                 System.out.println(project);
             }
         }
@@ -62,19 +56,16 @@ public class ProjectRepository
         return projectList;
     }
 
+    //Tilføj et projekt
     public boolean addProject(Project project)
     {
-        // Query to insert user
         final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.project (name) VALUES (?)";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY))
         {
-            // Set first_name
             preparedStatement.setString(1, project.getProjectName());
-            // Execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
             int rowsAffected = preparedStatement.executeUpdate();
-            // Return true if rowsAffected is 1
             if ( rowsAffected == 1 )
             {
                 return true;
@@ -85,24 +76,20 @@ public class ProjectRepository
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        // Return false if user was not added
         return false;
     }
 
+    //Hent et projekt med et specifikt id
     public Project getProjectByID(int projectID)
     {
-        //query to find user
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.project WHERE id = ?";
 
         Project selectedProject = null;
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            //set parameters for prepared statement (user_id)
             preparedStatement.setInt(1, projectID);
-            //execute statement
             ResultSet resultSet = preparedStatement.executeQuery();
-            //return user if user exists
             if ( resultSet.next() )
             {
                 selectedProject = getProject(resultSet);
@@ -113,11 +100,10 @@ public class ProjectRepository
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        //return null if user does not exist
         return selectedProject;
     }
 
-    // Opdatere navnet på et projekt
+    // Opdatere et projekt
     public void updateProject(Project project)
     {
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.project SET name = ? WHERE id = ?";
@@ -136,19 +122,16 @@ public class ProjectRepository
         }
     }
 
+    // Slet et projekt med et specifikt id
     public boolean deleteProjectById(int projectId)
     {
-        //query to delete project
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.project WHERE id = ?";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY))
         {
-            //set parameters for prepared statement (project_id)
             preparedStatement.setInt(1, projectId);
-            //execute statement
             int foundProject = preparedStatement.executeUpdate();
-            //return true if project was found and deleted (foundProject should be 1).
             if ( foundProject == 1 )
             {
                 return true;
@@ -159,10 +142,10 @@ public class ProjectRepository
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        //return false if project was not found and deleted
         return false;
     }
 
+    //Check om et projekt eksistere
     public boolean checkIfProjectExists(String checkName)
     {
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.project WHERE name = ?";
@@ -170,11 +153,8 @@ public class ProjectRepository
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            //set parameters
             preparedStatement.setString(1, checkName);
-            //execute statement
             ResultSet resultSet = preparedStatement.executeQuery();
-            // Check if there is a row in the resultSet with the specified email
             if ( resultSet.next() )
             {
                 return true;
@@ -185,7 +165,6 @@ public class ProjectRepository
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        //return false if user does not exist
         return false;
     }
 }
