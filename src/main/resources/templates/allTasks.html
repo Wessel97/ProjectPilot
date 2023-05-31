@@ -36,7 +36,6 @@
       <th><a href="/allTasks?sortingParameter=end_date">End Date</a></th>
       <th><a href="/allTasks?sortingParameter=status">Status</a></th>
       <th><a href="/allTasks?sortingParameter=department">Department</a></th>
-      <th>Update</th>
       <th>Delete</th>
       <th>Assign User</th>
     </tr>
@@ -55,9 +54,6 @@
       <td th:text="${#dates.format(task.end_Date, 'dd-MM-yyyy')}"></td>
       <td th:text="${task.status}">666</td>
       <td th:text="${task.department}">666</td>
-      <td>
-        <a th:href="@{'/updateTask/' + ${task.id}}" href="/updateTask"><button>Update</button></a>
-      </td>
       <td>
         <form th:action="@{'/deleteTask/' + ${task.id}}" method="post"><button type="submit">Delete</button>
         </form>
