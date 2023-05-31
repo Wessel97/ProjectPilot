@@ -64,7 +64,7 @@ public class DepartmentRepository
     }
 
     //Lav en metode der kan tilføje departments til databasen
-    public void addDepartment(Department department)
+    public boolean addDepartment(Department department)
     {
         // Query to insert user
         final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.department (project_id, name) VALUES (?,?)";
@@ -77,13 +77,21 @@ public class DepartmentRepository
             // Set first_name
             preparedStatement.setString(2, department.getDepartmentName());
             // Execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
-            preparedStatement.executeUpdate();
+            int rowsAffected = preparedStatement.executeUpdate();
+            // Return true if rowsAffected is 1
+            if ( rowsAffected == 1 )
+            {
+                return true;
+            }
         }
         catch (SQLException e)
         {
             System.out.println("Could not query database");
             e.printStackTrace();
         }
+        // Return false if user was not added
+        return false;
+
     }
 
     //Lav en metode der kan hente en department fra databasen med Id

@@ -64,7 +64,7 @@ public class ProjectRepository
         return projectList;
     }
 
-    public void addProject(Project project)
+    public boolean addProject(Project project)
     {
         // Query to insert user
         final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.project (name) VALUES (?)";
@@ -74,14 +74,21 @@ public class ProjectRepository
         {
             // Set first_name
             preparedStatement.setString(1, project.getProjectName());
-            // Execute SQL statement
-            preparedStatement.executeUpdate();
+            // Execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
+            int rowsAffected = preparedStatement.executeUpdate();
+            // Return true if rowsAffected is 1
+            if ( rowsAffected == 1 )
+            {
+                return true;
+            }
         }
         catch (SQLException e)
         {
             System.out.println("Could not query database");
             e.printStackTrace();
         }
+        // Return false if user was not added
+        return false;
     }
 
     //Metode der henter det project i databasen med det givne id
