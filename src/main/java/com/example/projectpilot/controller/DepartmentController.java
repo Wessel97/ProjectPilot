@@ -45,29 +45,16 @@ public class DepartmentController
 
     // Poster ny department
     @PostMapping("/addDepartment")
-    public String addDepartment( @RequestParam("department-name") String departmentName, Model model, HttpSession session)
+    public String addDepartment(@RequestParam("department-name") String newName, HttpSession session)
     {
-        // check if department exists
-        if (departmentRepository.checkIfDepartmentExists(departmentName))
+        if ( session.getAttribute("id") == null )
         {
-            model.addAttribute("error", "Department already exists. Please enter a new name.");
-            return "addDepartment";
+            return "redirect:/";
         }
-        else
-        {
-            int projectId = (int) session.getAttribute("projectId"); // Retrieve project ID from the session
-            Department newDepartment = new Department();
-            newDepartment.setDepartmentName(departmentName);
-            newDepartment.setProjectId(projectId);
-            if(departmentRepository.addDepartment(newDepartment))
-            {
-                return "redirect:/showProject/" + projectId;            }
-            else
-            {
-                model.addAttribute("error", "An error occurred while creating the department. Please try again.");
-                return "addDepartment";
-            }
-        }
+        Department newDepartment = new Department();
+        newDepartment.setDepartmentName(newName);
+        departmentRepository.addDepartment(newDepartment);
+        return "redirect:/showProject";
     }
 
     // Viser et department
