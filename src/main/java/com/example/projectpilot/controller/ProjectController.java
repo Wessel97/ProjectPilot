@@ -70,24 +70,16 @@ public class ProjectController
 
     // Poster nyt project
     @PostMapping("/addProject")
-    public String addProject(@RequestParam("project-name") String newName, HttpSession session,Model model)
+    public String addProject(@RequestParam("project-name") String newName, HttpSession session)
     {
         if ( session.getAttribute("id") == null )
         {
             return "redirect:/";
         }
-        if ( !projectRepository.checkIfProjectExists(newName) == false)
-        {
-            model.addAttribute("errorMessage", "Project already exists");
-            return "/addProject";
-        }
-        else
-        {
-            Project newProject = new Project();
-            newProject.setProjectName(newName);
-            projectRepository.addProject(newProject);
-            return "redirect:/adminStart";
-        }
+        Project newProject = new Project();
+        newProject.setProjectName(newName);
+        projectRepository.addProject(newProject);
+        return "redirect:/adminStart";
     }
 
     // Viser update project siden

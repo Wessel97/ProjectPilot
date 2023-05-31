@@ -115,7 +115,6 @@ public class DepartmentRepository
         return selectDepartment;
     }
 
-    //Lav en metode der kan hente en liste af alle departments fra databasen med projectId
     public List<Department> getAllDepartmentsByProjectId(int projectId)
     {
         // Initialize an empty list to store tasks with the given userID
@@ -153,7 +152,6 @@ public class DepartmentRepository
         return departmentsByProjectList;
     }
 
-    //Lav en metode der kan hente en departments navn fra databasen med id
     public String getDepartmentNameById(int id)
     {
         String departmentName = null;
@@ -181,7 +179,41 @@ public class DepartmentRepository
         return departmentName;
     }
 
-    //Metode der optager en række fra databasen og returnere en department
+    /*
+    public List<Department> getAllDepartments()
+    {
+        //create list of departments
+        List<Department> departmentList = new ArrayList<>();
+        //execute statement, here there is no exceptions that need to be caught. It does need to be in try/catch.
+        // Limit the scope of a try block to only the code that might throw an exception.
+        final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.department";
+
+        try (Connection connection = databaseService.getConnection();
+             Statement statement = connection.createStatement())
+        {
+            //get result set
+            ResultSet resultSet = statement.executeQuery(SQL_QUERY);
+            //loop through result set
+            while ( resultSet.next() )
+            {
+                //get user from result set
+                Department department = getDepartment(resultSet);
+                //add user to list
+                departmentList.add(department);
+                //print user
+                System.out.println(department);
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Error querying database");
+            e.printStackTrace();
+        }
+        return departmentList;
+
+    }*/
+
+
    public void updateDepartment(Department department)
     { //query to update user
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.department SET name = ? WHERE id = ?";
@@ -203,7 +235,6 @@ public class DepartmentRepository
         }
     }
 
-    //Metode der sletter en række fra databasen med et givent id
     public boolean deleteDepartmentById(int departmentId)
     {
         //query to delete user
