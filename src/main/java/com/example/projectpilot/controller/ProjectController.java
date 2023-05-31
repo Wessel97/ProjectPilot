@@ -35,8 +35,8 @@ public class ProjectController
         }
 
         List<Department> departmentList = departmentRepository.getAllDepartmentsByProjectId(projectId);
-        session.setAttribute("projectName", projectRepository.getProjectByID(projectId).getProjectName()); // Store project name in the session
-        session.setAttribute("projectId", projectId); // Store project ID in the session
+        session.setAttribute("projectName", projectRepository.getProjectByID(projectId).getProjectName());
+        session.setAttribute("projectId", projectId);
         model.addAttribute("department", departmentList);
         return "showProject";
     }
@@ -139,7 +139,7 @@ public class ProjectController
         }
     }
 
-
+    // Viser et projekt for en User
     @GetMapping("/showProjectUser/{id}")
     public String showProjectUser(@PathVariable("id") int projectId, HttpSession session, Model model)
     {
@@ -149,8 +149,8 @@ public class ProjectController
         }
 
         List<Department> departmentList = departmentRepository.getAllDepartmentsByProjectId(projectId);
-        session.setAttribute("projectName", projectRepository.getProjectByID(projectId).getProjectName()); // Store project name in the session
-        session.setAttribute("projectId", projectId); // Store project ID in the session
+        session.setAttribute("projectName", projectRepository.getProjectByID(projectId).getProjectName());
+        session.setAttribute("projectId", projectId);
         model.addAttribute("department", departmentList);
         return "showProjectUser";
     }

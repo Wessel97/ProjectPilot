@@ -33,7 +33,6 @@ public class TaskController
         {
             return "redirect:/";
         }
-        // Create a new Task object and add it to the model
         model.addAttribute("task", new Task());
         return "addTask";
     }
@@ -54,15 +53,12 @@ public class TaskController
             return "redirect:/";
         }
 
-        int departmentId = (int) session.getAttribute("departmentId"); // Retrieve Department ID from the session
-        String departmentName = (String) session.getAttribute("departmentName"); // Retrieve project ID from the session
+        int departmentId = (int) session.getAttribute("departmentId");
+        String departmentName = (String) session.getAttribute("departmentName");
 
-
-        // Convert LocalDate to java.sql.Date
         Date sqlStartDate = Date.valueOf(newStartDate);
         Date sqlEndDate = Date.valueOf(newEndDate);
 
-        // Laver en ny Task
         Task newTask = new Task();
         newTask.setDepartment_id(departmentId);
         newTask.setTitle(newTitle);
@@ -74,7 +70,6 @@ public class TaskController
         newTask.setStatus(newStatus);
         newTask.setDepartment(departmentName);
 
-        // Gemmer i taskRepository
         taskRepository.addTask(newTask);
 
         return "redirect:/showDepartment/" + departmentId;
@@ -89,13 +84,10 @@ public class TaskController
             return "redirect:/";
         }
 
-        //find produkt med id=updateId i databasen
         Task updateTask = taskRepository.getTaskByTaskId(updateId);
 
-        //tilføj produkt til view model, så det kan bruges i Thymeleaf
         model.addAttribute("task", updateTask);
 
-        //fortæl Spring hvilken HTML-side, der skal vises
         return "updateTask";
     }
 
@@ -120,15 +112,11 @@ public class TaskController
             return "redirect:/";
         }
 
-        // Convert LocalDate to java.sql.Date
         Date sqlStartDate = Date.valueOf(updateStartDate);
         Date sqlEndDate = Date.valueOf(updateEndDate);
 
-
-        //lav produkt ud fra parametre
         Task updateTask = new Task(updateTaskId, updateUserId, updateTitle, updateDescription, updateNote, updateHours, updatePayRate, updateFlag, sqlStartDate, sqlEndDate, updateStatus, updateDepartment);
 
-        //kald opdater i repository
         taskRepository.updateTask(updateTask);
 
         int check = (int) session.getAttribute("sesh");
@@ -153,10 +141,8 @@ public class TaskController
         {
             return "redirect:/";
         }
-        // Slet task med given taskId fra taskRepository
         taskRepository.deleteTaskByID(taskId);
 
-        // Går tilbage til alle tasks
         int departmentId = (int) session.getAttribute("departmentId");
         return "redirect:/showDepartment/" + departmentId;
     }

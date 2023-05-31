@@ -35,29 +35,37 @@ public class DepartmentControllerTest {
     @BeforeEach
     public void setup() {
         departmentName = "Test Department";
-        session = new MockHttpSession();  // Initialize session
-        session.setAttribute("projectId", 1);  // set projectId in session
+        session = new MockHttpSession();
+        session.setAttribute("projectId", 1);
     }
 
     @Test
     public void testAddDepartmentWhenExists() {
+        // Simulerer, at afdelingen allerede eksisterer i repository
         when(departmentRepository.checkIfDepartmentExists(departmentName)).thenReturn(true);
 
+        // Kalder metoden til at tilføje afdeling og gemmer returværdien
         String viewName = departmentController.addDepartment(departmentName, model, session);
 
+        // Verificerer, at fejlmeddelelsen blev tilføjet til modellen
         verify(model).addAttribute("error", "Department already exists. Please enter a new name.");
+
+        // Verificerer, at visningen er korrekt
         assertEquals("addDepartment", viewName);
     }
 
     @Test
     public void testAddDepartmentSuccess() {
+        // Simulerer, at afdelingen ikke eksisterer i repository
         when(departmentRepository.checkIfDepartmentExists(departmentName)).thenReturn(false);
+
+        // Simulerer, at tilføjelse af afdeling i repository er vellykket
         when(departmentRepository.addDepartment(any(Department.class))).thenReturn(true);
 
+        // Kalder metoden til at tilføje afdeling og gemmer returværdien
         String viewName = departmentController.addDepartment(departmentName, model, session);
 
+        // Verificerer, at der er blevet foretaget en omdirigering til visningen af projektet med id 1
         assertEquals("redirect:/showProject/" + 1, viewName);
     }
-
-    // Add more tests here for other scenarios like department creation failed
 }

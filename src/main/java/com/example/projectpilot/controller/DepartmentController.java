@@ -26,19 +26,19 @@ public class DepartmentController
         this.projectRepository = projectRepository;
     }
 
-    // Viser add departmnets siden
+    // Viser add departments siden
     @GetMapping("/addDepartment")
     public String showAddDepartment(HttpSession session, Model model) {
         if (session.getAttribute("id") == null) {
             return "redirect:/";
         }
 
-        int projectId = (int) session.getAttribute("projectId"); // Retrieve project ID from the session
+        int projectId = (int) session.getAttribute("projectId");
         List<Department> departmentList = departmentRepository.getAllDepartmentsByProjectId(projectId);
 
         model.addAttribute("projectId", projectId);
         model.addAttribute("department", departmentList);
-        model.addAttribute("newDepartment", new Department()); // this will be used to bind form data
+        model.addAttribute("newDepartment", new Department());
 
         return "addDepartment";
     }
@@ -47,7 +47,6 @@ public class DepartmentController
     @PostMapping("/addDepartment")
     public String addDepartment( @RequestParam("department-name") String departmentName, Model model, HttpSession session)
     {
-        // check if department exists
         if (departmentRepository.checkIfDepartmentExists(departmentName))
         {
             model.addAttribute("error", "Department already exists. Please enter a new name.");
@@ -55,7 +54,7 @@ public class DepartmentController
         }
         else
         {
-            int projectId = (int) session.getAttribute("projectId"); // Retrieve project ID from the session
+            int projectId = (int) session.getAttribute("projectId");
             Department newDepartment = new Department();
             newDepartment.setDepartmentName(departmentName);
             newDepartment.setProjectId(projectId);
@@ -81,7 +80,6 @@ public class DepartmentController
 
         Department department = departmentRepository.getDepartmentById(departmentId);
         if (department == null) {
-            // Department not found
             return "redirect:/showProject";
         }
 
@@ -97,8 +95,8 @@ public class DepartmentController
         int totalPrice = taskRepository.totalPriceByDepartment(departmentId);
         model.addAttribute("totalPrice", totalPrice);
 
-        session.setAttribute("departmentId", departmentId); // Store department ID in the session
-        session.setAttribute("departmentName", departmentName); // Store department Name in the session
+        session.setAttribute("departmentId", departmentId);
+        session.setAttribute("departmentName", departmentName);
 
         int sesh = 0;
         session.setAttribute("sesh", sesh);
@@ -164,7 +162,7 @@ public class DepartmentController
             return "redirect:/showProject/" + projectId;        }
     }
 
-
+    // Viser department siden for user
     @GetMapping("/showDepartmentUser/{id}")
     public String showDepartmentUser(@PathVariable("id") int departmentId, HttpSession session, Model model)
     {
@@ -175,7 +173,6 @@ public class DepartmentController
 
         Department department = departmentRepository.getDepartmentById(departmentId);
         if (department == null) {
-            // Department not found
             return "redirect:/showProjectUser";
         }
 
@@ -191,8 +188,8 @@ public class DepartmentController
         int totalPrice = taskRepository.totalPriceByDepartment(departmentId);
         model.addAttribute("totalPrice", totalPrice);
 
-        session.setAttribute("departmentId", departmentId); // Store department ID in the session
-        session.setAttribute("departmentName", departmentName); // Store department ID in the session
+        session.setAttribute("departmentId", departmentId);
+        session.setAttribute("departmentName", departmentName);
 
         return "showDepartmentUser";
     }

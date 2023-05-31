@@ -20,8 +20,6 @@ public class UserController
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
 
-    //Project newProject = new Project(); - IS NEVER USED.
-
     // Automatisk indsprøjtning af userRepository, taskRepository og projectRepository afhængighederne i klassen.
     @Autowired
     public UserController(UserRepository userRepository, TaskRepository taskRepository, ProjectRepository projectRepository)
@@ -52,7 +50,6 @@ public class UserController
                         Model model,
                         HttpSession session)
     {
-        //Hvis email og password ikke matcher eller ikke findes i databasen.
         if ( !userRepository.verifyUser(email, password) )
         {
             model.addAttribute("errorMessage", "Email or password invalid");
@@ -60,9 +57,7 @@ public class UserController
         }
         else
         {
-            // henter user.
             User user = userRepository.getUserByEmailAndPassword(email, password);
-            // Sætter userens id som session værdi.
             session.setAttribute("id", user.getId());
             if ( user.isAdmin() )
             {
@@ -79,10 +74,8 @@ public class UserController
     @GetMapping("/home")
     public String home(HttpSession session)
     {
-        // henter userId i session.
         int userId = (int) session.getAttribute("id");
         User user = userRepository.getUserByID(userId);
-        // Hvis user er admin = redirect adminStart, ellers userStart.
         if ( user.isAdmin() )
         {
             return "redirect:/adminStart";
@@ -148,7 +141,6 @@ public class UserController
                                Model model,
                                HttpSession session)
     {
-        //Check om user findes ud fra email.
         if ( !userRepository.checkIfUserExists(email) )
         {
             User user = new User(admin, firstname, lastname, email, password);
