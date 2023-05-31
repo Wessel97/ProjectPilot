@@ -163,7 +163,7 @@ public class ProjectRepository
         return false;
     }
 
-    /*public boolean checkIfProjectExists(String checkName)
+    public boolean checkIfProjectExists(String checkName)
     {
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.project WHERE name = ?";
 
@@ -187,5 +187,5 @@ public class ProjectRepository
         }
         //return false if user does not exist
         return false;
-    }*/
+    }
 }
