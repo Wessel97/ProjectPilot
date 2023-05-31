@@ -23,46 +23,31 @@ public class UserRepository
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
-    //Method 1 get user from SQL. This method will return a user object from the database.
+    //Metode 1: Hent bruger fra SQL. Denne metode vil returnere et brugerobjekt fra databasen.
     private User getUser(ResultSet resultSet) throws SQLException
     {
-        //get user_id from result set
         int id = resultSet.getInt(1);
-        //get admin status from result set
         boolean admin = resultSet.getBoolean(2);
-        //get first_name from result set
         String first_name = resultSet.getString(3);
-        //get last_name from result set
         String last_name = resultSet.getString(4);
-        //get email from result set
         String email = resultSet.getString(5);
-        //get password from result set
         String password = resultSet.getString(6);
-        //create user object
         return new User(id, admin, first_name, last_name, email, password);
     }
 
-    //Method 2 get all users. This method will return a list of all users in the database.
+    //Metode 2: Hent alle brugere. Denne metode vil returnere en liste over alle brugere i databasen.
     public List<User> getAllUsers()
     {
-        //create list of users
         List<User> userList = new ArrayList<>();
-        //execute statement, here there is no exceptions that need to be caught. It does need to be in try/catch.
-        // Limit the scope of a try block to only the code that might throw an exception.
         final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.user";
         try(Connection connection = databaseService.getConnection();
             Statement statement = connection.createStatement())
         {
-            //get result set
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
-            //loop through result set
             while ( resultSet.next() )
             {
-                //get user from result set
                 User user = getUser(resultSet);
-                //add user to list
                 userList.add(user);
-                //print user
                 System.out.println(user);
             }
         }
@@ -74,7 +59,7 @@ public class UserRepository
         return userList;
     }
 
-    //Method 3 check if user exists. This method will return true if the user exists in the database.
+    //Metode 3: Tjek om brugeren findes. Denne metode vil returnere sandt, hvis brugeren findes i databasen.
     public boolean checkIfUserExists(String checkEmail)
     {
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
@@ -82,11 +67,8 @@ public class UserRepository
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            //set parameters
             preparedStatement.setString(1, checkEmail);
-            //execute statement
             ResultSet resultSet = preparedStatement.executeQuery();
-            // Check if there is a row in the resultSet with the specified email
             if ( resultSet.next() )
             {
                 return true;
@@ -97,35 +79,25 @@ public class UserRepository
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        //return false if user does not exist
         return false;
     }
 
 
-    //Method 4 add user. This method will return true if the user was successfully added to the database.
+    //Metode 4: Tilføj bruger. Denne metode vil returnere sandt, hvis brugeren blev tilføjet til databasen.
     public boolean addUser(User user)
     {
-        // Query to insert user
         final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.user (admin, first_name, last_name, email, password) VALUES (?,?,?,?,?)";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY))
         {
-            // Set admin status
             preparedStatement.setBoolean(1, user.isAdmin());
-            // Set first_name
             preparedStatement.setString(2, user.getFirstName());
-            // Set last_name
             preparedStatement.setString(3, user.getLastName());
-            // Set email
             preparedStatement.setString(4, user.getEmail());
-            // Encrypt password
             String encryptedPassword = encoder.encode(user.getPassword());
-            // Set encrypted password
             preparedStatement.setString(5, encryptedPassword);
-            // Execute SQL statement and get number of rows affected by query (should be 1) and store in rowsAffected
             int rowsAffected = preparedStatement.executeUpdate();
-            // Return true if rowsAffected is 1
             if ( rowsAffected == 1 )
             {
                 return true;
@@ -136,24 +108,19 @@ public class UserRepository
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        // Return false if user was not added
         return false;
     }
 
-    //Method 5 get user by ID. This method will return a user object if the user exists in the database.
+    //Metode 5: Hent bruger efter ID. Denne metode vil returnere et brugerobjekt, hvis brugeren findes i databasen.
     public User getUserByID(int id)
     {
-        //query to find user
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE id = ?";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            //set parameters for prepared statement (user_id)
             preparedStatement.setInt(1, id);
-            //execute statement
             ResultSet resultSet = preparedStatement.executeQuery();
-            //return user if user exists
             if ( resultSet.next() )
             {
                 return getUser(resultSet);
@@ -164,10 +131,10 @@ public class UserRepository
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        //return null if user does not exist
         return null;
     }
 
+    //Metode 6 hent user med email og password. Denne metode vil returnere en user hvis den findes i databasen.
     public User getUserByEmailAndPassword(String email, String password)
     {
         User user = new User();
@@ -218,40 +185,30 @@ public class UserRepository
     }
 
 
-    // Method 6 update user. This method will update the selected user in the database. Without returning anything.
+    //Metode 7: Opdater bruger. Denne metode vil opdatere den valgte bruger i databasen uden at returnere noget.
     public void updateUser(User user, boolean passwordChanged)
     {
-        //query to update user
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.user SET admin = ?, first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY))
 
         {
-            //set admin status
             preparedStatement.setBoolean(1, user.isAdmin());
-            //set first_name
             preparedStatement.setString(2, user.getFirstName());
-            //set last_name
             preparedStatement.setString(3, user.getLastName());
-            //set email
             preparedStatement.setString(4, user.getEmail());
 
             if(passwordChanged)
             {
-                // Encrypt password
                 String encryptedPassword = encoder.encode(user.getPassword());
-                // Set encrypted password
                 preparedStatement.setString(5, encryptedPassword);
             }
             else
             {
                 preparedStatement.setString(5, user.getPassword());
             }
-
-            //set user_id
             preparedStatement.setInt(6, user.getId());
-            //execute statement
 
             preparedStatement.executeUpdate();
         }
@@ -262,27 +219,20 @@ public class UserRepository
         }
     }
 
-    // Method 7 verify user. This method will return true if the login credentials are matched in the database.
+    //Metode 8: Verificer bruger. Denne metode vil returnere sandt, hvis loginoplysningerne matcher i databasen.
     public boolean verifyUser(String email, String password)
     {
-        // Make a sentinel to check user, assume the user does not exist
         boolean userExists = false;
 
-        // Query to find user
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
 
-        // Try to query the database
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
         {
-            // Set the parameters for the query (email)
             preparedStatement.setString(1, email);
-            // Execute the query and retrieve the result
             ResultSet resultSet = preparedStatement.executeQuery();
-            // Check if a user with the given email exists
             if ( resultSet.next() )
             {
-                // If a user exists, retrieve the stored password
                 String savedCode = resultSet.getString("password");
                 if ( savedCode == null )
                 {
@@ -307,32 +257,26 @@ public class UserRepository
             System.out.println("Could not verify user");
             e.printStackTrace();
         }
-        // Return the sentinel
         return userExists;
     }
 
 
-    //Method 8 delete user by ID. This method will return true if the user was successfully deleted from the database.
+    //Metode 9: Slet bruger efter ID. Denne metode vil returnere sandt, hvis brugeren blev slettet fra databasen.
     public boolean deleteUserByID(int userId)
     {
 
-        //query to unassign tasks from user
         final String UNASSIGN_QUERY = "UPDATE ProjectPilotDB.task SET user_id = NULL WHERE user_id = ?";
-        //query to delete user
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.user WHERE id = ?";
         
         try (Connection connection = databaseService.getConnection();
              PreparedStatement unassignPreparedStatement = connection.prepareStatement(UNASSIGN_QUERY);
              PreparedStatement deletePreparedStatement = connection.prepareStatement(DELETE_QUERY))
         {
-            //set parameters for prepared statement(user_id)
             unassignPreparedStatement.setInt(1, userId);
             deletePreparedStatement.setInt(1, userId);
 
             unassignPreparedStatement.executeUpdate();
-            //execute statement
             int foundUser = deletePreparedStatement.executeUpdate();
-            //return true if user was found and deleted (foundUser should be 1).
             if ( foundUser == 1 )
             {
                 return true;
@@ -343,7 +287,6 @@ public class UserRepository
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        //return false if user was not found and deleted
         return false;
     }
 }
