@@ -155,45 +155,6 @@ public class UserController
         }
     }
 
-
-    /*  SKAL SLETTES
-    @GetMapping("/addUser")
-    public String showAddUser(HttpSession session)
-    {
-        if ( session.getAttribute("id") == null )
-        {
-            return "redirect:/";
-        }
-
-        return "addUser";
-    }
-
-
-    // This method is used to add a user.
-    @PostMapping("/addUser")
-    public String addUser(@RequestParam("user-admin") boolean newUserAdmin,
-                          @RequestParam("user-firstname") String newFirstName,
-                          @RequestParam("user-lastname") String newLastName,
-                          @RequestParam("user-email") String newEmail,
-                          @RequestParam("user-password") String newPassword,
-                          HttpSession session)
-    {
-        if ( session.getAttribute("id") == null )
-        {
-            return "redirect:/";
-        }
-
-        //lave en ny User
-        User newUser = new User(newUserAdmin, newFirstName, newLastName, newEmail, newPassword);
-
-        //Gem ny User
-        userRepository.addUser(newUser);
-
-        //Tilbage til start så man kan logge ind
-        return "start";
-    }*/
-
-
     // Viser assignUser siden og sætter task_id i stien så vi åbner den specifikke task.
     @GetMapping("/assignUser/{id}")
     public String showAssignUser(@PathVariable("id") int task_Id, HttpSession session, Model model)
@@ -202,14 +163,9 @@ public class UserController
         {
             return "redirect:/";
         }
-        // Henter task ud fra task-id.
         Task task = taskRepository.getTaskByTaskId(task_Id);
-        // Henter task objekt.
         model.addAttribute("task", task);
-        // Henter alle users.
         model.addAttribute("users", userRepository.getAllUsers());
-
-        //session.getAttribute("titleTask"); - METODE BRUGES IKKE SKAL SLETTES
 
         return "assignUser";
     }
@@ -222,9 +178,7 @@ public class UserController
         {
             return "redirect:/";
         }
-        //Henter task ud fra task_id.
         Task updateTask = taskRepository.getTaskByTaskId(task_id);
-        // sætter det valgte userId til den valgte task.
         taskRepository.assignTo(updateTask, userId);
 
         return "redirect:/allTasks";
@@ -263,12 +217,9 @@ public class UserController
         {
             return "redirect:/";
         }
-
-        // Henter den user som skal vises.
         User user = userRepository.getUserByID(id);
-
-        // user-objektet tilføjes til model.
         model.addAttribute("user", user);
+
         return "updateUser";
     }
 
@@ -290,12 +241,9 @@ public class UserController
         {
             return "redirect:/";
         }
-
-        // Henter user ud fra id.
         User user = userRepository.getUserByID(id);
         boolean passwordChanged = false;
 
-        // Hvis password boxen ikke er tom:
         if (!password.isEmpty())
         {
             // Hvis nye passwords ikke matcher gives fejl og vi starter forfra på useren.
@@ -304,8 +252,6 @@ public class UserController
                 model.addAttribute("user", user);
                 return "updateUser";
             }
-
-            // Hvis nye passwords matcher så går passwordChanged = true.
             user.setPassword(password);
             passwordChanged = true;
         }
@@ -315,7 +261,6 @@ public class UserController
         user.setLastName(lastname);
         user.setEmail(email);
 
-        // Vi opdaterer user, og passwordChanged hvis boolean = true.
         userRepository.updateUser(user, passwordChanged);
 
         return "redirect:/allUsers";

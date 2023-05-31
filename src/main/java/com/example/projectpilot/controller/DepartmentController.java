@@ -3,7 +3,6 @@ package com.example.projectpilot.controller;
 import com.example.projectpilot.model.Department;
 import com.example.projectpilot.model.Task;
 import com.example.projectpilot.repository.DepartmentRepository;
-import com.example.projectpilot.repository.ProjectRepository;
 import com.example.projectpilot.repository.TaskRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -17,13 +16,11 @@ public class DepartmentController
 {
     private final DepartmentRepository departmentRepository;
     private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
 
-    public DepartmentController(DepartmentRepository departmentRepository, TaskRepository taskRepository, ProjectRepository projectRepository)
+    public DepartmentController(DepartmentRepository departmentRepository, TaskRepository taskRepository)
     {
         this.departmentRepository = departmentRepository;
         this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
     }
 
     // Viser add departments siden

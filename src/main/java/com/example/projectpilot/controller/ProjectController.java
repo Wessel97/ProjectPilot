@@ -76,7 +76,7 @@ public class ProjectController
         {
             return "redirect:/";
         }
-        if ( !projectRepository.checkIfProjectExists(newName) == false)
+        if ( projectRepository.checkIfProjectExists(newName) )
         {
             model.addAttribute("errorMessage", "Project already exists");
             return "/addProject";
