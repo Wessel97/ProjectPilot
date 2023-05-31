@@ -188,6 +188,9 @@ public class DepartmentController
         session.setAttribute("departmentId", departmentId);
         session.setAttribute("departmentName", departmentName);
 
+        int sesh = 0;
+        session.setAttribute("sesh", sesh);
+
         return "showDepartmentUser";
     }
 }
