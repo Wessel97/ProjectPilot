@@ -1,6 +1,7 @@
 package com.example.projectpilot.model;
 
-public class User {
+public class User
+{
     private int id;
     private boolean admin;
     private String first_name;

@@ -23,7 +23,7 @@ public class UserRepository
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
-    //Metode 1: Hent bruger fra SQL. Denne metode vil returnere et brugerobjekt fra databasen.
+    // Denne metode vil returnere et brugerobjekt fra databasen.
     private User getUser(ResultSet resultSet) throws SQLException
     {
         int id = resultSet.getInt(1);
@@ -35,13 +35,13 @@ public class UserRepository
         return new User(id, admin, first_name, last_name, email, password);
     }
 
-    //Metode 2: Hent alle brugere. Denne metode vil returnere en liste over alle brugere i databasen.
+    // Denne metode vil returnere en liste over alle brugere i databasen.
     public List<User> getAllUsers()
     {
         List<User> userList = new ArrayList<>();
         final String SQL_QUERY = "SELECT * FROM ProjectPilotDB.user";
-        try(Connection connection = databaseService.getConnection();
-            Statement statement = connection.createStatement())
+        try (Connection connection = databaseService.getConnection();
+             Statement statement = connection.createStatement())
         {
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
             while ( resultSet.next() )
@@ -83,7 +83,7 @@ public class UserRepository
     }
 
 
-    //Metode 4: Tilføj bruger. Denne metode vil returnere sandt, hvis brugeren blev tilføjet til databasen.
+    // Denne metode vil returnere sandt, hvis brugeren blev tilføjet til databasen.
     public boolean addUser(User user)
     {
         final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.user (admin, first_name, last_name, email, password) VALUES (?,?,?,?,?)";
@@ -111,7 +111,7 @@ public class UserRepository
         return false;
     }
 
-    //Metode 5: Hent bruger efter ID. Denne metode vil returnere et brugerobjekt, hvis brugeren findes i databasen.
+    // Denne metode vil returnere et brugerobjekt, hvis brugeren findes i databasen.
     public User getUserByID(int id)
     {
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE id = ?";
@@ -134,12 +134,11 @@ public class UserRepository
         return null;
     }
 
-    //Metode 6 hent user med email og password. Denne metode vil returnere en user hvis den findes i databasen.
+    // Denne metode vil returnere en user hvis den findes i databasen.
     public User getUserByEmailAndPassword(String email, String password)
     {
         User user = new User();
         user.setEmail(email);
-        // SQL QUERY
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
 
         try (Connection connection = databaseService.getConnection();
@@ -157,7 +156,8 @@ public class UserRepository
                 String hashedPassword = resultSet.getString(6);
 
                 if ( encoder.matches(password, hashedPassword) )
-                { // Compare plain password with hashed one
+                {
+                    // Sammenlign det indtastede password med det hashede password i databasen.
                     user.setID(id);
                     user.setAdmin(admin);
                     user.setFirstName(first_name);
@@ -185,7 +185,7 @@ public class UserRepository
     }
 
 
-    //Metode 7: Opdater bruger. Denne metode vil opdatere den valgte bruger i databasen uden at returnere noget.
+    // Denne metode vil opdatere den valgte bruger i databasen uden at returnere noget.
     public void updateUser(User user, boolean passwordChanged)
     {
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.user SET admin = ?, first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
@@ -199,7 +199,7 @@ public class UserRepository
             preparedStatement.setString(3, user.getLastName());
             preparedStatement.setString(4, user.getEmail());
 
-            if(passwordChanged)
+            if ( passwordChanged )
             {
                 String encryptedPassword = encoder.encode(user.getPassword());
                 preparedStatement.setString(5, encryptedPassword);
@@ -219,7 +219,7 @@ public class UserRepository
         }
     }
 
-    //Metode 8: Verificer bruger. Denne metode vil returnere sandt, hvis loginoplysningerne matcher i databasen.
+    // Denne metode vil returnere sandt, hvis loginoplysningerne matcher i databasen.
     public boolean verifyUser(String email, String password)
     {
         boolean userExists = false;
@@ -261,13 +261,13 @@ public class UserRepository
     }
 
 
-    //Metode 9: Slet bruger efter ID. Denne metode vil returnere sandt, hvis brugeren blev slettet fra databasen.
+    // Denne metode vil returnere sandt, hvis brugeren blev slettet fra databasen.
     public boolean deleteUserByID(int userId)
     {
 
         final String UNASSIGN_QUERY = "UPDATE ProjectPilotDB.task SET user_id = NULL WHERE user_id = ?";
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.user WHERE id = ?";
-        
+
         try (Connection connection = databaseService.getConnection();
              PreparedStatement unassignPreparedStatement = connection.prepareStatement(UNASSIGN_QUERY);
              PreparedStatement deletePreparedStatement = connection.prepareStatement(DELETE_QUERY))

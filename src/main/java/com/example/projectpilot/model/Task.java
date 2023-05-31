@@ -2,7 +2,8 @@ package com.example.projectpilot.model;
 
 import java.sql.Date;
 
-public class Task {
+public class Task
+{
 
     // Parameters
     private int id;
@@ -57,7 +58,8 @@ public class Task {
     }
 
     // Empty Constructor
-    public Task() {
+    public Task()
+    {
     }
 
     public Task(String title, String description, String note, int hours, Date start_date, Date end_date, String status, String department)
@@ -77,115 +79,143 @@ public class Task {
     }
 
     // Getters and Setters
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id)
+    {
         this.id = id;
     }
 
-    public int getUser_id() {
+    public int getUser_id()
+    {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(int user_id)
+    {
         this.user_id = user_id;
     }
 
-    public int getPayRate() {
+    public int getPayRate()
+    {
         return pay_rate;
     }
 
-    public void setPayRate(int pay_rate) {
+    public void setPayRate(int pay_rate)
+    {
         this.pay_rate = pay_rate;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title)
+    {
         this.title = title;
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 
-    public String getNote() {
+    public String getNote()
+    {
         return note;
     }
 
-    public void setNote(String note) {
+    public void setNote(String note)
+    {
         this.note = note;
     }
 
-    public int getHours() {
+    public int getHours()
+    {
         return hours;
     }
 
-    public void setHours(int hours) {
+    public void setHours(int hours)
+    {
         this.hours = hours;
     }
 
-    public boolean isFlag() {
+    public boolean isFlag()
+    {
         return flag;
     }
 
-    public void setFlag(boolean flag) {
+    public void setFlag(boolean flag)
+    {
         this.flag = flag;
     }
 
-    public Date getStart_Date() {
+    public Date getStart_Date()
+    {
         return start_date;
     }
 
-    public void setStart_Date(Date start_date) {
+    public void setStart_Date(Date start_date)
+    {
         this.start_date = start_date;
     }
 
-    public Date getEnd_Date() {
+    public Date getEnd_Date()
+    {
         return end_date;
     }
 
-    public void setEnd_Date(Date end_date) {
+    public void setEnd_Date(Date end_date)
+    {
         this.end_date = end_date;
     }
 
-    public String getStatus() {
+    public String getStatus()
+    {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(String status)
+    {
         this.status = status;
     }
 
-    public String getDepartment() {
+    public String getDepartment()
+    {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(String department)
+    {
         this.department = department;
     }
 
-    public int getDepartment_id() {
+    public int getDepartment_id()
+    {
         return department_id;
     }
 
-    public void setDepartment_id(int department_id) {
+    public void setDepartment_id(int department_id)
+    {
         this.department_id = department_id;
     }
 
-    public String getProject() {
+    public String getProject()
+    {
         return project;
     }
 
-    public void setProject(String project) {
+    public void setProject(String project)
+    {
         this.project = project;
     }
 }

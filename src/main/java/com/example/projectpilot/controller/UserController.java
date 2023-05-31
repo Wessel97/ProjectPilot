@@ -1,6 +1,7 @@
 package com.example.projectpilot.controller;
 
 // import com.example.projectpilot.model.Project; - IS NEVER USED
+
 import com.example.projectpilot.model.Task;
 import com.example.projectpilot.model.User;
 import com.example.projectpilot.repository.ProjectRepository;
@@ -229,13 +230,13 @@ public class UserController
             /*Ved at sætte required = false bliver parameteren 'user-admin' valgfri,
             og controller-metoden vil ikke udløse en MissingServletRequestParameterException,
             hvis afkrydsningsfeltet ikke er markeret.*/
-                            @RequestParam(value = "user-admin", required = false) boolean admin,
-                            @RequestParam("user-firstname") String firstname,
-                            @RequestParam("user-lastname") String lastname,
-                            @RequestParam("user-email") String email,
-                            @RequestParam("user-password") String password,
-                            @RequestParam("user-confirm_password") String confirmPassword,
-                           HttpSession session, Model model)
+                             @RequestParam(value = "user-admin", required = false) boolean admin,
+                             @RequestParam("user-firstname") String firstname,
+                             @RequestParam("user-lastname") String lastname,
+                             @RequestParam("user-email") String email,
+                             @RequestParam("user-password") String password,
+                             @RequestParam("user-confirm_password") String confirmPassword,
+                             HttpSession session, Model model)
     {
         if ( session.getAttribute("id") == null )
         {
@@ -244,10 +245,11 @@ public class UserController
         User user = userRepository.getUserByID(id);
         boolean passwordChanged = false;
 
-        if (!password.isEmpty())
+        if ( !password.isEmpty() )
         {
             // Hvis nye passwords ikke matcher gives fejl og vi starter forfra på useren.
-            if (!password.equals(confirmPassword)) {
+            if ( !password.equals(confirmPassword) )
+            {
                 model.addAttribute("errorMessage", "Passwords do not match");
                 model.addAttribute("user", user);
                 return "updateUser";

@@ -23,11 +23,8 @@ public class ProjectRepository
     //Henter et projekt, bliver brugt i getAllProjects
     public Project getProject(ResultSet resultSet) throws SQLException
     {
-        //get department_id from result set
         int projectID = resultSet.getInt(1);
-        //get first_name from result set
         String projectName = resultSet.getString(2);
-        //create user object
         return new Project(projectID, projectName);
     }
 
@@ -103,7 +100,7 @@ public class ProjectRepository
         return selectedProject;
     }
 
-    // Opdatere et projekt
+    // Opdater et projekt
     public void updateProject(Project project)
     {
         final String UPDATE_QUERY = "UPDATE ProjectPilotDB.project SET name = ? WHERE id = ?";
@@ -145,7 +142,7 @@ public class ProjectRepository
         return false;
     }
 
-    //Check om et projekt eksistere
+    //Check om et projekt eksisterer
     public boolean checkIfProjectExists(String checkName)
     {
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.project WHERE name = ?";

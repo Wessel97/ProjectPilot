@@ -51,14 +51,12 @@ public class DepartmentRepository
             System.out.println("Could not query database");
             e.printStackTrace();
         }
-        //returner false hvis der ikke er en række i result set med det specificerede email
         return false;
     }
 
     //Lav en metode der kan tilføje departments til databasen
     public boolean addDepartment(Department department)
     {
-        // Query to insert user
         final String INSERT_QUERY = "INSERT INTO ProjectPilotDB.department (project_id, name) VALUES (?,?)";
 
         try (Connection connection = databaseService.getConnection();
@@ -108,9 +106,7 @@ public class DepartmentRepository
 
     public List<Department> getAllDepartmentsByProjectId(int projectId)
     {
-        // Initialize an empty list to store tasks with the given userID
         List<Department> departmentsByProjectList = new ArrayList<>();
-        // Define the SQL query to find all tasks with the given userID
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.department WHERE project_id = ?";
 
         try (Connection connection = databaseService.getConnection();
@@ -137,7 +133,6 @@ public class DepartmentRepository
     public String getDepartmentNameById(int id)
     {
         String departmentName = null;
-        //query to find user
         final String FIND_QUERY = "SELECT name FROM ProjectPilotDB.department WHERE id = ?";
 
         try (Connection connection = databaseService.getConnection();

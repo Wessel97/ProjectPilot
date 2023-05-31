@@ -23,13 +23,7 @@ public class TaskRepository
         this.databaseService = databaseService;
     }
 
-
-
-    /*--------------------------------------------------------------------
-                        //Get metoder (metode 1-5)
-     ------------------------------------------------------------------*/
-
-    //Metode 1 get task fra SQL. Denne metode vil returnere et task objekt fra databasen.
+    // Denne metode vil returnere et task objekt fra databasen.
     private Task getTask(ResultSet resultSet) throws SQLException
     {
         int id = resultSet.getInt(1);
@@ -51,7 +45,7 @@ public class TaskRepository
     }
 
 
-    //Metode 2 get all tasks. Denne metode vil returnere alle tasks i en liste med projectId.
+    // Denne metode vil returnere alle tasks i en liste med projectId.
     public List<Task> getAllTasksByProjectId(int projectId, String sortingParameter)
     {
         // Intialiser en tom liste til at gemme alle tasks i
@@ -85,7 +79,7 @@ public class TaskRepository
         return allTasksList;
     }
 
-    //Denne metode vil returnere alle tasks i en liste med userId og en sortingParameter.
+    // Denne metode vil returnere alle tasks i en liste med userId og en sortingParameter.
     //SortingParameteren defineres i html filen, så når du klikker på værdien sættes den i metoden.
     public List<Task> getAllTasksByUserID(int userId, String sortingParameter)
     {
@@ -124,7 +118,7 @@ public class TaskRepository
         return userIdTasksList;
     }
 
-    //Den her metode returnerer alle task i en list med departmentId
+    // Den her metode returnerer alle task i en list med departmentId
     public List<Task> getAllTasksByDepartmentID(int departmentId)
     {
         // Intialiser en tom liste til at gemme alle tasks i
@@ -231,23 +225,14 @@ public class TaskRepository
             int task_id = task.getId();
 
             preparedStatement.setString(1, title);
-            // set description parameter
             preparedStatement.setString(2, description);
-            // set note parameter
             preparedStatement.setString(3, note);
-            // set hours parameter
             preparedStatement.setInt(4, hours);
-            // set pay_rate parameter
             preparedStatement.setInt(5, payRate);
-            // set flag parameter
             preparedStatement.setBoolean(6, flag);
-            // set start_date parameter
             preparedStatement.setDate(7, start_date);
-            // set end_date parameter
             preparedStatement.setDate(8, end_date);
-            // set status parameter
             preparedStatement.setString(9, status);
-            // set task_id parameter
             preparedStatement.setInt(10, task_id);
             preparedStatement.executeUpdate();
         }
@@ -264,19 +249,14 @@ public class TaskRepository
     */
     public boolean deleteTaskByID(int taskId)
     {
-        // Make a boolean to check if the task was deleted (sentinel). Makes the code more readable.
         boolean taskDeleted = false;
-        //query to delete user
         final String DELETE_QUERY = "DELETE FROM ProjectPilotDB.task WHERE id = ?";
 
         try (Connection connection = databaseService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY))
         {
-            //set parameters for prepared statement(task_id)
             preparedStatement.setInt(1, taskId);
-            //execute statement
             int foundTask = preparedStatement.executeUpdate();
-            // Returnerer 1 hvis en task er slettet
             if ( foundTask == 1 )
             {
                 taskDeleted = true;
@@ -335,8 +315,6 @@ public class TaskRepository
         return sumHoursByDept;
     }
 
-
-
     // Metoden kalkulerer den totale pris for tasks i det givne department.
     public int totalPriceByDepartment(int id)
     {
@@ -359,5 +337,4 @@ public class TaskRepository
         }
         return sumPriceByDept;
     }
-
 }
