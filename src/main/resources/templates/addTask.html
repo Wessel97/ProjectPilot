@@ -16,7 +16,7 @@
 
 <!--        Vi bruger task-title i stedet for title, da flere objekter kan have de samme parameter navne-->
         <label for="title-field">Task titel:</label>
-        <input id="title-field" name="task-title" type="text">
+        <input id="title-field" name="task-title" type="text" required>
 
         <label for="description-field">Task description:</label>
         <input id="description-field" name="task-description" type="text">
@@ -25,13 +25,13 @@
         <input id="note-field" name="task-note" type="text">
 
         <label for="hours-field">Task hours:</label>
-        <input id="hours-field" name="task-hours" type="number">
+        <input id="hours-field" name="task-hours" type="number" required>
 
         <label for="start_date-field">Task start date:</label>
-        <input id="start_date-field" placeholder="26-08-2022" name="task-start_date" type="date" th:value="${task.start_Date}">
+        <input id="start_date-field" placeholder="26-08-2022" name="task-start_date" type="date" th:value="${task.start_Date}" required>
 
         <label for="end_date-field">Task end date:</label>
-        <input id="end_date-field" placeholder="27-08-2022" name="task-end_date" type="date" th:value="${task.end_Date}">
+        <input id="end_date-field" placeholder="27-08-2022" name="task-end_date" type="date" th:value="${task.end_Date}" required>
 
 
         <label for="status-field">Task status:</label>
