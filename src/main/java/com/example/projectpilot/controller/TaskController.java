@@ -177,7 +177,9 @@ public class TaskController
 
     // Viser alle tasks
     @GetMapping("/allTasks")
-    public String showAllTasks(HttpSession session, Model model, @RequestParam(required = false) String sortingParameter)
+    public String showAllTasks(HttpSession session,
+            Model model,
+            @RequestParam(required = false) String sortingParameter)
     {
         if ( session.getAttribute("id") == null )
         {
