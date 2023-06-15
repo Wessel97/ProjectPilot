@@ -44,14 +44,14 @@ public class DepartmentController
     @PostMapping("/addDepartment")
     public String addDepartment( @RequestParam("department-name") String departmentName, Model model, HttpSession session)
     {
-        if (departmentRepository.checkIfDepartmentExists(departmentName))
+        int projectId = (int) session.getAttribute("projectId");
+        if (departmentRepository.checkIfDepartmentExists(departmentName,projectId))
         {
             model.addAttribute("error", "Department already exists. Please enter a new name.");
             return "addDepartment";
         }
         else
         {
-            int projectId = (int) session.getAttribute("projectId");
             Department newDepartment = new Department();
             newDepartment.setDepartmentName(departmentName);
             newDepartment.setProjectId(projectId);

@@ -32,25 +32,24 @@ public class DepartmentRepository
     }
 
     //En metode som checker at et department eksisterer
-    public boolean checkIfDepartmentExists(String checkName)
-    {
-        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.department WHERE name = ?";
+    public boolean checkIfDepartmentExists(String checkName, int projectId) {
+        final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.department WHERE name = ? AND project_id = ?";
 
         try (Connection connection = databaseService.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY))
-        {
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY)) {
             preparedStatement.setString(1, checkName);
+            preparedStatement.setInt(2, projectId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if ( resultSet.next() )
-            {
+
+            if (resultSet.next()) {
+                // Department exists in the specified project ID
                 return true;
             }
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Could not query database");
+        } catch (SQLException e) {
+            System.out.println("Could not query the database");
             e.printStackTrace();
         }
+
         return false;
     }
 

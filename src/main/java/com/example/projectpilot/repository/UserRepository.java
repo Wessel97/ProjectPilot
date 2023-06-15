@@ -138,7 +138,6 @@ public class UserRepository
     public User getUserByEmailAndPassword(String email, String password)
     {
         User user = new User();
-        user.setEmail(email);
         final String FIND_QUERY = "SELECT * FROM ProjectPilotDB.user WHERE email = ?";
 
         try (Connection connection = databaseService.getConnection();
@@ -158,6 +157,7 @@ public class UserRepository
                 if ( encoder.matches(password, hashedPassword) )
                 {
                     // Sammenlign det indtastede password med det hashede password i databasen.
+                    user.setEmail(email);
                     user.setID(id);
                     user.setAdmin(admin);
                     user.setFirstName(first_name);
