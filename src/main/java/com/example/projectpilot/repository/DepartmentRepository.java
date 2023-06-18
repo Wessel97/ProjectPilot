@@ -2,7 +2,6 @@ package com.example.projectpilot.repository;
 
 import com.example.projectpilot.model.Department;
 import com.example.projectpilot.service.DatabaseService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -16,7 +15,7 @@ public class DepartmentRepository
     private final DatabaseService databaseService;
 
     //Lav en constructor der tager imod database service objektet
-    @Autowired
+
     public DepartmentRepository(DatabaseService databaseService)
     {
         this.databaseService = databaseService;

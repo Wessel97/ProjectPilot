@@ -2,7 +2,6 @@ package com.example.projectpilot.repository;
 
 import com.example.projectpilot.model.Project;
 import com.example.projectpilot.service.DatabaseService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -14,7 +13,6 @@ public class ProjectRepository
 {
     private final DatabaseService databaseService;
 
-    @Autowired
     public ProjectRepository(DatabaseService databaseService)
     {
         this.databaseService = databaseService;
