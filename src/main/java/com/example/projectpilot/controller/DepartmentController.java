@@ -25,17 +25,10 @@ public class DepartmentController
 
     // Viser add departments siden
     @GetMapping("/addDepartment")
-    public String showAddDepartment(HttpSession session, Model model) {
+    public String showAddDepartment(HttpSession session) {
         if (session.getAttribute("id") == null) {
             return "redirect:/";
         }
-
-        int projectId = (int) session.getAttribute("projectId");
-        List<Department> departmentList = departmentRepository.getAllDepartmentsByProjectId(projectId);
-
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("department", departmentList);
-        model.addAttribute("newDepartment", new Department());
 
         return "addDepartment";
     }
