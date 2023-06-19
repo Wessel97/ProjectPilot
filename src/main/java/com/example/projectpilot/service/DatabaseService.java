@@ -13,7 +13,6 @@ public class DatabaseService
 
     private final DataSource dataSource;
 
-    @Autowired
     public DatabaseService(DataSource dataSource)
     {
         this.dataSource = dataSource;

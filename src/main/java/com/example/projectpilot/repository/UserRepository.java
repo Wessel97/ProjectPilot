@@ -2,7 +2,6 @@ package com.example.projectpilot.repository;
 
 import com.example.projectpilot.model.User;
 import com.example.projectpilot.service.DatabaseService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -15,7 +14,6 @@ public class UserRepository
 {
     private final DatabaseService databaseService;
 
-    @Autowired
     public UserRepository(DatabaseService databaseService)
     {
         this.databaseService = databaseService;

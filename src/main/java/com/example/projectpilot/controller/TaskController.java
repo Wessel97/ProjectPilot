@@ -43,8 +43,8 @@ public class TaskController
                           @RequestParam("task-description") String newDescription,
                           @RequestParam("task-note") String newNote,
                           @RequestParam("task-hours") int newHours,
-                          @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate newStartDate,
-                          @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate newEndDate,
+                          @RequestParam("task-start_date") Date newStartDate,
+                          @RequestParam("task-end_date") Date newEndDate,
                           @RequestParam("task-status") String newStatus,
                           HttpSession session)
     {
@@ -56,17 +56,14 @@ public class TaskController
         int departmentId = (int) session.getAttribute("departmentId");
         String departmentName = (String) session.getAttribute("departmentName");
 
-        Date sqlStartDate = Date.valueOf(newStartDate);
-        Date sqlEndDate = Date.valueOf(newEndDate);
-
         Task newTask = new Task();
         newTask.setDepartment_id(departmentId);
         newTask.setTitle(newTitle);
         newTask.setDescription(newDescription);
         newTask.setNote(newNote);
         newTask.setHours(newHours);
-        newTask.setStart_Date(sqlStartDate);
-        newTask.setEnd_Date(sqlEndDate);
+        newTask.setStart_Date(newStartDate);
+        newTask.setEnd_Date(newEndDate);
         newTask.setStatus(newStatus);
         newTask.setDepartment(departmentName);
 
@@ -101,8 +98,8 @@ public class TaskController
                              @RequestParam("task-hours") int updateHours,
                              @RequestParam("task-pay_rate") int updatePayRate,
                              @RequestParam(value = "task-flag", defaultValue = "false") boolean updateFlag,
-                             @RequestParam("task-start_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate updateStartDate,
-                             @RequestParam("task-end_date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate updateEndDate,
+                             @RequestParam("task-start_date") Date updateStartDate,
+                             @RequestParam("task-end_date") Date updateEndDate,
                              @RequestParam("task-status") String updateStatus,
                              @RequestParam("task-department") String updateDepartment,
                              HttpSession session)
@@ -112,10 +109,7 @@ public class TaskController
             return "redirect:/";
         }
 
-        Date sqlStartDate = Date.valueOf(updateStartDate);
-        Date sqlEndDate = Date.valueOf(updateEndDate);
-
-        Task updateTask = new Task(updateTaskId, updateUserId, updateTitle, updateDescription, updateNote, updateHours, updatePayRate, updateFlag, sqlStartDate, sqlEndDate, updateStatus, updateDepartment);
+        Task updateTask = new Task(updateTaskId, updateUserId, updateTitle, updateDescription, updateNote, updateHours, updatePayRate, updateFlag, updateStartDate, updateEndDate, updateStatus, updateDepartment);
 
         taskRepository.updateTask(updateTask);
 
@@ -177,7 +171,9 @@ public class TaskController
 
     // Viser alle tasks
     @GetMapping("/allTasks")
-    public String showAllTasks(HttpSession session, Model model, @RequestParam(required = false) String sortingParameter)
+    public String showAllTasks(HttpSession session,
+            Model model,
+            @RequestParam(required = false) String sortingParameter)
     {
         if ( session.getAttribute("id") == null )
         {
